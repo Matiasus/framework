@@ -1,2 +1,2 @@
-# framework
+# Framework
 PHP simple framework
