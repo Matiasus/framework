@@ -10,11 +10,9 @@
   *	Adresa:       http://matiasus.cekuj.net
   * 
   * ------------------------------------------------------------
-  * @description: 		
-  *
-  * Autoloading tried - vytvorenie objektov (instancii) je vykonavane jednoduchym volanim triedy, 
-  * nie je potrebne definovanie celej cesty umiestnenie triedy napr. $class = new Class(), namiesto
-  * require(ADRESA ULOZENIA TRIEDY); $class = new Class();
+  * @description: Autoloading tried - vytvorenie objektov (instancii) je vykonavane jednoduchym volanim triedy, 
+  *               nie je potrebne definovanie celej cesty umiestnenie triedy napr. $class = new Class(), namiesto
+  *               require(ADRESA ULOZENIA TRIEDY); $class = new Class();
   */
 class Autoloader{
 

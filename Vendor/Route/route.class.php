@@ -36,16 +36,25 @@ class Route {
   * @param Boolean - true = with http:// or false = without
   * @return String - form of url address
   */
-  public static function getSerNameUri($http = False)
+  public static function getSerNameUri($http = false)
   {
+    // init uri
+    $uri = '';
+    // http protocol
+    $protocol = 'http://';
+    // check if HTTPS set
+    if (isset($_SERVER['HTTPS'])) {
+      // https protocol
+      $protocol = 'https://';
+    }
+    // with http or https
     if ($http !== false) {
       // url with http
-      return $http.'://'.$_SERVER['SERVER_NAME'];
+      $uri .= $protocol;
     // case without server name
-    }	else {
-      // with server name
-      return $_SERVER['SERVER_NAME'];
     }
+    // with server name
+    return $uri.$_SERVER['SERVER_NAME'];
   }
 
   /***
@@ -69,7 +78,7 @@ class Route {
   public static function getfullUri($http = false)
   {
     // get server name and requested uri
-    return $this->getSerNameUri($http).$this->getReqUri();
+    return self::getSerNameUri($http).self::getReqUri();
   }
 
   /***
@@ -78,14 +87,14 @@ class Route {
   * @param Void
   * @return Void
   */
-  public function explodedUrl()
+  public function explodeUrl()
   {
     // url path
     $path = self::getReqUri();
     // extract from url address module, view, controller
     // in according to config file (section ROUTE[PATT])
     // x param in regex is ignore whitespace in regex
-    preg_match('~'.Config::get('ROUTE', 'PATT').'~ix', $path, $matches);
+    preg_match('~'.Config::get('ROUTE', 'PATTERN').'~ix', $path, $matches);
     // loop the values
     foreach ($matches as $key => $value) {
       // find string in keys
@@ -107,7 +116,7 @@ class Route {
   * @param Void
   * @return String
   */
-  public static function get($key = false)
+  public static function get($key = false, $exception = false)
   {
     // check if 1 argument come
     if (func_num_args() > 1) {
@@ -126,8 +135,14 @@ class Route {
     }
     // check if exists in array   
     if (!array_key_exists($key, self::$uri)) {
-      // throw to exception with error message
-      throw new \Exception("[".get_called_class()."]:[".__LINE__."]: <b>".$key."</b> does not exist in ROUTE!");
+      // exception?
+      if ($exception !== false) {
+        // throw to exception with error message
+        throw new \Exception("[".get_called_class()."]:[".__LINE__."]: <b>".$key."</b> does not exist in ROUTE!");
+       } else {
+        // not exists
+        return false;
+       }
     }
     // return value
     return self::$uri[$key];

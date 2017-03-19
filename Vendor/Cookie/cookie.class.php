@@ -52,7 +52,7 @@ class Cookie{
 	 */
 	public static function get($key = false, $exception = false)
   {
-    // check if 1 argument come
+    // check if 2 arguments come
     if (func_num_args() > 2) {
       // throw to exception with error message
       throw new \Exception("[".get_called_class()."]:[".__LINE__."]: Just <b>TWO</b> argument accepted!"); 
@@ -68,10 +68,15 @@ class Cookie{
       throw new \Exception("[".get_called_class()."]:[".__LINE__."]: Key must be a <b>string</b>!"); 
     }
     // check if exists in array   
-    if (!array_key_exists($key, self::$_COOKIE) && 
-        true === $exception) {
-      // throw to exception with error message
-      throw new \Exception("[".get_called_class()."]:[".__LINE__."]: <b>".$key."</b> does not exist in COOKIE!");
+    if (!array_key_exists($key, $_COOKIE)) {
+      // exception?
+      if ($exception !== false) {
+        // throw to exception with error message      
+        throw new \Exception("[".get_called_class()."]:[".__LINE__."]: <b>".$key."</b> does not exist in COOKIE!");
+      } else {
+        // not exists
+        return false;
+      }
     }
     // return COOKIE
     return $_COOKIE[$key];

@@ -84,7 +84,7 @@ class File {
     // check if exists in array   
     if (!array_key_exists($key, self::$config)) {
       // throw to exception with error message
-      throw new \Exception("[".get_called_class()."]:[".__LINE__."]: <b>".$key."</b> does not exist in COOKIE!");
+      throw new \Exception("[".get_called_class()."]:[".__LINE__."]: <b>".$key."</b> does not exist!");
     }
     // return requested value from config array
     return self::$config[$key];
