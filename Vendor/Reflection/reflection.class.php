@@ -68,10 +68,8 @@ class Reflection {
    */
   public function create()
   {
-    if (empty($this->reflection)) {
-      // throw to exception with error message
-      throw new \Exception('['.get_called_class().']:['.__LINE__.']: Reflection doesn\'t exist!');
-    }
+    // create reflection
+    $this->reflect();
     // get constructor
     $constructor = $this->reflection->getConstructor();
   }
