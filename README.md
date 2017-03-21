@@ -1,2 +1,2 @@
 # Framework
-PHP simple framework
+Simple PHP framework trying to use Dependency Injection
