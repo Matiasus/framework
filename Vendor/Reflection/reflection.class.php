@@ -29,12 +29,12 @@ class Reflection {
   }
 
   /***
-   * Create controller
+   * Reflect class
    *
    * @param Void
    * @return Void
    */
-  public function create($class = false)
+  public function reflect($class = false)
   {
     // check if non empty value
     if (func_num_args() > 1) {
@@ -54,9 +54,25 @@ class Reflection {
     // 
     if (!class_exists($class)) {
       // throw to exception with error message
-      throw new \Exception('['.get_called_class().']:['.__LINE__.']: Class <b>'.$class.'</b> doesn't exist!');
+      throw new \Exception('['.get_called_class().']:['.__LINE__.']: Class <b>'.$class.'</b> doesn\'t exist!');
     }
     // create new \ReflectionClass 
-    $this->reflection = new \ReflectionClass($class);  
+    $this->reflection = new \ReflectionClass($class);
+  }
+  
+  /***
+   * Create instance of given class
+   *
+   * @param Void
+   * @return Void
+   */
+  public function create()
+  {
+    if (empty($this->reflection)) {
+      // throw to exception with error message
+      throw new \Exception('['.get_called_class().']:['.__LINE__.']: Reflection doesn\'t exist!');
+    }
+    // get constructor
+    $constructor = $this->reflection->getConstructor();
   }
 }
