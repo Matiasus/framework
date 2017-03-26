@@ -69,7 +69,7 @@ try {
   // @return Instance of \Vendor\Session\Session
   $di_container->store('\Vendor\Session\Session');
   // @fun Launch session
-	$di_container->service('\Vendor\Session\Session')->launchSession();
+  $di_container->service('\Vendor\Session\Session')->launchSession();
 
   // Mysql
   // @param void
