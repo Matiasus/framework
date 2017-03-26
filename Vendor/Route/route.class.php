@@ -17,8 +17,29 @@ use \Vendor\Config\File as Config;
 
 class Route {
 
+  /** @const */
+  const MODEL       = "Model";
+  /** @const */
+  const MODULE      = "Module";
+  /** @const */
+  const CONTROLLER  = "Controller";
+  /** @const */
+  const APPLICATION = "Application";
+
+  /** @var */
+  public $view;
+
+  /** @var */
+  public $module;
+  
+  /** @var */
+  public $controller;
+
   /** @var Array - obsah rozlozenie url cesty	*/
   private static $uri = array();
+
+  /** @var */
+  private $controller_namespace = false;
 
   /***
    * Constructor
@@ -107,6 +128,48 @@ class Route {
           self::$uri[$key] = trim($value);
         }
       }
+    }
+  }
+
+  /***
+  * Create controller namespace
+  *
+  * @param  Void
+  * @return Void
+  */
+  public function initValueUrl($http = false)
+  {
+    // init for controller
+    if (self::get('controller') === false) {      
+      // controller
+      self::$uri['controller'] = Config::get('CONTROLLER', 'CONTROLLER');
+    }
+    // init for module
+    if (self::get('module') === false) {
+      // module
+      self::$uri['module'] = Config::get('CONTROLLER', 'MODULE');
+    }
+    // init for view
+    if (self::get('view') === false) { 
+      // view
+      self::$uri['view'] = Config::get('CONTROLLER', 'VIEW');      
+    }
+    // controller name
+    self::$uri['controller_name'] = self::get('controller').self::CONTROLLER;
+    // controller full name from parsed url address without Module section
+    self::$uri['controller_namespace'] = '\\'.self::APPLICATION.
+                                         '\\'.self::CONTROLLER.
+                                         '\\'.self::$uri['controller_name'];
+    // module exists?
+    $module_exists = strpos(strtolower(Config::get('ROUTE', 'PATTERN')), strtolower(self::MODULE));
+    // controller full name from parsed url address with Module section
+    if ($module_exists !== false) {
+      //  controller name from parsed url address with Module section
+      self::$uri['controller_namespace'] = '\\'.self::APPLICATION.
+                                           '\\'.self::MODULE.
+                                           '\\'.ucfirst(self::get('module')).
+                                           '\\'.self::CONTROLLER.
+                                           '\\'.self::$uri['controller_name'];
     }
   }
 

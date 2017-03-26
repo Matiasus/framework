@@ -26,27 +26,26 @@ class Session {
 
   /** @var Zakladne nastavenia	*/
   private static $configuration = array (
+    // Minimalna zivotnost session 
+    "session.gc_maxlifetime"   => 0,
 
-  // Minimalna zivotnost session 
-  "session.gc_maxlifetime" 		=> 0,
+    // Zabezpeci, aby poziadavka na session bola realizovana prostrednictvom cookie, nie pomocou GET parametra
+    "session.use_cookies"      => 1,
+    // Zabezpeci, aby poziadavka na session bola realizovana IBA prostrednictvom cookie
+    "session.use_only_cookies" => 1,
+    // Musi byt nastavene na 1 - nebude citat ani zahrnovat SID do url
+    "session.use_trans_sid"    => 0,
 
-  // Zabezpeci, aby poziadavka na session bola realizovana prostrednictvom cookie, nie pomocou GET parametra
-  "session.use_cookies" 			=> 1,
-  // Zabezpeci, aby poziadavka na session bola realizovana IBA prostrednictvom cookie
-  "session.use_only_cookies"	=> 1,
-  // Musi byt nastavene na 1 - nebude citat ani zahrnovat SID do url
-  "session.use_trans_sid"		 	=> 0,
-
-  // zivotnost cookie session
-  "session.cookie_lifetime" 	=> 0,
-  // Nastavuje cestu, kde sa ma vytvarat cookie - cookie vramci celej domeny
-  "session.cookie_path" 			=> "/",
-  // Nastavuje domenu, v ramci ktorej je mozne pouzivat cookie
-  //			"session.cookie_domain" 		=> "",
-  // Zabezpeci, ze cookie je pristupne iba prostrednictvom http alebo https
-  "session.cookie_secure"	 		=> FALSE,
-  // Zabezpeci, ze cookie je pristupne iba prostrednictvom http, nie cez Javascript
-  "session.cookie_httponly" 	=> TRUE
+    // zivotnost cookie session
+    "session.cookie_lifetime"  => 0,
+    // Nastavuje cestu, kde sa ma vytvarat cookie - cookie vramci celej domeny
+    "session.cookie_path"      => "/",
+    // Nastavuje domenu, v ramci ktorej je mozne pouzivat cookie
+    //			"session.cookie_domain" 		=> "",
+    // Zabezpeci, ze cookie je pristupne iba prostrednictvom http alebo https
+    "session.cookie_secure"    => FALSE,
+    // Zabezpeci, ze cookie je pristupne iba prostrednictvom http, nie cez Javascript
+    "session.cookie_httponly"  => TRUE
   );
 
   /***
