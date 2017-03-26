@@ -30,34 +30,19 @@ class Creator {
   const APPLICATION = "Application";
 
   /** @var */
+  private $controller;
+
+  /** @var */
   private $container;
 
   /** @var */
   private $instance;
 
   /** @var */
+  private $method;
+
+  /** @var */
   private $route;
-
-  /** @var */
-  private $view;
-
-  /** @var */
-  private $module;
-  
-  /** @var */
-  private $controller;
-
-  /** @var */
-  private $process;
-
-  /** @var */
-  private $fullname;
-
-  /** @var */
-  private $rendername;
-
-  /** @var Array - array of exception */
-  private $exceptions = array('form', 'activate');
 
   /***
    * Constructor
@@ -80,25 +65,35 @@ class Creator {
    * @param Void
    * @return Void
    */
-  public function controller()
+  public function create($controller)
   {
-    // controller namespace
-    $controller = $this->route->get('controller_namespace');
+    // store controller namespace
+    $this->controller = $controller;
     // create instance of controller according to url
-    $this->container->store($controller);
+    $this->container->store($this->controller);
     // save to variable
-    $this->instance = $this->container->service($controller);
+    $this->instance = $this->container->service($this->controller);
+  }
+
+  /***
+   * Create controller
+   *
+   * @param Void
+   * @return Void
+   */
+  public function callMethod($method)
+  {  
     // Render method
-    $this->rendername = 'render'.ucfirst($this->route->get('view'));
+    $this->method = 'render'.ucfirst($method);
     // Doplnenie parametrov do renderovacej metody
-    if (!method_exists($this->instance, $this->rendername)) {
+    if (!method_exists($this->instance, $this->method)) {
       // throw to exception with error message
-      throw new \Exception('['.get_called_class().']:['.__LINE__.']: Method '.$this->rendername.' in '.$this->fullname.' does not exists!');
+      throw new \Exception('['.get_called_class().']:['.__LINE__.']: Method '.$this->method.' in '.$this->controller.' does not exists!');
     }
     // cookie process - safe actual url address
     $this->setCookies();
     // volanie renderovacej metody
-    $this->instance->{$this->rendername}();
+    $this->instance->{$this->method}();
 /*
     // if is set processing
     if (null !== $route->getProcessing()) {

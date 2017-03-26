@@ -17,7 +17,7 @@ namespace Vendor\Di;
 class Container {
 
   /** @var */
-  private $arguments = null;
+  private $reflection;
 
   /** @var */
   private $services = array();
@@ -66,10 +66,10 @@ class Container {
     // if non empty arguments
     if (!empty($arguments)) {
       // throw to exception with error message
-      $this->arguments = $arguments;
+      $this->reflection->setArguments($arguments);
     }
     // return reuired instance of class
-    return $this->services[$class] = $this->resolve($class);
+    return $this->services[$class] = $this->reflection->resolve($class);
   }
 
   /***
@@ -102,68 +102,6 @@ class Container {
     }
     // return service
     return $this->services[$name];
-  }
-  /***
-   * Resolve instnce of reuired instance of class
-   *
-   * @param  String  
-   * @return Void
-   */
-  private function resolve ($class)
-  {
-    // dependencies
-    $dependencies = array();
-    // create instance of class
-    $reflection = new \ReflectionClass($class);
-    // get created class constructor
-    $constructor = $reflection->getConstructor();
-
-    // if there is no dependencies
-    if (null === $constructor) {
-      // check if instantiable
-      if (!$reflection->isInstantiable()) {
-        // throw to exception with error message
-        throw new \Exception("[".get_called_class()."]:[".__LINE__."]: Class is instantiable!"); 
-      }
-      // if instance already created
-      if (array_key_exists($class, $this->instances)) {
-        // return existed instance
-        return $this->instances[$class];
-      }
-      // return new instance
-      return new $class;
-    }
-    // if there is dependencies - loop through dependencies
-    foreach ($constructor->getParameters() as $parameter) {
-      // check if parameter is class
-      if (!is_null($parameter->getClass())) {
-        // constructor dependencies with recursion
-        $dependencies[] = $this->resolve($parameter->getClass()->getName());
-      // is non class
-      } else {
-        // if optional value, try to get default value
-        if (!$parameter->isOptional()) {
-          // if not null
-          if (!is_null($this->arguments)) {
-            // append dependency
-            $dependencies[] = $this->arguments;
-            // null
-            $this->arguments = null;
-          }
-        } else {
-          // check if default value is available
-          if (false === $parameter->isDefaultValueAvailable()) {
-            // throw to exception with error message
-            throw new \Exception("[".get_called_class()."]:[".__LINE__."]: Default value is not available!");
-          } else {
-            // get default value
-            $dependencies[] = $parameter->getDefaultValue();
-          }
-        }
-      }
-    }
-    // return instance with parameters
-    return $reflection->newInstanceArgs($dependencies);
   }
 }
 
