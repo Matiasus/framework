@@ -205,11 +205,11 @@ class Template{
     $this->page = $this->replace
                        ->flash(Config::get('TEMPL', 'RE_FLA'),
                                $this->page);
-/*
+
     // replace forms
     $this->page = $this->replace
                        ->forms($this->controller,
-                               $this->config['TEMPLATE']['REPL_FORMS'],
+                               Config::get('TEMPL', 'RE_FOR'),
                                $this->page);
 /*
 												   'Forms',

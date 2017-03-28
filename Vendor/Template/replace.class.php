@@ -154,7 +154,7 @@ class Replace {
     // instance of controller
     $this->controller = $controller;
 		// Replace {fromular meno_formulara} by html code
-		return $this->content = preg_replace_callback($searched, array($this, "replaceForm"), $content);
+		echo $this->content = preg_replace_callback($searched, array($this, "replaceForm"), $content);
 	}
 
 	/***
@@ -170,26 +170,14 @@ class Replace {
 		// Controller method
 		$method = 'form' . ucfirst($form);
     // all methods in given controller
-    $methods = get_class_methods($this->controller->getFullName());
+    $methods = get_class_methods(get_class($this->controller));
     // check if method exists
 		if(!in_array($method, $methods)) {
       // error message
       throw new \Exception('\\'.get_class($this).' -> '.ucfirst(__FUNCTION__).' ( ) [Line: '.__LINE__.']: Form method <b>\''.$method.'\'</b> not present in controller '.$this->controller->getFullName().' !');
     }
-
-    $this->controller->getInstance()->$method();
-/*
-			// Metoda triedy (napr. formControllera) musi vratit Object Form
-			// $controller => napr. formController
-			// $method => napr. formKomentar
-			try	{
-				return $this->objectController->$method()->getFormContent($form);
-			}	
-      catch(Exception $exception)	{
-				print $exception->getMessage();
-			}
-		}
-*/
+		// html code
+    return $this->controller->$method();
 	}
 
 
