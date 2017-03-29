@@ -79,10 +79,10 @@ class Route {
   }
 
   /***
-  * Get url address in form (http://www.chat.com/show/ubuntu/?call=script)
+  * Get url address in form (show/ubuntu/?call=script)
   *
-  * @param Boolean - true = with SERVER NAME or false = without
-  * @return String - form of url address
+  * @param  Void
+  * @return String
   */
   public static function getReqUri()
   {
@@ -220,7 +220,7 @@ class Route {
   *	 						 false  - relative address admin/home/default
   * @return void
   */
-  public static function redirect($addr = false)
+  public static function redirect($addr = false, $params = array())
   {
     // redirect address
     $redirect = '';
@@ -240,6 +240,18 @@ class Route {
     }
     // redirect url address
     $redirect .= $addr;
+    //
+    if (!empty($params)) {
+      // append qeustion mark
+      $redirect .= '?';
+      // loop through params
+      foreach ($params as $key => $param) {
+        // append params to uri
+        $redirect .= $key.'='.$param.'&';
+      }
+      // trim last character
+      $redirect = substr($redirect, 0, - 1);
+    }
     // Redirection
     header( "Location: ".$redirect);
     // Important!
