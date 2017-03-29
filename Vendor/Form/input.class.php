@@ -13,24 +13,24 @@ class Input {
   /** @var Array */
   private $params = array();
 
-	/***
-	 * Constructor
-	 *
-	 * @param Void
-	 * @return Void
-	 */
-	public function __construct(\Vendor\Form\Form $form)
+  /***
+   * Constructor
+   *
+   * @param Void
+   * @return Void
+   */
+  public function __construct(\Vendor\Form\Form $form)
   {
     // @var \Vendor\Form\Form
     $this->form = $form;
-	}
+  }
 
-	/***
-	 * 
-	 *
-	 * @param 
-	 * @return 
-	 */
+  /***
+   * 
+   *
+   * @param 
+   * @return 
+   */
   public function text($name = false, $label = false, $value = false, $maxlen = false)
   {
     // check number of arguments
