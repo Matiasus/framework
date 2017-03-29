@@ -156,172 +156,163 @@ class Model {
     $form->input()
          ->text('Username', 'Priezvisko/Surname', '')->required();
     // return code
-    return $form->getCode();
+    return $form;
   }
 
-	/***
-	 * Registracia po uspesnej kontrole nazvov stlpcov
-	 * 
-	 * @param Formular
-	 * @Return Void
-	 */
-	public function registration($form)
-	{
-		// Extrahovanie dat z formulara
-		$user = $form->getData();
+  /***
+  * Registracia po uspesnej kontrole nazvov stlpcov
+  * 
+  * @param Formular
+  * @Return Void
+  */
+  public function registration($form)
+  {
+    // Extrahovanie dat z formulara
+    $user = $form->geData();
 
-		if (empty($user["Email"]) || 
+    if (empty($user["Email"]) || 
         empty($user["Username"]) || 
         empty($user["Passwordname"]))	
     {
-      
+
     }
-		// Notifikacia, posielanie emailov s tokenom pre uspesnu registraciu
-		$notification = new \Vendor\Notification\Notification($this);
-		/***
-		 * Predspracovanie udajov pre odoslanie emailom
-	   * @Parameters: Sting, String, String
-		 *   1.@parameter = Komu
-		 *   2.@parameter = Meno/Nick
-		 *   3.@parameter = Heslo/Password
-		 *
-		 * @return: Array
-		 *   0.@return => Komu
-		 *   1.@return => Predmet
-		 *   2.@return => Sprava
-		 *   3.@return => Od koho
-		 *   4.@return => Validacny kod
-		 */
-		$parameters = $notification->Preprocessing($user["Email"], $user["Username"], $user["Passwordname"]);
+    // Notifikacia, posielanie emailov s tokenom pre uspesnu registraciu
+    $notification = new \Vendor\Notification\Notification($this);
+    /***
+    * Predspracovanie udajov pre odoslanie emailom
+    * @Parameters: Sting, String, String
+    *   1.@parameter = Komu
+    *   2.@parameter = Meno/Nick
+    *   3.@parameter = Heslo/Password
+    *
+    * @return: Array
+    *   0.@return => Komu
+    *   1.@return => Predmet
+    *   2.@return => Sprava
+    *   3.@return => Od koho
+    *   4.@return => Validacny kod
+    */
+    $parameters = $notification->Preprocessing($user["Email"], $user["Username"], $user["Passwordname"]);
 
-		// Hash hesla
-		$user["Passwordname"] = $this->user->hashpassword($user["Passwordname"]);
-		// Pridanie na koniec pola validacny kod
-		$user["Codevalidation"] = $parameters[4];
-		// Overenie existencie uzivatela v databaze na zaklde emailu
-		$check = $this->database
-                  ->select(array("*"), 
-                           array("Email"=>$user["Email"]), 
-                           \Application\Config\Settings::$Detail->Mysql->Table_Users);
-
-		if ($check === FALSE)	{
-			// Vlozenie uzivatela do databazy
-			$this->database
-           ->insert($user,  
-                    \Application\Config\Settings::$Detail->Mysql->Table_Users);
-
-			// Odoslanie emailu podla predspracovanych udajov
-			$notification->Email($parameters);
-
-		}	else {
+    // Hash hesla
+    $user["Passwordname"] = $this->user->hashpassword($user["Passwordname"]);
+    // Pridanie na koniec pola validacny kod
+    $user["Codevalidation"] = $parameters[4];
+    // Overenie existencie uzivatela v databaze na zaklde emailu
+    $check = $this->database->select(
+      array("*"), 
+      array("Email"=>$user["Email"]), 
+      \Application\Config\Settings::$Detail->Mysql->Table_Users
+    );
+    // exists?
+    if ($check === FALSE)	{
+      // Vlozenie uzivatela do databazy
+      $this->database->insert(
+        $user,  
+        \Application\Config\Settings::$Detail->Mysql->Table_Users
+      );
+      // Odoslanie emailu podla predspracovanych udajov
+      $notification->Email($parameters);
+    }	else {
       // flash sprava
-			$this
-           ->session
-           ->set("flash", "Užívateľ so zadaným emailom už existuje !!!", false);
+      Session::set("flash", "Užívateľ so zadaným emailom už existuje !!!", false);
       // presmerovanie
-			$this
-           ->route
-           ->redirect("/front/form/registracia");
-		}
-	}
+      $this->route->redirect("/front/form/registracia");
+    }
+  }
 
-	/***
-	 * Spracovanie prihlasovacieho formulara
-	 * 
-	 * @param Form
-	 * @return Void
-	 */
-	public function logon($form)
-	{
-		// Uzivatel
-		$user = $this->container->get('user');
-		// Odoslane data
-		$data = $form->getData();
-		// Trvale prihlasenie
-		$persistent = false;
+  /***
+  * Spracovanie prihlasovacieho formulara
+  * 
+  * @param Form
+  * @return Void
+  */
+  public function logon($form)
+  {
+  // Uzivatel
+  $user = $this->container->get('user');
+  // Odoslane data
+  $data = $form->getData();
+  // Trvale prihlasenie
+  $persistent = false;
 
-		// Overenie, ci je poziadavka na trvale prihlasenie
-		if (isset($_POST['Persistentlog'])) { 
-      // persistent login
-			$persistent = true;	
-		}
+  // Overenie, ci je poziadavka na trvale prihlasenie
+  if (isset($_POST['Persistentlog'])) { 
+  // persistent login
+  $persistent = true;	
+  }
 
-    // Poziadavka / dotaz
-    $select = array("*");
-    // odkial
-    $from = array(\Application\Config\Settings::$Detail->Mysql->Table_Users, 
-             array(\Application\Config\Settings::$Detail->Mysql->Table_Profiles,
-                   \Application\Config\Settings::$Detail->Mysql->Table_Profiles.'.Id_Users'=>
-                    \Application\Config\Settings::$Detail->Mysql->Table_Users.'.Id')
-            );
-    // podmienka
-    $where = array(
-              array('=', \Application\Config\Settings::$Detail->Mysql->Table_Users.'.Username'=>$data['Username']), 
-                   'AND', 
-              array('=', \Application\Config\Settings::$Detail->Mysql->Table_Users.'.Passwordname'=>$user->hashpassword($data['Passwordname'])),
-                   'AND',
-              array('=', \Application\Config\Settings::$Detail->Mysql->Table_Users.'.Validation'=>'valid')
-             );
+  // Poziadavka / dotaz
+  $select = array("*");
+  // odkial
+  $from = array(\Application\Config\Settings::$Detail->Mysql->Table_Users, 
+  array(\Application\Config\Settings::$Detail->Mysql->Table_Profiles,
+  \Application\Config\Settings::$Detail->Mysql->Table_Profiles.'.Id_Users'=>
+  \Application\Config\Settings::$Detail->Mysql->Table_Users.'.Id')
+  );
+  // podmienka
+  $where = array(
+  array('=', \Application\Config\Settings::$Detail->Mysql->Table_Users.'.Username'=>$data['Username']), 
+  'AND', 
+  array('=', \Application\Config\Settings::$Detail->Mysql->Table_Users.'.Passwordname'=>$user->hashpassword($data['Passwordname'])),
+  'AND',
+  array('=', \Application\Config\Settings::$Detail->Mysql->Table_Users.'.Validation'=>'valid')
+  );
 
-    // poziadavaka na overenie uzivatela
-    $query_select = array($select, $from, $where);
+  // poziadavaka na overenie uzivatela
+  $query_select = array($select, $from, $where);
 
-		// Overenie prihlasovacich udajov
-		if ($user->login($query_select, $persistent)) {
-      // prihlaseny uzivatel
-      $logged_user = $user->getLoggedUser();
-      // privilegia
-			$privileges = $logged_user['Privileges'];
-			// Update z invalid na valid
-			$this->database
-           ->insert(array('Id_Users'   => $logged_user['Id'],
-                          'Datum'      => date("Y-m-d H:i:s"), 
-                          'Ip_address' => $_SERVER['REMOTE_ADDR'].':'.$_SERVER['REMOTE_PORT'], 
-                          'User_agent' => $_SERVER['HTTP_USER_AGENT'] 
-										      ), 
-										\Application\Config\Settings::$Detail->Mysql->Table_Logins,
-                    true);
-      // presmerovanie
-			$this->route->redirect($privileges . "/home/default");
-		} else {
-      // flash sprava
-			$this->session->set("flash", "Nesprávne meno, heslo alebo neaktívnosť účtu !!!", false);
-      // presmerovanie na prihlasovaciu stranku
-			$this->route->redirect("");
-		}
-	}
+  // Overenie prihlasovacich udajov
+  if ($user->login($query_select, $persistent)) {
+  // prihlaseny uzivatel
+  $logged_user = $user->getLoggedUser();
+  // privilegia
+  $privileges = $logged_user['Privileges'];
+  // Update z invalid na valid
+  $this->database
+  ->insert(array('Id_Users'   => $logged_user['Id'],
+  'Datum'      => date("Y-m-d H:i:s"), 
+  'Ip_address' => $_SERVER['REMOTE_ADDR'].':'.$_SERVER['REMOTE_PORT'], 
+  'User_agent' => $_SERVER['HTTP_USER_AGENT'] 
+  ), 
+  \Application\Config\Settings::$Detail->Mysql->Table_Logins,
+  true);
+  // presmerovanie
+  $this->route->redirect($privileges . "/home/default");
+  } else {
+  // flash sprava
+  $this->session->set("flash", "Nesprávne meno, heslo alebo neaktívnosť účtu !!!", false);
+  // presmerovanie na prihlasovaciu stranku
+  $this->route->redirect("");
+  }
+  }
 
-	/***
-	 * Aktivacia na zaklade url tokenu
-	 * 
-	 * @param Void
-	 * @return Void
-	 */
-	public function activation()
-	{
+  /***
+  * Aktivacia na zaklade url tokenu
+  * 
+  * @param Void
+  * @return Void
+  */
+  public function activation()
+  {
     $parameters = $this->route->getParameters();
 
-		if (!empty($parameters[0]))
-		{
-			$user = $this->database->select(array("*"), 
-																			array("Codevalidation"=>$parameters[0]), 
-																			\Application\Config\Settings::$Detail->Mysql->Table_Users);
-			
-			// Overenie, ci podla validacneho kluca existuje iba jeden zaznam v tabulke Users 
-			if (count($user) == 1)
-			{
-				// Update z invalid na valid
-				$this->database->update(array("Validation"=>"valid"), 
-																array("Codevalidation"=>$parameters[0]), 
-																\Application\Config\Settings::$Detail->Mysql->Table_Users);
-
-				// Vypis flash spravy
-				$this->session->set("flash", "Váš účet bol úspešne aktivovaný, pokračujte prosím prihlásením!", false);
-
-				// Presmerovanie na prihlasovaciu stranku
-				$this->route->redirect("");
-			}
-		}
-	}
+    if (!empty($parameters[0])) {
+      $user = $this->database->select(array("*"), 
+                                      array("Codevalidation"=>$parameters[0]), 
+                                      Config::get('MYSQL', 'TB_USE');
+      // Overenie, ci podla validacneho kluca existuje iba jeden zaznam v tabulke Users 
+      if (count($user) == 1) {
+        // Update z invalid na valid
+        $this->database->update(array("Validation"=>"valid"), 
+                                array("Codevalidation"=>$parameters[0]), 
+                                \Application\Config\Settings::$Detail->Mysql->Table_Users);
+        // Vypis flash spravy
+        Session::set("flash", "Váš účet bol úspešne aktivovaný, pokračujte prosím prihlásením!", false);
+        // Presmerovanie na prihlasovaciu stranku
+        $this->route->redirect("");
+      }
+    }
+  }
 }
 
