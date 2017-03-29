@@ -3,12 +3,12 @@
 /***
 * POZNAMKOVYBLOG Copyright (c) 2015 
 * 
-* Autor:		Mato Hrinko
-*	Datum:		07.12.2016 / update
-*	Adresa:		http://poznamkovyblog.cekuj.net
+* Autor:          Mato Hrinko
+* Datum:          07.12.2016 / update
+* Adresa:         http://poznamkovyblog.cekuj.net
 * 
 * ------------------------------------------------------------
-* Inspiracia: 		
+* Description: 		
 *
 ***/
 namespace Application\Module\Front\Model;
