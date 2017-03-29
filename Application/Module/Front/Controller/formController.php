@@ -105,31 +105,16 @@ class formController {
   */
   public function formRegistracia()
   {
-
-print_r($this->model->route);
-    $form = new \Vendor\Form\Form();
-
-    $form->setAction($this->model->route->getSerNameUri());
-    $form->setInlineForm(false);
-
-    $form->addEmail('Email', 'E-mail', '')->setRequired();
-    $form->addText('Username', 'Meno/Name', '')->setRequired();
-    $form->addPassword('Passwordname', 'Heslo/Password', '')->setRequired();
-    $form->addSubmit('submit', 'Registrovať');
-
-    /**
-     * Nastavenie tabulky, s ktorou sa ma pracovat
-     */
-    $this->registry->mysql->setTable(self::USERS);
-
-  /**
-   * Validacia zadanych nazvov jednotlivych prvkov formulara
-   * => ci sa zhoduju nazvy prvkov formulara s nazvami stlpcov prislusnej tabulky
-   */
-  if ($form->succeedSend() === true) {
-    $this->registraciaProccess($form);
-  }
-  return $form;
+    // create form
+    $form = $this->model
+                 ->showFormRegistracia(new \Vendor\Form\Form());
+    // check if created columns exist in database
+    if ($form->succeedSend()) {
+      // callback logon
+      $this->prihlasenieProccess($form);
+    }
+    // return html code
+    return $form->getCode();
   }
 
   /***

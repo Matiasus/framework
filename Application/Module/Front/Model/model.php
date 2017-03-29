@@ -144,17 +144,47 @@ class Model {
   public function showFormPrihlasenie(\Vendor\Form\Form $form)
   {
     // set method
-    $form->setMethod(\Vendor\Form\Form::POST);
+    $form->setMethod(Config::get('FORM', 'METHOD_POST'));
+    // set action
+    $form->setAction($this->route->getSerNameUri(true));
+    // set form
+    $form->setInline(true);
+    // input text field
+    $form->input()
+         ->text('Name', 'Meno/Name', '', true)->required();
+    // input text field
+    $form->input()
+         ->password('Passwordname', 'Heslo/Pasword', '', true)->required();
+    // input text field
+    $form->input()
+         ->submit('Submit', 'Prihlásenie', '', array('align'=>'right'));
+    // return code
+    return $form;
+  }
+
+  /***
+  * 
+  * 
+  * @param  \Vendor\Form\Form
+  * @return Void
+  */
+  public function showFormRegistracia(\Vendor\Form\Form $form)
+  {
+    // set method
+    $form->setMethod(Config::get('FORM', 'METHOD_POST'));
     // set action
     $form->setAction($this->route->getSerNameUri());
     // set form
-    $form->setInline(false);
+    $form->setInline(true);
     // input text field
     $form->input()
-         ->text('Name', 'Meno/Name', '', '50')->required();
+         ->email('Email', 'E-mail', '')->required();
     // input text field
     $form->input()
-         ->text('Username', 'Priezvisko/Surname', '')->required();
+         ->text('Username', 'Meno/Name', '')->required();
+    // input text field
+    $form->input()
+         ->password('Passwordname', 'Heslo/Password', '')->required();
     // return code
     return $form;
   }
@@ -300,7 +330,7 @@ class Model {
     if (!empty($parameters[0])) {
       $user = $this->database->select(array("*"), 
                                       array("Codevalidation"=>$parameters[0]), 
-                                      Config::get('MYSQL', 'TB_USE');
+                                      Config::get('MYSQL', 'TB_USE'));
       // Overenie, ci podla validacneho kluca existuje iba jeden zaznam v tabulke Users 
       if (count($user) == 1) {
         // Update z invalid na valid
