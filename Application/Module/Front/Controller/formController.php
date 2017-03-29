@@ -49,23 +49,16 @@ class formController {
    */	
   public function formPrihlasenie()
   {
-    return $this->model->showFormPrihlasenie(new \Vendor\Form\Form());
-    /*
-    $form->addPassword('Passwordname', 'Heslo/Password', '')->setRequired();
-    $form->addCheckbox('Persistentlog', 'Pamataj', 'Ostať prihlásený');
-    $form->addSubmit('submit', 'Prihlásiť');
-
-    // Nastavenie tabulky, s ktorou sa ma pracovat
-    $this->registry->mysql->setTable(self::USERS);
-
-    // Validacia zadanych nazvov jednotlivych prvkov formulara
-    // ci sa zhoduju s nazvami stlpcov prislusnej tabulky v MySQL
+    // create form
+    $form = $this->model
+                 ->showFormPrihlasenie(new \Vendor\Form\Form());
+    // check if created columns exist in database
     if ($form->succeedSend()) {
-    // callback logon
+      // callback logon
       $this->prihlasenieProccess($form);
     }
-    return $form;
-    */
+    // return html code
+    return $form->getCode();
   }
 
   /***
@@ -77,7 +70,7 @@ class formController {
   private function prihlasenieProccess($form) 
   {
     // Spracovanie prihlasenia
-    $this->formprocess
+    $this->model
          ->logon($form); 
   }
 
@@ -90,7 +83,7 @@ class formController {
   public function renderAktivacia()
   {
     // Spracovanie registracie
-    $this->formprocess
+    $this->model
          ->activation(); 
   }
 
@@ -148,6 +141,6 @@ print_r($this->model->route);
   private function registraciaProccess($form)
   {
     // Spracovanie registracie
-    $this->formprocess->registration($form); 
+    $this->model->registration($form); 
   }
 }
