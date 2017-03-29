@@ -4,7 +4,7 @@ namespace Vendor\Form\Input;
 // use
 use \Vendor\Config\File as Config;
 
-class Text {
+class Items {
   
   /** @var \Vendor\Form\Form */
   private $form;
@@ -31,9 +31,9 @@ class Text {
     $this->params = $params;
     // get selector for text, email, 
     $this->selector = $selector;
-    // return html code
-    $this->html();
-    // store to form
+    // create html code
+    $this->createHtmlCode();
+    // store to form codes
     $this->form->storeCode(array($this->params[Config::get('FORM', 'NAME')] => $this->code));
   }
 
@@ -48,7 +48,7 @@ class Text {
     // required
     $this->params[Config::get('FORM', 'REQUIRED')] = Config::get('FORM', 'REQUIRED');
     // return html code
-    $this->html();
+    $this->createHtmlCode();
     // store to form
     $this->form->storeCode(array($this->params[Config::get('FORM', 'NAME')] => $this->code));
   }
@@ -59,15 +59,30 @@ class Text {
   * @param Void
   * @return String
   */
-  private function html()
+  private function createHtmlCode()
   {
     $this->code  = ($this->params[Config::get('FORM', 'INLINE')] === true) ? "\n\t   <tr><td>" : "\n\t   <label for='id-".strtolower($this->params[Config::get('FORM', 'NAME')])."'>" ;
     $this->code .= $this->params[Config::get('FORM', 'LABEL')].(($this->params[Config::get('FORM', 'REQUIRED')] != '') ? '*' : '');
     $this->code .= (($this->params[Config::get('FORM', 'INLINE')] === true) ? "</td><td>" : "</label><br/>" );
     $this->code .= "\n\t    <input type='".$this->selector."'";
-    $this->code .= ($this->params[Config::get('FORM', 'MAXLEN')] !== false) ? " maxlength='".$this->params[Config::get('FORM', 'MAXLEN')]."'" : "";
-    $this->code .= " name='".$this->params[Config::get('FORM', 'NAME')]."' id='id-".strtolower($this->params[Config::get('FORM', 'NAME')])."'";
-    $this->code .= " value='" . $this->params[Config::get('FORM', 'VALUE')]."' ".$this->params[Config::get('FORM', 'REQUIRED')]."/>";
+    $this->code .= (empty($this->params[Config::get('FORM', 'ID')])) ? "" : " id='id-".strtolower($this->params[Config::get('FORM', 'NAME')])."'";
+    $this->code .= (empty($this->params[Config::get('FORM', 'ROWS')])) ? "" : " rows='".$this->params[Config::get('FORM', 'ROWS')]."'";
+    $this->code .= (empty($this->params[Config::get('FORM', 'COLS')])) ? "" : " cols='".$this->params[Config::get('FORM', 'COLS')]."'";
+    $this->code .= (empty($this->params[Config::get('FORM', 'VALUE')])) ? "" : " value='".$this->params[Config::get('FORM', 'VALUE')]."'";
+    $this->code .= (empty($this->params[Config::get('FORM', 'CLASS')])) ? "" : " class='".$this->params[Config::get('FORM', 'CLASS')]."'";
+    $this->code .= (empty($this->params[Config::get('FORM', 'MAXLEN')])) ? "" : " maxlength='".$this->params[Config::get('FORM', 'MAXLEN')]."'";
+    // check if no empty
+    if (!empty($this->params[Config::get('FORM', 'PARAMS')])) {
+      // check if array
+      if (is_array($this->params[Config::get('FORM', 'PARAMS')])) {
+        // loop through options
+        foreach ($this->params[Config::get('FORM', 'PARAMS')] as $key => $value) {
+          // append supplement options
+          $this->code .= " ".$key."='".$value."' "; 
+        }
+      }
+    }   
+    $this->code .= "/>";
     $this->code .= (($this->params[Config::get('FORM', 'INLINE')] === true) ? "</td></tr>" : "<br/>");
   }
 }

@@ -32,18 +32,6 @@ class Form {
   }
 
   /***
-  * Return \Vendor\Form\Input
-  *
-  * @param  Void
-  * @return Void
-  */
-  public function input()
-  {
-    // return input
-    return $this->input;
-  }
-
-  /***
   * Set action type 
   *
   * @param String
@@ -125,7 +113,7 @@ class Form {
     // check if method exists
     if (!is_bool($inline)) {
       // error message
-      throw new \Exception('['.get_called_class().']:['.__LINE__.']: Inline form <b>\''.$inline.'\'</b> not boolean!');
+      throw new \Exception('['.get_called_class().']:['.__LINE__.']: Inline form <b>must</b> be boolean!');
     }
     // set inline form
     $this->params[Config::get('FORM', 'INLINE')] = $inline;
@@ -143,6 +131,45 @@ class Form {
     if (!empty($this->params[Config::get('FORM', 'INLINE')])) {
       // return set inline method
       return $this->params[Config::get('FORM', 'INLINE')];
+    }
+    // method not set
+    return false;
+  }
+
+  /***
+  * Set inline form
+  *
+  * @param Bool 
+  * @return Void
+  */
+  public function setId($id)
+  {
+    // check if method exists
+    if (empty($id)) {
+      // error message
+      throw new \Exception('['.get_called_class().']:['.__LINE__.']: Id <b>must</b> be non empty value!');
+    }
+    // check if method exists
+    if (!is_string($id)) {
+      // error message
+      throw new \Exception('['.get_called_class().']:['.__LINE__.']: Id <b>must</b> be string!');
+    }
+    // set inline form
+    $this->params[Config::get('FORM', 'ID')] = $id;
+  }
+
+  /***
+  * Get type of inline method
+  *
+  * @param Void
+  * @return Bool
+  */
+  public function getId()
+  { 
+    // check if set inline method
+    if (!empty($this->params[Config::get('FORM', 'ID')])) {
+      // return set inline method
+      return $this->params[Config::get('FORM', 'ID')];
     }
     // method not set
     return false;
@@ -171,6 +198,18 @@ class Form {
   }
 
   /***
+  * Return \Vendor\Form\Input
+  *
+  * @param  Void
+  * @return Void
+  */
+  public function input()
+  {
+    // return input
+    return $this->input;
+  }
+
+  /***
   * Get html code
   *
   * @param Void
@@ -180,9 +219,10 @@ class Form {
   {
     // form tag
     $code  = "\n\t<form action='".$this->params[Config::get('FORM', 'ACTION')];
-    $code .= "' method='".$this->params[Config::get('FORM', 'METHOD')]."' id=''>";
+    $code .= "' method='".$this->params[Config::get('FORM', 'METHOD')]."'";
+    $code .= (isset($this->params[Config::get('FORM', 'ID')])) ? " id='".$this->getId()."'>" : ">";
     // table tag
-    $code .= (($this->params[Config::get('FORM', 'INLINE')] === false ) ? "\n\t  <table class=''>":"");
+    $code .= (($this->params[Config::get('FORM', 'INLINE')] === true ) ? "\n\t  <table id='table".$this->getId()."'>":"");
     // append all stored html codes
     foreach ($this->code as &$html_code) {
       // appending codes
@@ -191,7 +231,7 @@ class Form {
     // unset
     unset($html_code);
     // end table tag
-    $code .= (($this->params[Config::get('FORM', 'INLINE')] === false ) ? "\n\t  </table>" : "");
+    $code .= (($this->params[Config::get('FORM', 'INLINE')] === true ) ? "\n\t  </table>" : "");
     // end form tag
     $code .= "\n\t</form>";
     // return code
@@ -199,8 +239,7 @@ class Form {
   }
 
   /***
-  * Validacia zadanych nazvov jednotlivych prvkov formulara
-  * ci sa zhoduju s nazvami stlpcov prislusnej tabulky
+  *
   *
   * @param void
   * @return Bool
