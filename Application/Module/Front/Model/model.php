@@ -21,10 +21,10 @@ use \Vendor\Cookie\Cookie as Cookie,
 /** @class formproccess */
 class Model {
 
-	/** @var Object \Vendor\User\User */
+  /** @var Object \Vendor\User\User */
   private $user;
 
-	/** @var Object \Vendor\Route\Route */
+  /** @var Object \Vendor\Route\Route */
   private $route;
 
   /** @var Object \Vendor\Database\Database */
@@ -33,17 +33,17 @@ class Model {
   /** @var Object \Vendor\Generator\Generator */
   private $generator;
 
-	/***
-   * Constructor
-   *
-	 * @param  
-	 * @return Void
-	 */
-	public function __construct(\Vendor\User\User $user, 
+  /***
+  * Constructor
+  *
+  * @param  
+  * @return Void
+  */
+  public function __construct(\Vendor\User\User $user, 
                               \Vendor\Route\Route $route, 
                               \Vendor\Database\Database $database,
                               \Vendor\Generator\Generator $generator)
-	{
+  {
     // @var \Vendor\User\User
     $this->user = $user;
     // @var \Vendor\Route\Route
@@ -52,31 +52,30 @@ class Model {
     $this->database = $database;
     // @var \Vendor\Generator\Generator
     $this->generator = $generator;
-	}
+  }
 
-	/***
-	 * Overenie platnosti tokenu
-	 * 
-	 * @param Void
-	 * @return String - token
-	 */
-	public function autoLogon()
-	{
-
+  /***
+  * Overenie platnosti tokenu
+  * 
+  * @param Void
+  * @return String - token
+  */
+  public function autoLogon()
+  {
     // default value
     $user = null;
-		// Vytvorenie tokenu
-		$token = $this->generator->create();
+    // Vytvorenie tokenu
+    $token = $this->generator->create();
     // token agenta
     $token_agent = Cookie::get(Config::get('COOKIES', 'AGENT'));
     // token session id
     $token_sessionid = Cookie::get(Config::get('COOKIES', 'SESID'));
-
     // overi existenciu COOKIES
-		if (!empty($token_agent) && 
-        !empty($token_sessionid))	{
-			// Porovnanie tokena v $_COOKIE s vygenerovanym tokenom
-			if (strcmp($token_agent, $token) === 0) {
+    if (!empty($token_agent) && 
+        !empty($token_sessionid))	
+    {
+      // Porovnanie tokena v $_COOKIE s vygenerovanym tokenom
+      if (strcmp($token_agent, $token) === 0) {
         // Dotaz na uzivatela
         // ~~~~~~~~~~~~~~~~~~
         // vyber vsetko
@@ -85,23 +84,22 @@ class Model {
         $from = array(Config::get('MYSQL', 'TB_AUT'));
         // podla zhody id s parametrom v url
         $where = array(
-                  array('=', Config::get('MYSQL', 'TB_AUT').'.Session'=>$token_sessionid)
-                 );
-				// Overenie existencie tokena v databaze
-				$item = $this->database
+          array('=', Config::get('MYSQL', 'TB_AUT').'.Session'=>$token_sessionid)
+        );
+        // Overenie existencie tokena v databaze
+        $item = $this->database
                      ->select($select)
                      ->from($from) 
                      ->where($where)
                      ->query();
-
-				// Ak zaznam s tokenom existuje
-				if ($item !== false) {
-					// Porovnanie zhody tokena a id uzivatela v databaze s $_COOKIE
-					if (strcmp($token_agent, $item[0]->Token) === 0) {	
-						// Overenie, ci nie expirovany datum a cas
-						if ($this->datum
+        // Ak zaznam s tokenom existuje
+        if ($item !== false) {
+          // Porovnanie zhody tokena a id uzivatela v databaze s $_COOKIE
+          if (strcmp($token_agent, $item[0]->Token) === 0) {	
+            // Overenie, ci nie expirovany datum a cas
+            if ($this->datum
                      ->difference($item[0]->Expires))
-						{
+            {
               // Overenie existencie tokena v databaze
               // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
               // vyber vsetko
@@ -110,40 +108,41 @@ class Model {
               $from = array(Config::get('MYSQL', 'TB_USE'));
               // podla zhody id s parametrom v url
               $where = array(
-                        array('=', Config::get('MYSQL', 'TB_USE').'.Id'=>$item[0]->Usersid)
-                       );
-				      // Overenie existencie tokena v databaze
-				      $answer = $this->database
+                array('=', Config::get('MYSQL', 'TB_USE').'.Id'=>$item[0]->Usersid)
+              );
+              // Overenie existencie tokena v databaze
+              $answer = $this->database
                              ->select($select)
                              ->from($from) 
                              ->where($where)
                              ->query();
               // prihlaseny uzivatel
-							$user = $answer[0];
-						}
-					}
-				}
-			}
-		}
+              $user = $answer[0];
+            }
+          }
+        }
+      }
+    }
     // get last visit page
     $uri = Cookie::get(Config::get('COOKIES','LAST_URI'));
     // check if user log on
-		if (null !== $user) {
+    if (null !== $user) {
       // redirect to last visited uri
-			$this->route
+      $this->route
            ->redirect($uri);
-		}	
-		return false;
-	}
+    }
+    // return false
+    return false;
+  }
 
-	/***
-	 * 
-	 * 
-	 * @param  \Vendor\Form\Form
-	 * @return Void
-	 */
-	public function showFormPrihlasenie(\Vendor\Form\Form $form)
-	{
+  /***
+  * 
+  * 
+  * @param  \Vendor\Form\Form
+  * @return Void
+  */
+  public function showFormPrihlasenie(\Vendor\Form\Form $form)
+  {
     // set method
     $form->setMethod(\Vendor\Form\Form::POST);
     // set action
@@ -156,7 +155,7 @@ class Model {
     // input text field
     $form->input()
          ->text('Username', 'Priezvisko/Surname', '')->required();
-
+    // return code
     return $form->getCode();
   }
 
