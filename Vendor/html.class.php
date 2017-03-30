@@ -25,22 +25,22 @@ class Html {
   
   /** @var array of self closing tags */
   private $self_close_tags = array (
-    'area'
-    'base'
-    'br'
-    'col'
-    'command'
-    'embed'
-    'hr'
-    'img'
-    'input'
-    'keygen'
-    'link'
-    'meta'
-    'param'
-    'source'
-    'track'
-    'wbr'
+    'area',
+    'base',
+    'br',
+    'col',
+    'command',
+    'embed',
+    'hr',
+    'img',
+    'input',
+    'keygen',
+    'link',
+    'meta',
+    'param',
+    'source',
+    'track',
+    'wbr',
   );
     
   /***
@@ -52,6 +52,58 @@ class Html {
   public function __construct ()
   {
   }
+  
+  /***
+   * 
+   *
+   * @param  Array
+   * @return Void
+   */
+  public function setAttributes ($attributes = array())
+  {
+    // init attributes
+    $attributes = '';
+    // check if non empty attributes
+    if(!empty($attributes) && 
+        isset($attributes)) 
+    {
+      // check all elements of array
+      while (list($key, $value) = each($attributes)) {
+        // check if value is not array
+        if (!is_string($value) && 
+            !is_int($value)) 
+        {
+          // throw to exception with error message
+          throw new \Exception("[".get_called_class()."]:[".__LINE__."]: Value can\'t be array!");         
+        }
+        // if string
+        if (is_string($value)) {
+          // append attribute
+          $attributes .= ' '.$key.'=\''.$value.'\'';
+        // if integer
+        } elseif (is_int($value)) {
+          // append attribute
+          $attributes .= ' '.$key.'='.$value.'';
+        }        
+      }
+      // reset pointer
+      reset($attributes);
+      // set attributes
+      $this->tag_attributes = $attributes;
+    }
+  }
+  
+  /***
+   * 
+   *
+   * @param  Void
+   * @return Void
+   */
+  public function getAttributes ()
+  {
+    // return string form of attributes
+    return $this->attributes;
+  }  
   
   /***
    * 
@@ -79,7 +131,7 @@ class Html {
     // save tag
     $this->tag = $tag;
   }
-  
+   
   /***
    * Compose html code of given tag
    *
@@ -109,55 +161,5 @@ class Html {
       // success return
       return true;
     }
-  }
-  
-  /***
-   * 
-   *
-   * @param  Array
-   * @return Void
-   */
-  public function setAttributes ($attributes = array())
-  {
-    // check if non empty attributes
-    if(!empty($attributes) && 
-        isset($attributes)) 
-    {
-      // set attributes
-      $this->tag_attributes = $attributes;
-    }
-  }
-  
-  /***
-   * 
-   *
-   * @param  Void
-   * @return Void
-   */
-  public function getAttributes ()
-  {
-    $attributes = '';
-    // check if non empty attributes
-    if(!empty($this->tag_attributes) && 
-        isset($this->tag_attributes)) 
-    {
-      // must be array
-      if (is_array($this->tag_attributes)) {
-        // loop through attributes
-        foreach ($this->tag_attributes as $key => $value) {
-          // if string
-          if (is_string($value)) {
-            // append attribute
-            $attributes .= ' '.$key.'=\''.$value.'\'';
-          // if integer
-          } elseif (is_int($value)) {
-            // append attribute
-            $attributes .= ' '.$key.'='.$value.'';
-          }
-        }
-      }
-    }
-    // return string form of attributes
-    return $attributes;
   }
 }
