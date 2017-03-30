@@ -30,6 +30,18 @@ class Form {
     // @var \Vendor\Form\Input
     $this->input = new \Vendor\Form\Input($this);
   }
+  
+ /***
+  * Get \Vendor\Form\Input
+  *
+  * @param  Void
+  * @return \Vendor\Form\Input
+  */
+  public function input()
+  {
+    // return \Vendor\Form\Input
+    return $this->input;
+  }
 
   /***
   * Set action type 
@@ -195,18 +207,6 @@ class Form {
     }
     // store html code
     $this->code[array_keys($code)[0]] = array_values($code)[0];
-  }
-
-  /***
-  * Return \Vendor\Form\Input
-  *
-  * @param  Void
-  * @return Void
-  */
-  public function input()
-  {
-    // return input
-    return $this->input;
   }
 
   /***
