@@ -50,8 +50,7 @@ class formController {
   public function formPrihlasenie()
   {
     // create form
-    $form = $this->model
-                 ->showFormPrihlasenie(new \Vendor\Form\Form());
+    $form = $this->model->showFormPrihlasenie(new \Vendor\Form\Form());
     // check if created columns exist in database
     if ($form->succeedSend()) {
       // callback logon
@@ -70,8 +69,7 @@ class formController {
   private function prihlasenieProccess($form) 
   {
     // Spracovanie prihlasenia
-    $this->model
-         ->logon($form); 
+    $this->model->logon($form); 
   }
 
   /***
@@ -83,8 +81,7 @@ class formController {
   public function renderAktivacia()
   {
     // Spracovanie registracie
-    $this->model
-         ->activation(); 
+    $this->model->activation(); 
   }
 
   /***
@@ -106,8 +103,7 @@ class formController {
   public function formRegistracia()
   {
     // create form
-    $form = $this->model
-                 ->showFormRegistracia(new \Vendor\Form\Form());
+    $form = $this->model->showFormRegistracia(new \Vendor\Form\Form());
     // check if created columns exist in database
     if ($form->succeedSend()) {
       // callback logon
