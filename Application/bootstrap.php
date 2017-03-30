@@ -48,7 +48,7 @@
     // build namespace of controller
     $di_container->service('\Vendor\Route\Route')->initValueUrl();
 
-    // Datum
+    // Date
     // @param void
     // @return Instance of \Vendor\Date\Date
     $di_container->store('\Vendor\Date\Date');
@@ -104,8 +104,7 @@
     // @param \Vendor\Di\Container
     // @return Instance of \Vendor\Controller\Creator
     $controller = new \Vendor\Controller\Creator($di_container);
-    // create controller according to controller in url address
-    // and store it into DI container
+    // create appropriate controller according to url address and store it into DI container
     $controller->create($di_container->service('\Vendor\Route\Route')->get('controller_namespace'));
     // call render method according to view in url address
     $controller->callMethod($di_container->service('\Vendor\Route\Route')->get('view'));
