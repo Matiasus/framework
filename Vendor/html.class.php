@@ -15,16 +15,16 @@ namespace Vendor\Html;
 class Html {
   
   /** @var String */
-  private $html_code;
+  private static $html_code;
   
   /** @var String */
-  private $tag_content; 
+  private static $tag_content; 
   
   /** @var String */
-  private $tag_attributes;
+  private static $tag_attributes;
   
   /** @var array of self closing tags */
-  private $self_close_tags = array (
+  private static $self_close_tags = array (
     'area',
     'base',
     'br',
@@ -59,7 +59,7 @@ class Html {
    * @param  Array
    * @return Void
    */
-  public function setAttributes ($attributes = array())
+  public static function setAttrs ($attributes = array())
   {
     // init attributes
     $attributes = '';
@@ -89,7 +89,7 @@ class Html {
       // reset pointer
       reset($attributes);
       // set attributes
-      $this->tag_attributes = $attributes;
+      self::$tag_attributes = $attributes;
     }
   }
   
@@ -99,10 +99,10 @@ class Html {
    * @param  Void
    * @return Void
    */
-  public function getAttributes ()
+  public static function getAttrs ()
   {
     // return string form of attributes
-    return $this->attributes;
+    return self::$attributes;
   }  
   
   /***
@@ -129,7 +129,7 @@ class Html {
       throw new \Exception("[".get_called_class()."]:[".__LINE__."]: Tag must be a <b>string</b>!"); 
     }
     // save tag
-    $this->tag = $tag;
+    self::$tag = $tag;
   }
    
   /***
@@ -138,18 +138,18 @@ class Html {
    * @param  Void
    * @return Void
    */
-  public function composer ()
+  private static function composer ()
   {
     // init html code
-    $this->html_code = '<'.$this->tag = $tag;
+    self::$html_code = '<'.self::$tag;
     // if set close tags?
-    if (empty($this->self_close_tags)) {
+    if (empty(self::$self_close_tags)) {
       // loop throuh tags
-      foreach ($this->self_close_tags as &$self_close_tag) {
+      foreach (self::$self_close_tags as &$self_close_tag) {
         // compare with created tag
-        if (strcmp($self_close_tag, $this->tag) === 0) {
+        if (strcmp($self_close_tag, self::$tag) === 0) {
           // close tag
-          $this->html_code .= ''.$this->getAttributes().' />';
+          self::$html_code .= ''.self::$getAttributes().' />';
           // end loop
           return true;
         }
@@ -157,7 +157,7 @@ class Html {
       // unset variable
       unset($self_close_tag);
       // append html code
-      $this->html_code .= ' '.$this->getAttributes().'>'.$this->tag_content.'</'.$this->tag.'>';
+      self::$html_code .= ' '.self::$getAttributes().'>'.self::$tag_content.'</'.self::$tag.'>';
       // success return
       return true;
     }
