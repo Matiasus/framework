@@ -124,7 +124,7 @@ class Html {
         isset($attributes)) 
     {
       // set attributes
-      $this->attributes = $attributes;
+      $this->tag_attributes = $attributes;
     }
   }
   
