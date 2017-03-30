@@ -13,7 +13,28 @@
 namespace Vendor\Html;
 
 class Html {
-
+  
+  /** @var array of self closing tags */
+  private $self_close_tags = array (
+    'area'
+    'base'
+    'br'
+    'col'
+    'command'
+    'embed'
+    'hr'
+    'img'
+    'input'
+    'keygen'
+    'link'
+    'meta'
+    'param'
+    'source'
+    'track'
+    'wbr'
+  );
+  
+  
   /***
    * Constructor
    *
