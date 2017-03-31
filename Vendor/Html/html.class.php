@@ -124,7 +124,7 @@ class Html {
       throw new \Exception("[".get_called_class()."]:[".__LINE__."]: Tag must be <b>NON</b> empty!"); 
     }
     // check if string
-    if (!is_string($class)) {
+    if (!is_string($tag)) {
       // throw to exception with error message
       throw new \Exception("[".get_called_class()."]:[".__LINE__."]: Tag must be a <b>string</b>!"); 
     }
