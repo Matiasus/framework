@@ -16,6 +16,9 @@ class Attributes {
 
   /** @var \Vendor\Html\Html $html */
   private $html;
+  
+  /** @var \Vendor\Html\Content $content */
+  private $content;  
       
   /***
    * Constructor
@@ -25,8 +28,10 @@ class Attributes {
    */
   public function __construct (\Vendor\Html\Html $html)
   {
-    // @var \Vendor\Html\Html $html
+    // @var \Vendor\Html\Html
     $this->html = $html;
+    // @var \Vendor\Html\Content
+    $this->content = new \Vendor\Html\Content($this->html);    
   }
   
   /***
@@ -35,7 +40,7 @@ class Attributes {
    * @param  Array
    * @return Void
    */
-  public static function attributes ($attributes = array())
+  public function setAttrs ($attributes = array())
   {
     // init attributes
     $tag_attributes = '';
@@ -66,6 +71,8 @@ class Attributes {
       reset($attributes);
       // set attributes
       $this->html->setAttrs($tag_attributes);
+      // return 
+      return $this->content;
     }
   }  
 }
