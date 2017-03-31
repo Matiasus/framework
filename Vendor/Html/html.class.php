@@ -65,7 +65,7 @@ class Html {
   {
     if (!is_string($attributes)) {
       // throw to exception with error message
-      throw new \Exception("[".get_called_class()."]:[".__LINE__."]: Tag must be a <b>string</b>!");       
+      throw new \Exception("[".get_called_class()."]:[".__LINE__."]: Attributes must be a <b>string</b>!");       
     }
     // return string form of attributes
     $this->tag_attributes = $attributes;
@@ -77,11 +77,39 @@ class Html {
    * @param  Void
    * @return Void
    */
-  public static function getAttrs ()
+  public function getAttrs ()
   {
     // return string form of attributes
-    return $this->attributes;
-  }  
+    return $this->tag_attributes;
+  }
+  
+  /***
+   * 
+   *
+   * @param  String
+   * @return Void
+   */
+  public static function setContent ($content)
+  {
+    if (!is_string($content)) {
+      // throw to exception with error message
+      throw new \Exception("[".get_called_class()."]:[".__LINE__."]: Content must be a <b>string</b>!");       
+    }
+    // set content
+    $this->tag_content = $content;
+  }
+
+  /***
+   * 
+   *
+   * @param  Void
+   * @return Void
+   */
+  public function getContent ()
+  {
+    // return string form of content
+    return $this->tag_content;
+  }
   
   /***
    * 
@@ -89,7 +117,7 @@ class Html {
    * @param  Void
    * @return Void
    */
-  public function create ($tag = false)
+  public function tag ($tag = false)
   {
     // check if non empty value
     if (func_num_args() > 1) {
@@ -121,7 +149,7 @@ class Html {
   public function compose ()
   {
     // init html code
-    $this->html_code = '<'.self::$tag;
+    $this->html_code = '<'.$this->tag;
     // if set close tags?
     if (empty($this->self_close_tags)) {
       // loop throuh tags
@@ -129,7 +157,7 @@ class Html {
         // compare with created tag
         if (strcmp($self_close_tag, $this->tag) === 0) {
           // close tag
-          $this->html_code .= ''.$this->getAttributes().' />';
+          $this->html_code .= ''.$this->tag_attributes.' />';
           // end loop
           return true;
         }
@@ -137,7 +165,7 @@ class Html {
       // unset variable
       unset($self_close_tag);
       // append html code
-      $this->html_code .= ' '.$this->getAttributes().'>'.$this->tag_content.'</'.$this->tag.'>';
+      $this->html_code .= ' '.$this->tag_attributes.'>'.$this->tag_content.'</'.$this->tag.'>';
       // success return
       return true;
     }
