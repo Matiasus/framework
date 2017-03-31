@@ -130,6 +130,8 @@ class Html {
     }
     // save tag
     self::$tag = $tag;
+    // compose html tag
+    self::composer();
   }
    
   /***
