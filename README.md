@@ -1,6 +1,7 @@
 <h1>Framework</h1>
-Simple PHP framework trying to use Dependency Injection
+<p>Simple PHP framework trying to use Dependency Injection</p>
 <h2>Html</h2>
+<p>Instance of class creates html tag.</p>
 <h3>Example</h3>
 <pre>
 // new instance of simple html tag creator
