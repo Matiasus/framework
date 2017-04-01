@@ -1,40 +1,31 @@
 <?php
 
 namespace Vendor\Form\Input;
-// use
-use \Vendor\Config\File as Config;
+
 
 class Items {
   
-  /** @var \Vendor\Form\Form */
-  private $form;
-
-  /** @var String */
-  private $code;
+  /** @var \Vendor\Form\Composer */
+  private $composer;
 
   /** @var Array */
-  private $params = array();
+  private $attributes;
+
+  /** @var Array */
+  private $parameters;
 
   /***
   * Constructor
-  * 
-  * @param Array
-  * @return String
+  *
+  * @param 
+  * @return Void
   */
-  public function __construct(\Vendor\Form\Form $form, 
-                              $params = array(),
-                              $selector)
+  public function __construct(\Vendor\Html\Html $html)
   {
-    // @var \Vendor\Form\Form
-    $this->form = $form;
-    // parameters
-    $this->params = $params;
-    // get selector for text, email, 
-    $this->selector = $selector;
-    // create html code
-    $this->createHtmlCode();
-    // store to form codes
-    $this->form->storeCode(array($this->params[Config::get('FORM', 'NAME')] => $this->code));
+    // @var \Vendor\Html\Html
+    $this->html = $html;
+    // @var \Vendor\Form\Composer
+    $this->composer = new \Vendor\Form\Composer($this->html);
   }
 
   /***
@@ -43,14 +34,68 @@ class Items {
   * @param 
   * @return 
   */
-  public function required()
+  public function setParameters($parameters = array())
   {
-    // required
-    $this->params[Config::get('FORM', 'REQUIRED')] = Config::get('FORM', 'REQUIRED');
-    // return html code
-    $this->createHtmlCode();
-    // store to form
-    $this->form->storeCode(array($this->params[Config::get('FORM', 'NAME')] => $this->code));
+    // set parameters
+    $this->parameters = $parameters;
+  }
+
+  /***
+  * 
+  *
+  * @param 
+  * @return 
+  */
+  public function setAttributes($attributes = array())
+  {
+    // set attributes
+    $this->attributes = $attributes;
+    // set params
+    $this->composer->setParameters($this->parameters);
+    // set attributes
+    $this->composer->setAttributes($this->attributes);
+  }
+
+  /***
+  * Html code
+  * 
+  * @param  
+  * @return String
+  */
+  public function html5Attrs()
+  {
+    // check if non empty
+    if (!empty(func_get_args())) {
+      // loop through arguments
+      foreach (func_get_args() as $attribute) {
+        // check if no array
+        if (is_string($attribute)) {
+          // without re-writing existing values
+          if (!array_key_exists($attribute, $this->attributes)) {
+            // append html5 attribute
+            $this->attributes[$attribute] = true;
+          }
+        }
+      }
+    }
+    // set params
+    $this->composer->setParameters($this->parameters);
+    // set attributes
+    $this->composer->setAttributes($this->attributes);
+    // \Vendor\Form\Composer
+    return $this->composer;
+  }
+
+  /***
+  * 
+  *
+  * @param 
+  * @return 
+  */
+  public function getCode()
+  {
+    // set parameters
+    return $this->composer->getCode();
   }
 
   /***
@@ -59,30 +104,9 @@ class Items {
   * @param Void
   * @return String
   */
-  private function createHtmlCode()
+  public function create()
   {
-    $this->code  = ($this->params[Config::get('FORM', 'INLINE')] === true) ? "\n\t   <tr><td>" : "\n\t   <label for='id-".strtolower($this->params[Config::get('FORM', 'NAME')])."'>" ;
-    $this->code .= $this->params[Config::get('FORM', 'LABEL')].(($this->params[Config::get('FORM', 'REQUIRED')] != '') ? '*' : '');
-    $this->code .= (($this->params[Config::get('FORM', 'INLINE')] === true) ? "</td><td>" : "</label><br/>" );
-    $this->code .= "\n\t    <input type='".$this->selector."'";
-    $this->code .= (empty($this->params[Config::get('FORM', 'ID')])) ? "" : " id='id-".strtolower($this->params[Config::get('FORM', 'NAME')])."'";
-    $this->code .= (empty($this->params[Config::get('FORM', 'ROWS')])) ? "" : " rows='".$this->params[Config::get('FORM', 'ROWS')]."'";
-    $this->code .= (empty($this->params[Config::get('FORM', 'COLS')])) ? "" : " cols='".$this->params[Config::get('FORM', 'COLS')]."'";
-    $this->code .= (empty($this->params[Config::get('FORM', 'VALUE')])) ? "" : " value='".$this->params[Config::get('FORM', 'VALUE')]."'";
-    $this->code .= (empty($this->params[Config::get('FORM', 'CLASS')])) ? "" : " class='".$this->params[Config::get('FORM', 'CLASS')]."'";
-    $this->code .= (empty($this->params[Config::get('FORM', 'MAXLEN')])) ? "" : " maxlength='".$this->params[Config::get('FORM', 'MAXLEN')]."'";
-    // check if no empty
-    if (!empty($this->params[Config::get('FORM', 'PARAMS')])) {
-      // check if array
-      if (is_array($this->params[Config::get('FORM', 'PARAMS')])) {
-        // loop through options
-        foreach ($this->params[Config::get('FORM', 'PARAMS')] as $key => $value) {
-          // append supplement options
-          $this->code .= " ".$key."='".$value."' "; 
-        }
-      }
-    }   
-    $this->code .= "/>";
-    $this->code .= (($this->params[Config::get('FORM', 'INLINE')] === true) ? "</td></tr>" : "<br/>");
+    // input element
+    return $this->composer->create();
   }
 }
