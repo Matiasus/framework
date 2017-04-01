@@ -7,22 +7,81 @@ use \Vendor\Config\File as Config;
 
 class Input {
 
-  /** @var \Vendor\Form\Form */
-  private $form;
+  /** @var \Vendor\Html\Html */
+  private $html = null;
+
+  /** @var \Vendor\Form\Input\Items */
+  private $items;
+
+  /** @var parameters */
+  private $parameters;
+
+  /** allowable attributes */
+  private $input_type_text = array(
+    /** input types */
+    'name',
+    'label',
+    'value',
+    'id',
+    'maxlength'
+  );
 
   /** @var Array */
   private $params = array();
 
+
   /***
   * Constructor
   *
-  * @param Void
+  * @param 
   * @return Void
   */
-  public function __construct(\Vendor\Form\Form $form)
+  public function __construct(\Vendor\Html\Html $html)
   {
-    // @var \Vendor\Form\Form
-    $this->form = $form;
+    // @var \Vendor\Html\Html
+    $this->html = $html;
+    // @var \Vendor\Form\Input\Items
+    $this->items = new \Vendor\Form\Input\Items($this->html);
+  }
+
+  /***
+  * 
+  *
+  * @param 
+  * @return 
+  */
+  public function setParameters($parameters = array())
+  {
+    // set parameters
+    $this->parameters = $parameters;
+  }
+
+  /***
+  * 
+  *
+  * @param 
+  * @return 
+  */
+  public function getCode()
+  {
+    $code = '';
+    // array
+    $codes = $this->items->getCode();
+    // check if no empty
+    if (!empty($codes)) {
+      // check if array
+      if (is_array($codes)) {
+        // loop thruogh codes
+        foreach ($codes as $item) {
+          // html code as string
+          $code .= $item;
+        }
+        // return code as string
+        return $code;
+      }
+    }
+    // unsuccess
+    return false;
   }
 
   /***
@@ -31,98 +90,158 @@ class Input {
    * @param 
    * @return 
    */
-  public function text($name = false, $label = false, $value = false, $id = false, $maxlen = false)
+  public function text()
   {
     // check number of arguments
     if (func_num_args() > 5) {
       // throw to exception with error message
       throw new \Exception('['.get_called_class().']:['.__LINE__.']: Maximum arguments is <b>5</b>!');
     }
-    // check number of arguments
-    $this->preprocess($name, $label, $value, $id, $maxlen);
-    // @var \Vendor\Form\Input\Text
-    return new \Vendor\Form\Input\Items($this->form, $this->params, 'text');
-  }
-
-  /***
-   * 
-   *
-   * @param 
-   * @return 
-   */
-  public function email($name = false, $label = false, $value = false, $id = false, $maxlen = false)
-  {
-    // check number of arguments
-    if (func_num_args() > 5) {
-      // throw to exception with error message
-      throw new \Exception('['.get_called_class().']:['.__LINE__.']: Maximum arguments is <b>5</b>!');
-    }
-    // check number of arguments
-    $this->preprocess($name, $label, $value, $id, $maxlen);
-    // @var \Vendor\Form\Input\Text
-    return new \Vendor\Form\Input\Items($this->form, $this->params, 'email');
-  }
-
-  /***
-   * 
-   *
-   * @param 
-   * @return 
-   */
-  public function password($name = false, $label = false, $value = false, $id = false, $maxlen = false)
-  {
-    // check number of arguments
-    if (func_num_args() > 5) {
-      // throw to exception with error message
-      throw new \Exception('['.get_called_class().']:['.__LINE__.']: Maximum arguments is <b>5</b>!');
-    }
-    // check number of arguments
-    $this->preprocess($name, $label, $value, $id, $maxlen);
-    // @var \Vendor\Form\Input\Text
-    return new \Vendor\Form\Input\Items($this->form, $this->params, 'password');
-  }
-
-  /***
-   * 
-   *
-   * @param 
-   * @return 
-   */
-  public function submit($name = false, $value = false, $id = false, $params = array())
-  {
-    // check number of arguments
-    if (func_num_args() > 4) {
-      // throw to exception with error message
-      throw new \Exception('['.get_called_class().']:['.__LINE__.']: Maximum arguments is <b>4</b>!');
-    }
-    // check number of arguments
-    $this->preprocess($name, false, $value, false, $id, false, false, false, $params);
-    // @var \Vendor\Form\Input\Text
-    return new \Vendor\Form\Input\Items($this->form, $this->params, 'submit');
-  }
-
-  /***
-   * 
-   *
-   * @param 
-   * @return 
-   */
-  public function preprocess($name = false, $label = false, $value = false, $id = false, $maxlen = false, $class = false, $rows = false, $cols = false, $params = array())
-  {
-    // parameters for input
-    $this->params = array(
-      Config::get('FORM', 'REQUIRED') => false,
-      Config::get('FORM', 'INLINE')   => $this->form->getInline(),
-      Config::get('FORM', 'ID')       => $id,
-      Config::get('FORM', 'NAME')     => $name,
-      Config::get('FORM', 'LABEL')    => $label,
-      Config::get('FORM', 'VALUE')    => $value,
-      Config::get('FORM', 'MAXLEN')   => $maxlen,
-      Config::get('FORM', 'CLASS')    => $class,
-      Config::get('FORM', 'ROWS')     => $rows,
-      Config::get('FORM', 'COLS')     => $cols,
-      Config::get('FORM', 'PARAMS')   => $params,
+    // arguments
+    $arguments = func_get_args();
+    // attributes
+    $attributes = array(
+      'type' => __FUNCTION__
     );
+    // assign values
+    while (list($key, $value) = each($arguments)) {
+      // assign values
+      $attributes[$this->input_type_text[$key]] = $value;
+    }
+    // send attributes
+    $this->items->setParameters($this->parameters);
+    // send attributes
+    $this->items->setAttributes($attributes);
+    // @var \Vendor\Form\Input\Items
+    return $this->items;
+  }
+
+  /***
+   * 
+   *
+   * @param 
+   * @return 
+   */
+  public function email()
+  {
+    // check number of arguments
+    if (func_num_args() > 5) {
+      // throw to exception with error message
+      throw new \Exception('['.get_called_class().']:['.__LINE__.']: Maximum arguments is <b>5</b>!');
+    }
+    // arguments
+    $arguments = func_get_args();
+    // attributes
+    $attributes = array(
+      'type' => __FUNCTION__
+    );
+    // assign values
+    while (list($key, $value) = each($arguments)) {
+      // assign values
+      $attributes[$this->input_type_text[$key]] = $value;
+    }
+    // send attributes
+    $this->items->setParameters($this->parameters);
+    // send attributes
+    $this->items->setAttributes($attributes);
+    // @var \Vendor\Form\Input\Items
+    return $this->items;
+  }
+
+  /***
+   * 
+   *
+   * @param 
+   * @return 
+   */
+  public function password()
+  {
+    // check number of arguments
+    if (func_num_args() > 5) {
+      // throw to exception with error message
+      throw new \Exception('['.get_called_class().']:['.__LINE__.']: Maximum arguments is <b>5</b>!');
+    }
+    // arguments
+    $arguments = func_get_args();
+    // attributes
+    $attributes = array(
+      'type' => __FUNCTION__
+    );
+    // assign values
+    while (list($key, $value) = each($arguments)) {
+      // assign values
+      $attributes[$this->input_type_text[$key]] = $value;
+    }
+    // send attributes
+    $this->items->setParameters($this->parameters);
+    // send attributes
+    $this->items->setAttributes($attributes);
+    // @var \Vendor\Form\Input\Items
+    return $this->items;
+  }
+
+  /***
+   * 
+   *
+   * @param 
+   * @return 
+   */
+  public function submit()
+  {
+    // check number of arguments
+    if (func_num_args() > 3) {
+      // throw to exception with error message
+      throw new \Exception('['.get_called_class().']:['.__LINE__.']: Maximum arguments is <b>3</b>!');
+    }
+    // arguments
+    $arguments = func_get_args();
+    // attributes
+    $attributes = array(
+      'type' => __FUNCTION__
+    );
+    // assign values
+    while (list($key, $value) = each($arguments)) {
+      // assign values
+      $attributes[$this->input_type_text[$key]] = $value;
+    }
+    // send attributes
+    $this->items->setParameters($this->parameters);
+    // send attributes
+    $this->items->setAttributes($attributes);
+    // @var \Vendor\Form\Input\Items
+    return $this->items;
+  }
+
+  /***
+   * 
+   *
+   * @param 
+   * @return 
+   */
+  public function routine($function = false)
+  {
+    // check number of arguments
+    if (func_num_args() > 5) {
+      // throw to exception with error message
+      throw new \Exception('['.get_called_class().']:['.__LINE__.']: Maximum arguments is <b>5</b>!');
+    }
+    // arguments
+    $arguments = func_get_args();
+    // attributes
+    $attributes = array(
+      'type' => __FUNCTION__
+    );
+    // assign values
+    while (list($key, $value) = each($arguments)) {
+      // assign values
+      $attributes[$this->input_type_text[$key]] = $value;
+    }
+    // send attributes
+    $this->items->setParameters($this->parameters);
+    // send attributes
+    $this->items->setAttributes($attributes);
+    // @var \Vendor\Form\Input\Items
+    return $this->items;
   }
 
   /***
