@@ -6,12 +6,20 @@
 <pre>
 // new instance of simple html tag creator
 $html = new \Vendor\Html\Html();
-// set attributes and cotent
-$html->tag('div')
-     ->setAttrs(array(
-          'class' => 'test',
-          'align' => 'center')
-     ->setContent('This is my first div element!');
-// compose html tag
-$html->compose();
+// table element
+$html->tag('table')
+     ->attributes(array(
+          'id'=>'table'))
+     ->content("\n".$code)
+     ->create();
+</pre>
+or
+<pre>
+// new instance of simple html tag creator
+$html = new \Vendor\Html\Html();
+// table element
+$html->tag('input')
+     ->attributes(array(
+          'type'=>'text'))
+     ->reate();
 </pre>
