@@ -10,38 +10,69 @@
 * Description:
 *
 ***/
+
 namespace Vendor\Html;
 
 class Content {
 
-  /** @var \Vendor\Html\Html $html */
-  private $html;
-      
+  /** @var \Vendor\Html\Composer */
+  private $composer;
+
+  /** @var array of self closing tags */
+  private static $self_close_tags = array (
+    'area',
+    'base',
+    'br',
+    'col',
+    'command',
+    'embed',
+    'hr',
+    'img',
+    'input',
+    'keygen',
+    'link',
+    'meta',
+    'param',
+    'source',
+    'track',
+    'wbr',
+  );
+
   /***
    * Constructor
    *
-   * @param  \Vendor\Html\Html $html
+   * @param  
    * @return Void
    */
-  public function __construct (\Vendor\Html\Html $html)
+  public function __construct (\Vendor\Html\Composer $composer)
   {
-    // @var \Vendor\Html\Html $html
-    $this->html = $html;
+    // @var \Vendor\Html\Composer
+    $this->composer = $composer;
   }
-  
+ 
   /***
    * 
    *
    * @param  String
    * @return Void
    */
-  public function setContent ($content)
+  public function content ($content)
   {
-    if (!is_string($content)) {
-      // throw to exception with error message
-      throw new \Exception("[".get_called_class()."]:[".__LINE__."]: Content must be a <b>string</b>!");       
-    }
-    // set content to html instance
-    $this->html->setContent($content);
-  }  
+    // set content
+    $this->composer->setContent($content);
+    // @var \Vendor\Html\Composer
+    return $this->composer;
+  }
+
+  /***
+   * Compose html code of given tag
+   *
+   * @param  Void
+   * @return Void
+   */
+  public function create ()
+  {
+    // compose html code
+    return $this->composer->create();
+  }
 }
