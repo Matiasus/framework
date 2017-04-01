@@ -9,10 +9,10 @@
 // new instance of simple html tag creator
 $html = new \Vendor\Html\Html();
 // table element
-$html->tag('table')
+$html->tag('div')
      ->attributes(array(
-          'id'=>'table'))
-     ->content("\n".$code)
+          'id'=>'id-div'))
+     ->content('This is my first div container!')
      ->create();
 </pre>
 </p>
