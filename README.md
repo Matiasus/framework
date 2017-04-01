@@ -37,6 +37,6 @@ $html->tag('input')
 <p>creates</p>
 <p>
 <pre>
-&lt;input type='text'&gt; \&gt;
+&lt;input type='text' \&gt;
 </pre>
 </p>
