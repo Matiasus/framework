@@ -5,26 +5,26 @@
 <h3>Example</h3>
 <p>With content</p>
 <p>
-     <pre>
-     // new instance of simple html tag creator
-     $html = new \Vendor\Html\Html();
-     // table element
-     $html->tag('table')
-          ->attributes(array(
-               'id'=>'table'))
-          ->content("\n".$code)
-          ->create();
-     </pre>
+<pre>
+// new instance of simple html tag creator
+$html = new \Vendor\Html\Html();
+// table element
+$html->tag('table')
+     ->attributes(array(
+          'id'=>'table'))
+     ->content("\n".$code)
+     ->create();
+</pre>
 </p>
 <p>or without content</p>
 <p>
-     <pre>
-     // new instance of simple html tag creator
-     $html = new \Vendor\Html\Html();
-     // table element
-     $html->tag('input')
-          ->attributes(array(
-               'type'=>'text'))
-          ->create();
-     </pre>
+<pre>
+// new instance of simple html tag creator
+$html = new \Vendor\Html\Html();
+// table element
+$html->tag('input')
+     ->attributes(array(
+          'type'=>'text'))
+     ->create();
+</pre>
 </p>
