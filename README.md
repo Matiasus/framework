@@ -14,8 +14,10 @@ $html->tag('div')
           'id'=>'id-div'))
      ->content('This is my first div container!')
      ->create();
+</pre>
 creates
-&lt;div id='id-div'&rt;This is my first div container!\&lt;/div\&rt;
+<pre>
+&lt;div id='id-div'&gt;This is my first div container!&lt;/div&gt;
 </pre>
 </p>
 <p>or without content</p>
