@@ -1,19 +1,18 @@
 <?php
+/***
+* Poznamkovyblog Copyright (c) 2015 
+* 
+* Author:         Mato Hrinko
+* Datum:          12.7.2015
+* Adrress:        http://matiasus.cekuj.net
+* 
+* ------------------------------------------------------------
+* @description: Autoloading tried - vytvorenie objektov (instancii) je vykonavane jednoduchym volanim triedy, 
+*               nie je potrebne definovanie celej cesty umiestnenie triedy napr. $class = new Class(), namiesto
+*               require(ADRESA ULOZENIA TRIEDY); $class = new Class();
+*/
+namespace Vendor\Autoloader;
 
-  namespace Vendor\Autoloader;
-
-  /***
-  * Poznamkovyblog Copyright (c) 2015 
-  * 
-  * Author:         Mato Hrinko
-  * Datum:          12.7.2015
-  * Adrress:        http://matiasus.cekuj.net
-  * 
-  * ------------------------------------------------------------
-  * @description: Autoloading tried - vytvorenie objektov (instancii) je vykonavane jednoduchym volanim triedy, 
-  *               nie je potrebne definovanie celej cesty umiestnenie triedy napr. $class = new Class(), namiesto
-  *               require(ADRESA ULOZENIA TRIEDY); $class = new Class();
-  */
 class Autoloader{
 
   /** @const */
@@ -72,7 +71,3 @@ class Autoloader{
     }
   }
 }
-
-
-
-	
