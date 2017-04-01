@@ -16,7 +16,7 @@ $html->tag('div')
      ->create();
 </pre>
 </p>
-<p>creates</p>
+outputs
 <p>
 <pre>
 &lt;div id='id-div'&gt;This is my first div container!&lt;/div&gt;
@@ -34,7 +34,7 @@ $html->tag('input')
      ->create();
 </pre>
 </p>
-<p>creates</p>
+outputs
 <p>
 <pre>
 &lt;input type='text' \&gt;
