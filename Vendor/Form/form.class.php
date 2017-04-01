@@ -10,6 +10,9 @@ class Form {
   /** @var Object \Vendor\Form\Input */
   private $input = null;
 
+  /** @var \Vendor\Html\Html */
+  private $html = null;
+
   /** @var Array */
   private $variables = array();
   
@@ -27,8 +30,10 @@ class Form {
   */
   public function __construct()
   {
+    // @var \Vendor\Html\Html
+    $this->html = new \Vendor\Html\Html();
     // @var \Vendor\Form\Input
-    $this->input = new \Vendor\Form\Input($this);
+    $this->input = new \Vendor\Form\Input($this->html);
   }
   
  /***
@@ -39,6 +44,8 @@ class Form {
   */
   public function input()
   {
+    // send parameters
+    $this->input->setParameters($this->params);
     // return \Vendor\Form\Input
     return $this->input;
   }
@@ -217,25 +224,25 @@ class Form {
   */
   public function getCode()
   {
-    // form tag
-    $code  = "\n\t<form action='".$this->params[Config::get('FORM', 'ACTION')];
-    $code .= "' method='".$this->params[Config::get('FORM', 'METHOD')]."'";
-    $code .= (isset($this->params[Config::get('FORM', 'ID')])) ? " id='".$this->getId()."'>" : ">";
-    // table tag
-    $code .= (($this->params[Config::get('FORM', 'INLINE')] === true ) ? "\n\t  <table id='table".$this->getId()."'>":"");
-    // append all stored html codes
-    foreach ($this->code as &$html_code) {
-      // appending codes
-      $code .= $html_code;
-    }
-    // unset
-    unset($html_code);
-    // end table tag
-    $code .= (($this->params[Config::get('FORM', 'INLINE')] === true ) ? "\n\t  </table>" : "");
-    // end form tag
-    $code .= "\n\t</form>";
-    // return code
+    // row elements
+    $code = $this->input->getCode();
+    // table element
+    $code = $this->html->tag('table')
+                 ->attributes(array('id'=>'table'))
+                 ->content("\n".$code)
+                 ->create();
+    // return html code
     return $code;
+  }
+
+  /***
+  * Html creator
+  *
+  * @param Void
+  * @return Void
+  */
+  public function createCode()
+  {
   }
 
   /***
