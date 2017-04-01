@@ -14,7 +14,7 @@ $html->tag('table')
      ->content("\n".$code)
      ->create();
 </pre>
-or
+or without the content<br/>
 <pre>
 // new instance of simple html tag creator
 $html = new \Vendor\Html\Html();
