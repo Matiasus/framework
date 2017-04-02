@@ -146,20 +146,47 @@ class Model {
     // set method
     $form->setMethod(Config::get('FORM', 'METHOD_POST'));
     // set action
-    $form->setAction($this->route->getSerNameUri(true));
+    $form->setAction($this->route->getfullUri(true));
     // set form
     $form->setInline(true);
     // input text field
     $form->input()
-         ->text('Name', 'Meno/Name', '', true)->required();
+         ->text('Username', 'Meno/Name')
+         ->html5Attrs('required')
+         ->create();
     // input text field
     $form->input()
-         ->password('Passwordname', 'Heslo/Pasword', '', true)->required();
+         ->password('Passwordname', 'Heslo/Pasword')
+         ->html5Attrs('required')
+         ->create();
     // input text field
     $form->input()
-         ->submit('Submit', 'Prihlásenie', '', array('align'=>'right'));
+         ->checkbox('Persistentlog', 'Pamätaj prihlásenie', 'Pamataj')
+         ->create();
+    // submit
+    $form->input()
+         ->submit('Prihlasenie', '', 'Prihlásenie')
+         ->create();
+    // check if created columns exist in database
+    if ($form->succeedSend($this->database, Config::get('MYSQL', 'T_USER'))) {
+      // callback logon
+      //$this->prihlasenieProccess($form);
+    }
     // return code
     return $form;
+  }
+
+  /***
+  * Callback - logon
+  *
+  * @param Array
+  * @return Void
+  */	
+  private function prihlasenieProccess($form) 
+  {
+    // Spracovanie prihlasenia
+    $this->model
+         ->logon($form); 
   }
 
   /***
@@ -173,18 +200,33 @@ class Model {
     // set method
     $form->setMethod(Config::get('FORM', 'METHOD_POST'));
     // set action
-    $form->setAction($this->route->getSerNameUri());
+    $form->setAction($this->route->getfullUri(true));
     // set form
     $form->setInline(true);
+    // input email
+    $form->input()
+         ->email('Email', 'E-mail')
+         ->html5Attrs('required')
+         ->create();
     // input text field
     $form->input()
-         ->email('Email', 'E-mail', '')->required();
-    // input text field
+         ->text('Username', 'Meno/Name')
+         ->html5Attrs('required')
+         ->create();
+    // input password field
     $form->input()
-         ->text('Username', 'Meno/Name', '')->required();
-    // input text field
+         ->password('Passwordname', 'Heslo/Pasword')
+         ->html5Attrs('required')
+         ->create();
+    // submit
     $form->input()
-         ->password('Passwordname', 'Heslo/Password', '')->required();
+         ->submit('Registracia', '', 'Registrácia')
+         ->create();
+    // check if created columns exist in database
+    if ($form->succeedSend($this->database, Config::get('MYSQL', 'T_USER'))) {
+      // callback logon
+      //$this->prihlasenieProccess($form);
+    }
     // return code
     return $form;
   }
