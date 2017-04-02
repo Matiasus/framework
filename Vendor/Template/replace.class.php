@@ -124,21 +124,26 @@ class Replace {
 	 */
 	public function flash($searched, $page)
 	{
-    // flash messages
     $key = 'flash';
+    // replace messages
+    $replace = '';
     // get all flash messages 
-    $messages = Session::get('flash');
-    // check if array or object
-		if (is_array($messages) || 
-        is_object($messages))
-		{
-      // contnent of flash messages
-      $messages = $this->errors->toString($messages);
-		} 
+    $messages = Session::get($key);
+    // check if array
+    if (is_array($messages)) {
+      // loop
+      foreach ($messages as $message) {
+        // append messages
+        $replace .= $message."<br/>\n";
+      }
+		} else {
+      // append messages
+      $replace .= $messages."<br/>\n";
+    }
     // session destroy
   	Session::destroy($key, false);
     // return replace content of flash message  
-  	return $this->includes($searched, $messages, $page);
+  	return $this->includes($searched, $replace, $page);
   }
 
 	/***
@@ -154,7 +159,7 @@ class Replace {
     // instance of controller
     $this->controller = $controller;
 		// Replace {fromular meno_formulara} by html code
-		echo $this->content = preg_replace_callback($searched, array($this, "replaceForm"), $content);
+		return preg_replace_callback($searched, array($this, "replaceForm"), $content);
 	}
 
 	/***
@@ -250,18 +255,6 @@ class Replace {
       $this->content = str_replace(self::BODY, $javascript_string, $this->content);
     }
   }
-
-	/***
-	 * Spracovanie sablony
-	 *
-	 * @param Void
-	 * @return Void
-	 */
-	public function render($content)
-	{
-		echo $content;
-	}
-
 }
 
 

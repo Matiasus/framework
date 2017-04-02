@@ -197,14 +197,16 @@ class Session {
       throw new \Exception("[".get_called_class()."]:[".__LINE__."]: Key must be a <b>string</b>!"); 
     }
     // check if exists in array   
-    if (!array_key_exists($key, $_SESSION) && 
-        true === $exception) 
-    {
-      // throw to exception with error message
-      throw new \Exception("[".get_called_class()."]:[".__LINE__."]: <b>".$key."</b> does not exist in SESSION!");
-    } else {
-      // return false
-      return false;    
+    if (!array_key_exists($key, $_SESSION)) {
+      //
+      if ($exception !== false) { 
+        // throw to exception with error message
+        throw new \Exception("[".get_called_class()."]:[".__LINE__."]: <b>".$key."</b> does not exist in SESSION!");
+      //
+      } else {
+        // return false
+        return false;    
+      }
     }
     // return session
     return $_SESSION[$key];

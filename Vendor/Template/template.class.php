@@ -91,76 +91,8 @@ class Template{
       $this->directory .= '/'.ucfirst($this->route->get('module')).
                           '/'.Config::get('TEMPL', 'VIEWS');
     }
-/*
-		// Errors occured during previous code
-		if (false === $this->errors->checkIfNoErrors())	{
-      // load error layout
-      $this->page = $this->replace->layout($this->errors->layout);
-      // replace error title
-      $this->page = $this->replace->title($this->config['TEMPLATE']['REPL_TITLE'], 
-                                          $this->config['TEMPLATE']['ERROR'], 
-                                          $this->page);
-      // replace errors
-      $this->page = $this->replace->errors($this->config['TEMPLATE']['REPL_ERROR'], 
-                                           $this->errors->toString($this->errors->messages()), 
-                                           $this->page);
-      // return replacement
-      return false;
-		}
-*/
     // replacements
     $this->replacements();
-	}
-
-
-	/***
-	 * Variable set
-	 *
-	 * @param String, String - key, Value
-	 * @return Void
-	 */
-	public function set($key, $value)
-	{
-    if (empty($key)) {
-      // zapis chyby - error
-      $this->errors->store('warning', '\\'.get_class($this).' -> '.ucfirst(__FUNCTION__).' ( ) [Line: '.__LINE__.']: Variable must assign <b>key</b>!');
-      // neuspesny navrat
-      return false;
-    }
-    // ulozenie premennej
-    $this->variables[$key] = $value;
-	}
-
-	/***
-	 * Variable call
-	 *
-	 * @param String - key
-	 * @return String | Array
-	 */
-	public function get($key, $errors = false)
-	{
-    // overenie pritomnosti kluca
-		if ($key !== false) {
-      // overi, ci je spravne zadana hodnota kluca
-      if (empty($key)) {
-        // zapis chyby - error
-        $this->errors->store('warning', '\\'.get_class($this).' -> '.ucfirst(__FUNCTION__).' ( ) [Line: '.__LINE__.']: Key has <b>Zero length</b> or <b>NULL</b> or <b>0</b>!');
-        // neuspesny navrat
-        return false;
-      // overi existenciu pozadovaneho nastavenia
-		  } else if (!array_key_exists($key, $this->variables)) {
-        // zapis chyby - error
-        $this->errors->store('warning', '\\'.get_class($this).' -> '.ucfirst(__FUNCTION__).' ( ) [Line: '.__LINE__.']: Cookie <b>\''.$key.'\'</b> does not exists!');
-        // neuspesny navrat
-        return false;
-      // nastavenie podla kluca existuje
-      } else {
-        // return variable
-        return $this->variables[$key];
-      }
-    } 
-    // return variables
-    return $this->variables;
 	}
 
 	/***
@@ -186,30 +118,20 @@ class Template{
                        ->title(Config::get('TEMPL', 'RE_TIT'), 
                                Config::get('TEMPL', 'TITLE'), 
                                $this->page);
-/*
-    // replace warnings
-    $this->page = $this->replace
-                       ->errors($this->config['TEMPLATE']['REPL_ERROR'], 
-                                $this->errors->toString($this->errors->messages('warning', false)), 
-                                $this->page);
-*/
     // replace conntent
     $this->page = $this->replace
                        ->content($this->buffer,
                                  Config::get('TEMPL', 'RE_CON'),
                                  $this->content_path,
                                  $this->page);
-
-
-    // replace conntent
-    $this->page = $this->replace
-                       ->flash(Config::get('TEMPL', 'RE_FLA'),
-                               $this->page);
-
     // replace forms
     $this->page = $this->replace
                        ->forms($this->controller,
                                Config::get('TEMPL', 'RE_FOR'),
+                               $this->page);
+    // replace conntent
+    $this->page = $this->replace
+                       ->flash(Config::get('TEMPL', 'RE_FLA'),
                                $this->page);
 /*
 												   'Forms',
@@ -221,34 +143,6 @@ class Template{
   }
 
 	/***
-	 * Spracovanie sablony
-	 *
-	 * @param Array - pole metod, ktore sa maju volat
-	 * @return Void
-	 */
-	protected function process($methods = array())
-	{
-    // object with replace function
-    $replace = new \Vendor\Template\Replace($this->container,
-                                            $this->config);
-		//  Nacitanie premennych do premennej $variables cim je mozne volat premnenne z prislusneho kontrolera
-		$this->variables = $this->objectController->variables;
-		// Prechazanie jednotlivych metod zadanych v poli
-		foreach ($methods as $method)	{
-      // overenie existecie metody
-			if (method_exists($this, $method))	{
-				// Volanie metod jednotlivych metod z template class
-				$this->$method();
-			} else {
-        // zapis chyby
-				$this->container->get('errors')->store('warning', '\\'.get_class($this).' -> '.ucfirst(__FUNCTION__).' ( ) [Line: '.__LINE__.']: Method <b>\''.$method.'\'</b> does not exists!');
-			}
-		}
-		// Vykreslenie obsahu, cize tlacenie premennej $this->content
-		echo $this->render();
-	}
-
-	/***
 	 * Render content
 	 *
 	 * @param Void
@@ -257,7 +151,7 @@ class Template{
 	public function render()
 	{
     // show content
-		$this->replace->render($this->page);
+		echo $this->page;
 	}
 }
 

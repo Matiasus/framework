@@ -34,6 +34,9 @@ class Mysql {
   private $table;
 
   /** @var String - nazov pripojenia */
+  private $active;
+
+  /** @var String - nazov pripojenia */
   private $name;
 
   /**
@@ -151,28 +154,6 @@ class Mysql {
   }
 
   /**
-  * Check if row exists in table
-  *
-  * @param  String   
-  * @return Bool
-  */
-  public function existenceOfColumn($column)
-  {
-    // MySQL Syntax
-    $query = "SHOW COLUMNS FROM ".$this->table." LIKE '".ucfirst($column)."';";	
-    // execute query
-    if ($this->executeQuery($query, array()) === true) {
-      // check if number of rows > 0 
-      if (count($this->getRows()) > 0) {
-        // not exists
-        return true;
-      }
-    }
-    // exists
-    return true;
-  }
-
-  /**
   * Get rows
   *
   * @param  Void
@@ -180,6 +161,7 @@ class Mysql {
   */
   public function getRows()
   {
+    // array of all items or zero array
     return $this->last->fetchAll(\PDO::FETCH_OBJ);
   }
   
