@@ -13,7 +13,6 @@
 ***/
 namespace Vendor\Di;
 
-
 class Container {
 
   /** @var */
