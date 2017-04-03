@@ -13,7 +13,6 @@
 ***/
 namespace Vendor\Reflection;
 
-
 class Reflection {
 
   /** @var */
