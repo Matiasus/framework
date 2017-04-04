@@ -1,5 +1,5 @@
 <h1>Framework</h1>
-     <p>Simple PHP framework with Dependency Injection</p>
+     <p>Simple PHP framework with Dependency Injection pattern</p>
 <h2>Html</h2>
      <p>Instance of class creates html tag. Class doesn't check proper attributes for given html tag. It only recognizes self         closing tags.</p>
 <h3>Examples</h3>
