@@ -42,10 +42,13 @@ outputs
 </p>
 <h4>Form</h4>
 <p>
-Simple html form creator
+Simple html form creator allows to create custimised form html element. Starts with createing new Instance of class <i>\Vendor\Form\Form</i>.
 <pre>
 // new instance of form tag
 $html = new \Vendor\Form\Form();
+</pre>
+creates 
+<pre>
 // set method
 $form->setMethod('POST');
 // set action
@@ -54,17 +57,17 @@ $form->setAction('index.php');
 $form->setInline(true);
 // input text field
 $form->input()
-     ->text('Username', 'Meno/Name')
+     ->text('name', 'Name')
      ->html5Attrs('required')
      ->create();
 // input password field
 $form->input()
-     ->password('Passwordname', 'Heslo/Pasword')
+     ->password('password', 'Pasword')
      ->html5Attrs('required')
      ->create();
-// input text field
+// input checkbox field
 $form->input()
-     ->checkbox('Persistentlog', 'Pamätaj prihlásenie', 'Pamataj')
+     ->checkbox('login', 'Remember', 'Remmember')
      ->create();
 // get created html code     
 $form->getCode();
