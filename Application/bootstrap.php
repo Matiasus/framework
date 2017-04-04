@@ -1,8 +1,5 @@
 <?php
 
-  // global container
-  $global = null;
-
   // Path to autoloader
   $autoloader_file = dirname(dirname(__FILE__)).'/Vendor/Autoloader/autoloader.class.php';
   // Path to config file
