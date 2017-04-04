@@ -47,12 +47,12 @@ Then must be defined form method (POST, GET)
 // set method
 $form->setMethod('POST');
 </pre>
-and acction (where can be send form request)
+and form action
 <pre>
 // set action
 $form->setAction('index.php');
 </pre>
-It enables select between two visual forms (<i>inline form true</i> - more columns in one row and <i>inline form false</i> - one column for every row)
+Optionale parameter is inline form. It enables select between two visual forms (<i>inline form true</i> - more columns in one row and <i>inline form false</i> - one column for every row)
 <pre>
 // set display form - more columns in one row
 $form->setInline(true);
