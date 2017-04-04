@@ -40,3 +40,33 @@ outputs
 &lt;input type='text' \&gt;
 </pre>
 </p>
+<h4>Form</h4>
+<p>
+Simple html form creator
+<pre>
+// new instance of form tag
+$html = new \Vendor\Form\Form();
+// set method
+$form->setMethod('POST');
+// set action
+$form->setAction('index.php');
+// set display form
+$form->setInline(true);
+// input text field
+$form->input()
+     ->text('Username', 'Meno/Name')
+     ->html5Attrs('required')
+     ->create();
+// input password field
+$form->input()
+     ->password('Passwordname', 'Heslo/Pasword')
+     ->html5Attrs('required')
+     ->create();
+// input text field
+$form->input()
+     ->checkbox('Persistentlog', 'Pamätaj prihlásenie', 'Pamataj')
+     ->create();
+// get created html code     
+$form->getCode();
+</pre>
+</p>
