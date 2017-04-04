@@ -7,7 +7,7 @@ Simple example of creating html tag starts with a new Instance of class <i>\Vend
 // new instance of simple html tag creator
 $html = new \Vendor\Html\Html();
 </pre>
-and then can be created required elements with attributes and content
+and then should be created required elements with attributes and content
 <pre>
 // table element
 $html->tag('div')
@@ -26,8 +26,12 @@ $html->tag('input')
           'type'=>'text'))
      ->create();
 </pre>
+Output of first example is
 <pre>
 &lt;div id='id-div'&gt;This is my first div container!&lt;/div&gt;
+</pre>
+and for second example is
+<pre>
 &lt;input type='text' \&gt;
 </pre>
 </p>
@@ -38,12 +42,12 @@ Simple html form creator allows to create custimised form html element. Starts w
 // new instance of form tag
 $html = new \Vendor\Form\Form();
 </pre>
-Then have to be set sending method (POST, GET) by
+Then must be defined form method (POST, GET)
 <pre>
 // set method
 $form->setMethod('POST');
 </pre>
-and acction (where can be send form request) by:
+and acction (where can be send form request)
 <pre>
 // set action
 $form->setAction('index.php');
