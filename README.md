@@ -57,16 +57,12 @@ and acction (where can be send form request) by:
 // set action
 $form->setAction('index.php');
 </pre>
-It enables select between two visual forms:
-<ul>
-     <li>inline form true - more columns in one row</li>
-     <li>inline form false - one column for every row</li>
-</ul>
+It enables select between two visual forms (<i>inline form true</i> - more columns in one row and <i>inline form false</i> - one column for every row)
 <pre>
 // set display form - more columns in one row
 $form->setInline(true);
 </pre>
-And finally creating given element, for example <b>text</b>
+Creating required element is for given examples <b>text</b>
 <pre>
 // input text field
 $form->input()
@@ -89,7 +85,7 @@ $form->input()
      ->checkbox('login', 'Remember', 'Remmember')
      ->create();
 </pre>
-Get html code is carried out by calling public method <i>getCode()</i>
+where arguments are defined in order <i>name</i>, <i>label</i>, <i>value</i>, <i>id</i> and <i>maxlength</i>. Finally html code is got by calling public method <i>getCode()</i>
 <pre>
 // get created html code     
 $form->getCode();
