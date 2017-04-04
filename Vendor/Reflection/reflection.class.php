@@ -37,7 +37,7 @@ class Reflection {
    * @param  
    * @return 
    */
-  public function setInstance ($class = false, $arguments = false)
+  public function createInstance ($class = false, $arguments = false)
   {
     // check if non empty value
     if (func_num_args() > 2) {
