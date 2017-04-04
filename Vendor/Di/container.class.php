@@ -39,14 +39,15 @@ class Container {
    */
   public function store ($class = false, $arguments = false)
   {
-    return $this->reflection->setInstance($class, $arguments);
+    return $this->reflection->createInstance($class, $arguments);
   }
 
   /***
    * Get service 
    *
    * @param  String
-   * @return Void
+   * @param  Bool
+   * @return stdClass
    */
   public function service ($class = false, $error = true)
   {
