@@ -57,7 +57,7 @@ Optionale parameter is inline form. It enables select between two visual forms (
 // set display form - more columns in one row
 $form->setInline(true);
 </pre>
-Creating required element is for given examples <i>text</i>
+Create element <i>text</i> can be done  
 <pre>
 // input text field
 $form->input()
@@ -65,7 +65,7 @@ $form->input()
      ->html5Attrs('required')
      ->create();
 </pre>
-or <i>password</i>
+element <i>password</i>
 <pre>     
 // input password field
 $form->input()
@@ -73,7 +73,7 @@ $form->input()
      ->html5Attrs('required')
      ->create();
 </pre>
-or <i>checkbox</i>
+element <i>checkbox</i>
 <pre>
 // input checkbox field
 $form->input()
