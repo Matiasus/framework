@@ -47,12 +47,22 @@ Simple html form creator allows to create custimised form html element. Starts w
 // new instance of form tag
 $html = new \Vendor\Form\Form();
 </pre>
-creates 
+Then have to be set sending method (POST, GET) by
 <pre>
 // set method
 $form->setMethod('POST');
+</pre>
+and acction (where can be send form request) by:
+<pre>
 // set action
 $form->setAction('index.php');
+</pre>
+It enables select between two visual forms
+     <ul>
+          <li>inline form true - more columns in one row</li>
+          <li>inline form false - one column for every row</li>
+     </ul>
+<pre>
 // set display form
 $form->setInline(true);
 // input text field
