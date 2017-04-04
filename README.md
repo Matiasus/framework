@@ -63,18 +63,27 @@ It enables select between two visual forms
           <li>inline form false - one column for every row</li>
      </ul>
 <pre>
-// set display form
+// set display form - more columns in one row
 $form->setInline(true);
+</pre>
+And finally creating given element, for example <b>text</b>
+<pre>
 // input text field
 $form->input()
      ->text('name', 'Name')
      ->html5Attrs('required')
      ->create();
+</pre>
+or <b>password</b>
+<pre>     
 // input password field
 $form->input()
      ->password('password', 'Pasword')
      ->html5Attrs('required')
      ->create();
+</pre>
+or <b>checkbox</b>
+<pre>
 // input checkbox field
 $form->input()
      ->checkbox('login', 'Remember', 'Remmember')
