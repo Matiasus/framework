@@ -16,7 +16,7 @@ $html->tag('div')
      ->content('This is my first div container!')
      ->create();
 </pre>
-or with attributes but without contents
+or with attributes but without content
 <pre>
 // new instance of simple html tag creator
 $html = new \Vendor\Html\Html();
