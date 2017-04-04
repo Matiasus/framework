@@ -2,8 +2,6 @@
      <p>Simple PHP framework with Dependency Injection pattern</p>
 <h2>Html</h2>
      <p>Instance of class creates html tag. Class doesn't check proper attributes for given html tag. It only recognizes self         closing tags.</p>
-<h3>Examples</h3>
-<h4>Example 1</h4>
 <p>
 <pre>
 // new instance of simple html tag creator
@@ -40,7 +38,7 @@ outputs
 &lt;input type='text' \&gt;
 </pre>
 </p>
-<h4>Form</h4>
+<h2>Form</h2>
 <p>
 Simple html form creator allows to create custimised form html element. Starts with creating a new Instance of class <i>\Vendor\Form\Form</i>.
 <pre>
