@@ -62,7 +62,7 @@ It enables select between two visual forms (<i>inline form true</i> - more colum
 // set display form - more columns in one row
 $form->setInline(true);
 </pre>
-Creating required element is for given examples <b>text</b>
+Creating required element is for given examples <i>text</i>
 <pre>
 // input text field
 $form->input()
