@@ -42,7 +42,7 @@ outputs
 </p>
 <h4>Form</h4>
 <p>
-Simple html form creator allows to create custimised form html element. Starts with createing new Instance of class <i>\Vendor\Form\Form</i>.
+Simple html form creator allows to create custimised form html element. Starts with creating a new Instance of class <i>\Vendor\Form\Form</i>.
 <pre>
 // new instance of form tag
 $html = new \Vendor\Form\Form();
