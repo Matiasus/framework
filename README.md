@@ -1,11 +1,14 @@
 <h1>Framework</h1>
-     <p>Simple PHP framework with Dependency Injection pattern</p>
+<p>Simple PHP framework with Dependency Injection pattern</p>
 <h2>Html</h2>
-     <p>Instance of class creates html tag. Class doesn't check proper attributes for given html tag. It only recognizes self         closing tags.</p>
-<p>
+<p>Instance of class creates html tag. Class doesn't check proper attributes for given html tag. It only recognizes self closing tags.
+Simple example of creating html tag starts with a new Instance of class <i>\Vendor\Html\Html</i>
 <pre>
 // new instance of simple html tag creator
 $html = new \Vendor\Html\Html();
+</pre>
+and then can be created required elements with attributes and content
+<pre>
 // table element
 $html->tag('div')
      ->attributes(array(
@@ -13,15 +16,7 @@ $html->tag('div')
      ->content('This is my first div container!')
      ->create();
 </pre>
-</p>
-outputs
-<p>
-<pre>
-&lt;div id='id-div'&gt;This is my first div container!&lt;/div&gt;
-</pre>
-</p>
-<h4>Example 2</h4>
-<p>
+or with attributes but without contents
 <pre>
 // new instance of simple html tag creator
 $html = new \Vendor\Html\Html();
@@ -31,10 +26,8 @@ $html->tag('input')
           'type'=>'text'))
      ->create();
 </pre>
-</p>
-outputs
-<p>
 <pre>
+&lt;div id='id-div'&gt;This is my first div container!&lt;/div&gt;
 &lt;input type='text' \&gt;
 </pre>
 </p>
