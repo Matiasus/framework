@@ -66,7 +66,7 @@ $form->input()
      ->create();
 </pre>
 element <i>password</i>
-<pre>     
+<pre>
 // input password field
 $form->input()
      ->password('password', 'Pasword')
