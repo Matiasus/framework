@@ -16,7 +16,7 @@ namespace Vendor\Controller;
 // use
 use \Vendor\Route\Route as Route;
 
-class Controller  implements \Vendor\Controller\Icontroller {
+class Controller implements \Vendor\Controller\Icontroller {
 
   /** @const */
   const RENDER = 'render';
