@@ -1,5 +1,8 @@
 <?php
 
+  // global container
+  $global = null;
+
   // Path to autoloader
   $autoloader_file = dirname(dirname(__FILE__)).'/Vendor/Autoloader/autoloader.class.php';
   // Path to config file
@@ -24,26 +27,144 @@
     // @return Instance of \Vendor\Reflection\Reflection
     $reflection = new \Vendor\Reflection\Reflection();
 
+    // Parser
+    // @param String - path to config file
+    // @return Instance \Vendor\Config\Parser
+    $parser = new \Vendor\Config\Parser($config_ini_file);
+
+    // Config
+    // @param \Vendor\Config\Parser
+    // @return Instance of \Vendor\Config\File
+    $config = new \Vendor\Config\File($parser);
+
+    // Route
+    // @param void
+    // @return Instance of \Vendor\Route\Route
+    $route = new \Vendor\Route\Route();
+
+    // Datum
+    // @param void
+    // @return Instance of \Vendor\Date\Date
+    $date = new \Vendor\Date\Date();
+
+    // Cookie
+    // @param void
+    // @param \Vendor\Datum\Datum
+    // @return Instance of \Vendor\Cookie\Cookie
+    $cookie = new \Vendor\Cookie\Cookie();
+
+    // Session
+    // @param void
+    // @return Instance of \Vendor\Session\Session
+    $session = new \Vendor\Session\Session();
+
+    // Mysql arguments 
+    // @param - define host
+    // @param - define database
+    // @param - define name
+    // @param - define password
+    $arguments = array(
+        \Vendor\Config\File::getArray('ICONNECTION')['MYSQL']['HOST']
+      , \Vendor\Config\File::getArray('ICONNECTION')['MYSQL']['DTBS']
+      , \Vendor\Config\File::getArray('ICONNECTION')['MYSQL']['NAME']
+      , \Vendor\Config\File::getArray('ICONNECTION')['MYSQL']['PASS']
+      , array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION)
+    );
+    // set arguments before creating interface class
+    $reflection->bind('\Vendor\Connection\Iconnection', function () use ($arguments) { return new \Vendor\Connection\Mysql($arguments); });
+    // Create controller
+    $reflection->service(\Vendor\Route\Route::get('controller_namespace'));
+
+    // called controller
+    $controller = $reflection->get(Vendor\Route\Route::get('controller_namespace'));
+    // called method
+    $method = $controller->callMethod();
+    // render method
+    $controller->$method();
+
+    // set arguments before creating interface class
+    $reflection->bind('\Vendor\Controller\Icontroller', function () use ($controller) { return $controller; });
+    // Template
+    // @return Instance of \Vendor\Template\Template
+    $reflection->service('\Vendor\Template\Template');
+    // Render processed page
+    $reflection->get('\Vendor\Template\Template')->render();
+
+
+/*
+    // Generator
+    // @param \Vendor\User\User
+    // @return Instance of \Vendor\Generator\Generator
+    $generator = new \Vendor\Generator\Generator($user);
+
+    // Controller
+    // @param \Vendor\Di\Container
+    // @return Instance of \Vendor\Controller\Creator
+    $controller = new \Vendor\Controller\Creator($route, $reflection);
+
+
+exit;
+/*
+    // Mysql
+    // @param void
+    // @return Instance of \Vendor\Connection\Mysql
+    $mysql = new \Vendor\Connection\Mysql($arguments);
+
+    // Mysql
+    // @param void
+    // @return Instance of \Vendor\Connection\Connection
+    $connection = new \Vendor\Connection\Connection($mysql);
+
+    // mYSql connection
+    $mysql->connect(
+      'mysql'
+      , \Vendor\Config\File::get('MYSQL', 'HOST')
+      , \Vendor\Config\File::get('MYSQL', 'DTBS')
+      , \Vendor\Config\File::get('MYSQL', 'NAME')
+      , \Vendor\Config\File::get('MYSQL', 'PASS')
+      , array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION)
+    );
+
+    // Database
+    // @param \Vendor\Connection\Mysql
+    // @return Instance of \Vendor\Database\Database
+    $database = new \Vendor\Database\Database($mysql);
+
+    // User
+    // @param \Vendor\Database\Database
+    // @return Instance of \Vendor\User\User
+    $user = new \Vendor\User\User($database);
+
+    // Generator
+    // @param \Vendor\User\User
+    // @return Instance of \Vendor\Generator\Generator
+    $generator = new \Vendor\Generator\Generator($user);
+
+    // Controller
+    // @param \Vendor\Di\Container
+    // @return Instance of \Vendor\Controller\Creator
+    $controller = new \Vendor\Controller\Creator($route, $reflection);
+/*
+
     // DI Container
     // @param \Vendor\Reflection\Reflection
     // @return Instance of \Vendor\Di\Container
     $di_container = new \Vendor\Di\Container($reflection);
 
-    // Config
+    // Parser
     // @param String - path to config file
+    // @return Instance \Vendor\Config\Parser
+    //$parser = new \Vendor\Config\Parser($config_ini_file);
+    // Config
+    // @param @var \Vendor\Config\Parser
     // @return Instance \Vendor\Config\Config
+    //$config = new \Vendor\Config\File($parser);
     $di_container->store('\Vendor\Config\File', $config_ini_file);
-    // parse INI file
-    $di_container->service('\Vendor\Config\File')->parse();
 
     // Route
     // @param void
     // @return Instance of \Vendor\Route\Route
     $di_container->store('\Vendor\Route\Route');
-    // explode url address
-    $di_container->service('\Vendor\Route\Route')->explodeUrl();
-    // build namespace of controller
-    $di_container->service('\Vendor\Route\Route')->initValueUrl();
 
     // Datum
     // @param void
@@ -100,7 +221,11 @@
     // Controller
     // @param \Vendor\Di\Container
     // @return Instance of \Vendor\Controller\Creator
-    $controller = new \Vendor\Controller\Creator($di_container);
+    $controller = new \Vendor\Controller\Creator($di_container->service(''));
+
+print_r($di_container);
+
+/*
     // create controller according to controller in url address
     // and store it into DI container
     $controller->create($di_container->service('\Vendor\Route\Route')->get('controller_namespace'));
@@ -113,6 +238,7 @@
     $view = new \Vendor\Template\Template($di_container);
     // Render processed page
     $view->render();
+*/
   }
   // -------------------------------------------------------------------------------------+
   //                                  ERRORS DISPLAY                                      |  
