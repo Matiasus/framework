@@ -1,5 +1,8 @@
 <?php
 
+  // global container
+  $global = null;
+
   // Path to autoloader
   $autoloader_file = dirname(dirname(__FILE__)).'/Vendor/Autoloader/autoloader.class.php';
   // Path to config file
@@ -24,95 +27,69 @@
     // @return Instance of \Vendor\Reflection\Reflection
     $reflection = new \Vendor\Reflection\Reflection();
 
-    // DI Container
-    // @param \Vendor\Reflection\Reflection
-    // @return Instance of \Vendor\Di\Container
-    $di_container = new \Vendor\Di\Container($reflection);
+    // Parser
+    // @param String - path to config file
+    // @return Instance \Vendor\Config\Parser
+    $parser = new \Vendor\Config\Parser($config_ini_file);
 
     // Config
-    // @param String - path to config file
-    // @return Instance \Vendor\Config\Config
-    $di_container->store('\Vendor\Config\File', $config_ini_file);
-    // parse INI file
-    $di_container->service('\Vendor\Config\File')->parse();
+    // @param \Vendor\Config\Parser
+    // @return Instance of \Vendor\Config\File
+    $config = new \Vendor\Config\File($parser);
 
     // Route
     // @param void
     // @return Instance of \Vendor\Route\Route
-    $di_container->store('\Vendor\Route\Route');
-    // explode url address
-    $di_container->service('\Vendor\Route\Route')->explodeUrl();
-    // build namespace of controller
-    $di_container->service('\Vendor\Route\Route')->initValueUrl();
+    $route = new \Vendor\Route\Route();
 
     // Datum
     // @param void
     // @return Instance of \Vendor\Date\Date
-    $di_container->store('\Vendor\Date\Date');
-
-    // Buffer
-    // @param void
-    // @return Instance of \Vendor\Buffer\BUffer
-    $di_container->store('\Vendor\Buffer\Buffer');
+    $date = new \Vendor\Date\Date();
 
     // Cookie
     // @param void
     // @param \Vendor\Datum\Datum
     // @return Instance of \Vendor\Cookie\Cookie
-    $di_container->store('\Vendor\Cookie\Cookie');
+    $cookie = new \Vendor\Cookie\Cookie();
 
     // Session
     // @param void
     // @return Instance of \Vendor\Session\Session
-    $di_container->store('\Vendor\Session\Session');
-    // @fun Launch session
-    $di_container->service('\Vendor\Session\Session')->launchSession();
+    $session = new \Vendor\Session\Session();
 
-    // Mysql
-    // @param void
-    // @return Instance of \Vendor\Connection\Mysql
-    $di_container->store('\Vendor\Connection\Mysql');
-    // mYSql connection
-    $di_container->service('\Vendor\Connection\Mysql')->connect(
-      'mysql'
-      , \Vendor\Config\File::get('MYSQL', 'HOST')
-      , \Vendor\Config\File::get('MYSQL', 'DTBS')
-      , \Vendor\Config\File::get('MYSQL', 'NAME')
-      , \Vendor\Config\File::get('MYSQL', 'PASS')
+    // Mysql arguments 
+    // @param - define host
+    // @param - define database
+    // @param - define name
+    // @param - define password
+    $arguments = array(
+        \Vendor\Config\File::getArray('ICONNECTION')['MYSQL']['HOST']
+      , \Vendor\Config\File::getArray('ICONNECTION')['MYSQL']['DTBS']
+      , \Vendor\Config\File::getArray('ICONNECTION')['MYSQL']['NAME']
+      , \Vendor\Config\File::getArray('ICONNECTION')['MYSQL']['PASS']
       , array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION)
     );
+    // set arguments before creating interface class
+    $reflection->bind('\Vendor\Connection\Iconnection', function () use ($arguments) { 
+      return new \Vendor\Connection\Mysql($arguments); 
+    });
+    // Create controller
+    $reflection->service(\Vendor\Route\Route::get('controller_namespace'));
 
-    // Database
-    // @param \Vendor\Connection\Mysql
-    // @return Instance of \Vendor\Database\Database
-    $di_container->store('\Vendor\Database\Database');
+    // called controller
+    $controller = $reflection->get(Vendor\Route\Route::get('controller_namespace'));
+    // called method
+    $method = $controller->callMethod();
+    // render method
+    $controller->$method();
 
-    // User
-    // @param \Vendor\Database\Database
-    // @return Instance of \Vendor\User\User
-    $di_container->store('\Vendor\User\User');
-
-    // Generator
-    // @param \Vendor\User\User
-    // @return Instance of \Vendor\Generator\Generator
-    $di_container->store('\Vendor\Generator\Generator');
-
-    // Controller
-    // @param \Vendor\Di\Container
-    // @return Instance of \Vendor\Controller\Creator
-    $controller = new \Vendor\Controller\Creator($di_container);
-    // create controller according to controller in url address
-    // and store it into DI container
-    $controller->create($di_container->service('\Vendor\Route\Route')->get('controller_namespace'));
-    // call render method according to view in url address
-    $controller->callMethod($di_container->service('\Vendor\Route\Route')->get('view'));
-
-    // Template
-    // @param \Vendor\Di\Container
-    // @return Instance of \Vendor\Template\Template
-    $view = new \Vendor\Template\Template($di_container);
+    // set arguments before creating interface class
+    $reflection->bind('\Vendor\Controller\Icontroller', function () use ($controller) { return $controller; });
+    // Create Template
+    $reflection->service('\Vendor\Template\Template');
     // Render processed page
-    $view->render();
+    $reflection->get('\Vendor\Template\Template')->render();
   }
   // -------------------------------------------------------------------------------------+
   //                                  ERRORS DISPLAY                                      |  
