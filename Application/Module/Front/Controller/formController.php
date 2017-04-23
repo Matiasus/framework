@@ -2,7 +2,7 @@
 
 namespace Application\Module\Front\Controller;
 
-class formController {
+class formController extends \Vendor\Controller\Controller {
 
   /** @var \Application\Module\Front\Model\Model */
   public $model;
@@ -51,7 +51,7 @@ class formController {
   {
     // create form
     $form = $this->model
-                 ->showFormPrihlasenie(new \Vendor\Form\Form());
+                 ->showFormPrihlasenie(new \Vendor\Form\Form(new \Vendor\Html\Html));
     // return html code
     return $form->getCode();
   }
@@ -89,7 +89,7 @@ class formController {
   {
     // create form
     $form = $this->model
-                 ->showFormRegistracia(new \Vendor\Form\Form());
+                 ->showFormRegistracia(new \Vendor\Form\Form(new \Vendor\Html\Html));
     // return html code
     return $form->getCode();
   }
