@@ -86,8 +86,7 @@
 
     // set arguments before creating interface class
     $reflection->bind('\Vendor\Controller\Icontroller', function () use ($controller) { return $controller; });
-    // Template
-    // @return Instance of \Vendor\Template\Template
+    // Create Template
     $reflection->service('\Vendor\Template\Template');
     // Render processed page
     $reflection->get('\Vendor\Template\Template')->render();
