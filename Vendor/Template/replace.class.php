@@ -47,17 +47,13 @@ class Replace {
 	{
 		// check if file exists
 		if (!file_exists($path)) {
-      // error message
-      throw new \Exception('\\'.get_class($this).' -> '.ucfirst(__FUNCTION__).' ( ) [Line: '.__LINE__.']: Layout <b>\''.$path.'\'</b> does not exists!');
-      // unsuccess return
-      return false;
+      // throw to exception with error message
+      throw new \Exception('['.get_called_class().']:['.__LINE__.']: Layout <b>\''.$path.'\'</b> does not exists!');
     }
     // check if layout not empty
 		if (empty($content = file_get_contents($path))) {
-      // error message
-      throw new \Exception('\\'.get_class($this).' -> '.ucfirst(__FUNCTION__).' ( ) [Line: '.__LINE__.']: Empty layout <b>\''.$path.'\'</b>!');
-      // unsuccess return
-      return false;
+      // throw to exception with error message
+      throw new \Exception('['.get_called_class().']:['.__LINE__.']: Empty layout <b>\''.$path.'\'</b>!');
     }
     // content <= layout
   	return $content;
@@ -75,8 +71,8 @@ class Replace {
   {
 		// check if file exists
 		if (!file_exists($path)) {
-      // error message
-      throw new \Exception('\\'.get_class($this).' -> '.ucfirst(__FUNCTION__).' ( ) [Line: '.__LINE__.']: Content <b>\''.$path.'\'</b> does not exists!');
+      // throw to exception with error message
+      throw new \Exception('['.get_called_class().']:['.__LINE__.']: Content <b>\''.$path.'\'</b> does not exists!');
     }
     // set path to buffered file content
     $buffer->setPath($path);
@@ -178,8 +174,8 @@ class Replace {
     $methods = get_class_methods(get_class($this->controller));
     // check if method exists
 		if(!in_array($method, $methods)) {
-      // error message
-      throw new \Exception('\\'.get_class($this).' -> '.ucfirst(__FUNCTION__).' ( ) [Line: '.__LINE__.']: Form method <b>\''.$method.'\'</b> not present in controller '.$this->controller->getFullName().' !');
+      // throw to exception with error message
+      throw new \Exception('['.get_called_class().']:['.__LINE__.']: Form method <b>\''.$method.'\'</b> not present in controller '.$this->controller->getFullName().' !');
     }
 		// html code
     return $this->controller->$method();

@@ -16,18 +16,13 @@ namespace Vendor\Template;
 // use
 use \Vendor\Cookie\Cookie as Cookie,
     \Vendor\Config\File as Config,
+    \Vendor\Route\Route as Route,
     \Vendor\Date\Date as Date;
 
 class Template{
 
 	/** @var Object \Vendor\User\User */
   private $user;
-
-	/** @var Object \Vendor\Route\Route */
-  private $route;
-
-	/** @var Object \Vendor\Errors\Errors */
-  private $errors;
 
   /** @var Object \Vendor\Buffer\Buffer */
   private $buffer;
@@ -66,29 +61,29 @@ class Template{
    * @param Object \Vendor\Di\Container
 	 * @return Void
 	 */
-	public function __construct(\Vendor\Di\Container $container)
+	public function __construct(\Vendor\User\User $user,
+                              \Vendor\Buffer\Buffer $buffer,
+                              \Vendor\Template\Replace $replace,
+                              \Vendor\Database\Database $database,
+                              \Vendor\Controller\Icontroller $controller)
 	{
     // @var \Vendor\User\User
-    $this->user = $container->service('\Vendor\User\User');
-    // @var \Vendor\Route\Route
-    $this->route = $container->service('\Vendor\Route\Route');
+    $this->user = $user;
     // @var Object \Vendor\Buffer\Buffer
-    $this->buffer = $container->service('\Vendor\Buffer\Buffer');
-    // @var \Vendor\Database\Database
-    $this->database = $container->service('\Vendor\Database\Database');
-    // controller object
-    $this->controller = $container->service($this->route->get('controller_namespace'));
-
-
+    $this->buffer = $buffer;
     // @var \Vendor\Template\Replace
-    $this->replace = new \Vendor\Template\Replace();
+    $this->replace = $replace;
+    // @var \Vendor\Database\Database
+    $this->database = $database;
+    // @var \Vendor\Controller\Icontroller
+    $this->controller = $controller;
     // basic directory address
     $this->directory = 'Application/'.Config::get('TEMPL', 'MODUL');
 
    // check if module set
     if (strlen(Config::get('TEMPL', 'MODUL')) > 0) {
       // join /
-      $this->directory .= '/'.ucfirst($this->route->get('module')).
+      $this->directory .= '/'.ucfirst(Route::get('module')).
                           '/'.Config::get('TEMPL', 'VIEWS');
     }
     // replacements
@@ -108,8 +103,8 @@ class Template{
                          '/'.Config::get('TEMPL', 'LA_BAS');
     // content for layout
 	  $this->content_path = $this->directory.
-                          '/'.$this->route->get('controller').
-                          '/'.$this->route->get('view').'.tpl.php';
+                          '/'.Route::get('controller').
+                          '/'.Route::get('view').'.tpl.php';
     // load basic layout
     $this->page = $this->replace
                        ->layout($this->layout_path);
@@ -129,12 +124,12 @@ class Template{
                        ->forms($this->controller,
                                Config::get('TEMPL', 'RE_FOR'),
                                $this->page);
+
     // replace conntent
     $this->page = $this->replace
                        ->flash(Config::get('TEMPL', 'RE_FLA'),
                                $this->page);
 /*
-												   'Forms',
 												   'Editor',
                            'Javascript',
 

@@ -19,6 +19,9 @@ class Form {
   /** @var Array */
   private $params = array();
 
+  /** @var Array */
+  private $data = array();
+
   /** @var String */
   private $code = '';
 
@@ -28,10 +31,10 @@ class Form {
   * @param 
   * @return Void
   */
-  public function __construct()
+  public function __construct(\Vendor\Html\Html $html)
   {
     // @var \Vendor\Html\Html
-    $this->html = new \Vendor\Html\Html();
+    $this->html = $html;
     // @var \Vendor\Form\Input
     $this->input = new \Vendor\Form\Input($this->html);
   }
@@ -231,6 +234,17 @@ class Form {
                  ->attributes(array('id'=>'table'))
                  ->content("\n".$code)
                  ->create();
+    // form attribute
+    $attributes = array(
+      'action' => $this->getAction(),
+      'method' => $this->getMethod(),
+      'id'     => $this->getId()
+    );
+    // create form
+    $code = $this->html->tag('form')
+                 ->attributes($attributes)
+                 ->content("\n".$code)
+                 ->create();
     // return html code
     return $code;
   }
@@ -241,8 +255,9 @@ class Form {
   * @param Void
   * @return Void
   */
-  public function createCode()
+  public function getData()
   {
+    return $this->data;
   }
 
   /***
@@ -251,51 +266,41 @@ class Form {
   * @param void
   * @return Bool
   */		
-  public function succeedSend()
+  public function succeedSend(\Vendor\Database\Database $database, $table)
   {
     if (isset($_POST) && 
         !empty($_POST))
     {
-      // overenie posielanych dat
-      $this->validation = call_user_func(array($this, "validation"));
-      // navratova hodnota
-      return $this->validation;
-    }
-  }
-
-  /***
-  * 
-  *
-  * @param Void
-  * @return Bool
-  */		
-  private function validation($allerrors = false)
-  {
-    // inicializacia chybovej hlasky
-    $this->registry->errors->sql = "";
-    // Prechod jednotlivych prvkov odoslanych metodou POST
-    foreach($_POST as $key => $value)	{
-      // Overenie existencie nayvu stlpca v MySQL tabulke databazy
-      if ($this->registry->mysql->existenceOfColumn($key) !== TRUE)
-      {
-        // Osetrenie submitu
-        if (!empty($this->submit->name)) {
-          if (strcmp($key, $this->submit->name) === 0) {
-            continue;
-          }
-        }
-        // Osetrenie checkboxu
-        if (!empty($this->checkbox->name)) {
-          if (strcmp($key, $this->checkbox->name) === 0) {
-            continue;
-          }
-        }
-      } else {
-        // Zapis udajov do pola data bez submit hodnoty
+      // loop through POSTs
+      foreach($_POST as $key => $value)	{
+        // store value
         $this->data[$key] = $value;
+        // check if column in database exists
+        $database->columnExists($key, $table);
+  /*
+        // Overenie existencie nayvu stlpca v MySQL tabulke databazy
+        if ($this->registry->mysql->existenceOfColumn($key) !== TRUE)
+        {
+          // Osetrenie submitu
+          if (!empty($this->submit->name)) {
+            if (strcmp($key, $this->submit->name) === 0) {
+              continue;
+            }
+          }
+          // Osetrenie checkboxu
+          if (!empty($this->checkbox->name)) {
+            if (strcmp($key, $this->checkbox->name) === 0) {
+              continue;
+            }
+          }
+        } else {
+          // Zapis udajov do pola data bez submit hodnoty
+          $this->data[$key] = $value;
+        }
+  */
       }
+      // return true
+      return true;
     }
-    // return true
-    return true;
   }
 }
