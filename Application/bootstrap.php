@@ -71,7 +71,9 @@
       , array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION)
     );
     // set arguments before creating interface class
-    $reflection->bind('\Vendor\Connection\Iconnection', function () use ($arguments) { return new \Vendor\Connection\Mysql($arguments); });
+    $reflection->bind('\Vendor\Connection\Iconnection', function () use ($arguments) { 
+      return new \Vendor\Connection\Mysql($arguments); 
+    });
     // Create controller
     $reflection->service(\Vendor\Route\Route::get('controller_namespace'));
 
