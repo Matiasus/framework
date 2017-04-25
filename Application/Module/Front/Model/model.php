@@ -208,7 +208,7 @@ class Model {
     // check if created columns exist in database
     if ($form->succeedSend($this->database, Config::get('ICONNECTION', 'MYSQL', 'T_USER'))) {
       // callback logon
-      $this->prihlasenieProccess($form);
+      $this->registration($form);
     }
     // return code
     return $form;
