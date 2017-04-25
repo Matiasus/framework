@@ -150,12 +150,12 @@ class Model {
          ->text('Username', 'Meno/Name')
          ->html5Attrs('required')
          ->create();
-    // input text field
+    // input password field
     $form->input()
          ->password('Passwordname', 'Heslo/Pasword')
          ->html5Attrs('required')
          ->create();
-    // input text field
+    // input checkbox field
     $form->input()
          ->checkbox('Persistentlog', 'Trvalé prihlásenie', 'Pamataj')
          ->create();
@@ -163,30 +163,16 @@ class Model {
     $form->input()
          ->submit('Prihlasenie', '', 'Prihlásenie')
          ->create();
-
     // check if created columns exist in database
     if ($form->succeedSend($this->database, Config::get('ICONNECTION', 'MYSQL', 'T_USER'))) {
-      // callback logon
-      $this->prihlasenieProccess($form);
+        // process form
+        $this->logon($form);
     }
-
     // return code
     return $form;
   }
 
-  /***
-  * Callback - logon
-  *
-  * @param Array
-  * @return Void
-  */	
-  private function prihlasenieProccess($form) 
-  {
-    // Spracovanie prihlasenia
-    $this->logon($form); 
-  }
-
-  /***
+ /***
   * 
   * 
   * @param  \Vendor\Form\Form
@@ -222,7 +208,7 @@ class Model {
     // check if created columns exist in database
     if ($form->succeedSend($this->database, Config::get('ICONNECTION', 'MYSQL', 'T_USER'))) {
       // callback logon
-      $this->prihlasenieProccess($form);
+      $this->registration($form);
     }
     // return code
     return $form;
@@ -293,7 +279,7 @@ class Model {
   /***
   * Spracovanie prihlasovacieho formulara
   * 
-  * @param Form
+  * @param \Vendor\Vendor\Form
   * @return Void
   */
   public function logon($form)
