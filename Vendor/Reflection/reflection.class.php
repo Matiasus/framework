@@ -13,7 +13,6 @@
 ***/
 namespace Vendor\Reflection;
 
-
 class Reflection {
 
   /** @var */
@@ -36,7 +35,7 @@ class Reflection {
   }
 
   /***
-   * 
+   * Create and store service
    *
    * @param  
    * @return 
@@ -68,9 +67,10 @@ class Reflection {
   }
 
   /***
-   * 
+   * Getter of stored service
    *
-   * @param  
+   * @param  String
+   * @param  Bool - Throw to exception
    * @return 
    */
   public function get ($name = false, $error = false)
