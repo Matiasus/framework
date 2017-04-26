@@ -122,6 +122,7 @@ class Composer {
     // get html code
     return $this->code;
   }
+
   /***
   * Html code
   * 
@@ -147,64 +148,40 @@ class Composer {
       $this->attributes['id'] = 'id-'.$key;
     }
     // td element
-    $td = $this->html->tag('td')
-               ->attributes()
-               ->content($content)
-               ->create();
+    $td = $this->build('td', false, $content);
     // input element
-    $input = $this->html->tag('input')
-                  ->attributes($this->attributes)
-                  ->create();
+    $input = $this->build('input', $this->attributes);
     // inline form
     if ($this->getParameter(Config::get('FORM', 'INLINE')) !== true) {
       // tr element
-      $tr  = $this->html->tag('tr')->attributes()->content($td)->create();
+      $tr  = $this->build('tr', false, $td);
       // td element
-      $td  = $this->html->tag('td')->attributes(array("align"=>"right"))->content($input)->create();
+      $td  = $this->build('td', array("align"=>"right"), $input);
       // tr element
-      $tr .= $this->html->tag('tr')->attributes()->content($td)->create();       
+      $tr .= $this->build('tr', false, $td);       
     } else {
       // td element
-      $td  = $this->html->tag('td')->attributes()->content($content)->create();
+      $tr  = $this->build('td', false, $content);
       // td element
-      $td .= $this->html->tag('td')->attributes(array("align"=>"right"))->content($input)->create();
+      $td .= $this->build('td', array("align"=>"right"), $input);
       // tr element
-      $tr  = $this->html->tag('tr')->attributes()->content($td)->create();
+      $tr  = $this->build('tr', false, $td);
     }
     // final code
     $this->code[$key] = $tr."\n";
-    
-/*  
-echo "\n<br/>-------------------------------------------------<br/>\n";
-echo  $table;
-echo "\n<br/>-------------------------------------------------<br/>\n";
+  }
 
-  
-
-    $this->code  = ($this->params[Config::get('FORM', 'INLINE')] === true) ? "\n\t   <tr><td>" : "\n\t   <label for='id-".strtolower($this->params[Config::get('FORM', 'NAME')])."'>" ;
-    $this->code .= $this->params[Config::get('FORM', 'LABEL')].(($this->params[Config::get('FORM', 'REQUIRED')] != '') ? '*' : '');
-    $this->code .= (($this->params[Config::get('FORM', 'INLINE')] === true) ? "</td><td>" : "</label><br/>" );
-    $this->code .= "\n\t    <input type='".$this->selector."'";
-    $this->code .= (empty($this->params[Config::get('FORM', 'ID')])) ? "" : " id='id-".strtolower($this->params[Config::get('FORM', 'NAME')])."'";
-    $this->code .= (empty($this->params[Config::get('FORM', 'ROWS')])) ? "" : " rows='".$this->params[Config::get('FORM', 'ROWS')]."'";
-    $this->code .= (empty($this->params[Config::get('FORM', 'COLS')])) ? "" : " cols='".$this->params[Config::get('FORM', 'COLS')]."'";
-    $this->code .= (empty($this->params[Config::get('FORM', 'VALUE')])) ? "" : " value='".$this->params[Config::get('FORM', 'VALUE')]."'";
-    $this->code .= (empty($this->params[Config::get('FORM', 'CLASS')])) ? "" : " class='".$this->params[Config::get('FORM', 'CLASS')]."'";
-    $this->code .= (empty($this->params[Config::get('FORM', 'MAXLEN')])) ? "" : " maxlength='".$this->params[Config::get('FORM', 'MAXLEN')]."'";
-    // check if no empty
-    if (!empty($this->params[Config::get('FORM', 'PARAMS')])) {
-      // check if array
-      if (is_array($this->params[Config::get('FORM', 'PARAMS')])) {
-        // loop through options
-        foreach ($this->params[Config::get('FORM', 'PARAMS')] as $key => $value) {
-          // append supplement options
-          $this->code .= " ".$key."='".$value."' "; 
-        }
-      }
-    }   
-    $this->code .= "/>";
-    $this->code .= (($this->params[Config::get('FORM', 'INLINE')] === true) ? "</td></tr>" : "<br/>");
-
-*/
+  /***
+  * Html builder
+  * 
+  * @param Void
+  * @return String
+  */
+  private function build($tag = false, $attributes = false, $content = false)
+  {
+    return $this->html->tag($tag)
+                ->attributes($attributes)
+                ->content($content)  
+                ->create();
   }
 }

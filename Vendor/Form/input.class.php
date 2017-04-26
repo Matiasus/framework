@@ -17,8 +17,8 @@ class Input {
   private $parameters;
 
   /** allowable attributes */
-  private $input_type_text = array(
-    /** input types */
+  private $input_type_attr = array(
+    /** input types attributes */
     'name',
     'label',
     'value',
@@ -99,21 +99,8 @@ class Input {
     }
     // arguments
     $arguments = func_get_args();
-    // attributes
-    $attributes = array(
-      'type' => __FUNCTION__
-    );
-    // assign values
-    while (list($key, $value) = each($arguments)) {
-      // assign values
-      $attributes[$this->input_type_text[$key]] = $value;
-    }
-    // send attributes
-    $this->items->setParameters($this->parameters);
-    // send attributes
-    $this->items->setAttributes($attributes);
-    // @var \Vendor\Form\Input\Items
-    return $this->items;
+    // process routine for every type
+    return $this->routine(func_get_args(), __FUNCTION__);
   }
 
   /***
@@ -131,21 +118,8 @@ class Input {
     }
     // arguments
     $arguments = func_get_args();
-    // attributes
-    $attributes = array(
-      'type' => __FUNCTION__
-    );
-    // assign values
-    while (list($key, $value) = each($arguments)) {
-      // assign values
-      $attributes[$this->input_type_text[$key]] = $value;
-    }
-    // send attributes
-    $this->items->setParameters($this->parameters);
-    // send attributes
-    $this->items->setAttributes($attributes);
-    // @var \Vendor\Form\Input\Items
-    return $this->items;
+    // process routine for every type
+    return $this->routine(func_get_args(), __FUNCTION__);
   }
 
   /***
@@ -163,21 +137,27 @@ class Input {
     }
     // arguments
     $arguments = func_get_args();
-    // attributes
-    $attributes = array(
-      'type' => __FUNCTION__
-    );
-    // assign values
-    while (list($key, $value) = each($arguments)) {
-      // assign values
-      $attributes[$this->input_type_text[$key]] = $value;
+    // process routine for every type
+    return $this->routine(func_get_args(), __FUNCTION__);
+  }
+
+  /***
+   * 
+   *
+   * @param 
+   * @return 
+   */
+  public function checkbox()
+  {
+    // check number of arguments
+    if (func_num_args() > 3) {
+      // throw to exception with error message
+      throw new \Exception('['.get_called_class().']:['.__LINE__.']: Maximum arguments is <b>5</b>!');
     }
-    // send attributes
-    $this->items->setParameters($this->parameters);
-    // send attributes
-    $this->items->setAttributes($attributes);
-    // @var \Vendor\Form\Input\Items
-    return $this->items;
+    // arguments
+    $arguments = func_get_args();
+    // process routine for every type
+    return $this->routine(func_get_args(), __FUNCTION__);
   }
 
   /***
@@ -195,21 +175,8 @@ class Input {
     }
     // arguments
     $arguments = func_get_args();
-    // attributes
-    $attributes = array(
-      'type' => __FUNCTION__
-    );
-    // assign values
-    while (list($key, $value) = each($arguments)) {
-      // assign values
-      $attributes[$this->input_type_text[$key]] = $value;
-    }
-    // send attributes
-    $this->items->setParameters($this->parameters);
-    // send attributes
-    $this->items->setAttributes($attributes);
-    // @var \Vendor\Form\Input\Items
-    return $this->items;
+    // process routine for every type
+    return $this->routine(func_get_args(), __FUNCTION__);
   }
 
   /***
@@ -218,23 +185,27 @@ class Input {
    * @param 
    * @return 
    */
-  public function routine($function = false)
+  public function routine($arguments = array(), $type)
   {
+    $attributes = array();
     // check number of arguments
-    if (func_num_args() > 5) {
+    if (func_num_args() > 2) {
       // throw to exception with error message
-      throw new \Exception('['.get_called_class().']:['.__LINE__.']: Maximum arguments is <b>5</b>!');
+      throw new \Exception('['.get_called_class().']:['.__LINE__.']: Maximum arguments is <b>2</b>!');
     }
-    // arguments
-    $arguments = func_get_args();
     // attributes
     $attributes = array(
-      'type' => __FUNCTION__
+      'type' => $type
     );
     // assign values
     while (list($key, $value) = each($arguments)) {
+      // check if attribute exists
+      if (!array_key_exists($key, $this->input_type_attr)) {
+        // throw to exception with error message
+        throw new \Exception('['.get_called_class().']:['.__LINE__.']: Try to assign value which are not defined in \$input_type_attr!');
+      }
       // assign values
-      $attributes[$this->input_type_text[$key]] = $value;
+      $attributes[$this->input_type_attr[$key]] = $value;
     }
     // send attributes
     $this->items->setParameters($this->parameters);

@@ -60,6 +60,8 @@ class Session {
     $configuration['session.gc_maxlifetime'] = Date::getInSec(Config::getArray('DATE')['EXPIR']);
     // set expiration time (from config.php.ini)
     $configuration['session.cookie_lifetime'] = $configuration['session.gc_maxlifetime'];
+    // launch session
+    $this->launchSession();
   }
 
   /***
@@ -114,7 +116,7 @@ class Session {
   * @param  Void
   * @return Void
   */
-  private function regenerate()
+  private static function regenerate()
   {
     session_regenerate_id(true);
   }
@@ -167,7 +169,7 @@ class Session {
     // regenerate?
     if ($regenerate === true)	{
       // regenerate id
-      $this->regenerate();
+      self::regenerate();
     }
     // success return
     return true;
@@ -198,7 +200,7 @@ class Session {
     }
     // check if exists in array   
     if (!array_key_exists($key, $_SESSION)) {
-      //
+      // error reporting
       if ($exception !== false) { 
         // throw to exception with error message
         throw new \Exception("[".get_called_class()."]:[".__LINE__."]: <b>".$key."</b> does not exist in SESSION!");

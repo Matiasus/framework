@@ -16,11 +16,11 @@
     /***
      * Konstruktor
      *
-     * @param \Errors
+     * @param \Vendor\Connection\Connection
      * @param String
      * @return Void
      */
-		public function __construct(\Vendor\Mysql\Mysql $mysql, $select_query) 
+		public function __construct(\Vendor\Connection\Connection $mysql, $select_query) 
     {
       $this->mysql = $mysql;
       $this->select_query = $select_query;

@@ -37,10 +37,10 @@ class Database{
   /***
    * Constructor
    *
-   * @param Object \Vendor\Connection\Mysql
+   * @param Object \Vendor\Connection\Connection
    * @return Void
    */
-  public function __construct(\Vendor\Connection\Mysql $connection) 
+  public function __construct(\Vendor\Connection\Connection $connection) 
   {
     // @var \Vendor\Connection\Mysql
     $this->connection = $connection;
@@ -69,11 +69,9 @@ class Database{
       return false;
     }    
     // query request
-    $qrespond = $this->connection
-                     ->executeQuery($query);
+    $qrespond = $this->connection->executeQuery($query);
     // get content
-    $content = $this->connection
-                    ->getRows();
+    $content = $this->connection->getRows();
     // return content
     return $content;
   }
@@ -116,7 +114,7 @@ class Database{
         $binds .= ":".$key.", ";
       } else {
         // bind params
-        $binds .= $value.", ";     
+        $binds .= "'".$value."', ";     
       }
     }
     // names
@@ -139,30 +137,30 @@ class Database{
   {
     // joiner
     $join = ", ";
-    // init string
+    // init value
     $select = $this->select_query;
 
     if (empty($query) ||
         !is_array($query))
     {
-      // zaznam chyby
-      throw new \Exception(get_class($this).'-'.__FUNCTION__.'-'.__LINE__, 'Parameter ma byt neprazdne pole!');
+      // throw to error
+      throw new \Exception(get_class($this).'-'.__FUNCTION__.'-'.__LINE__, 'Query must be non empty string!');
     } else {
-      // prechod cez prvky pola
+      // loop
       foreach ($query as $key => $value) {
-        // overi, ci je scalar
+        //is scalar
         if (!is_scalar($value)) {
-          // zaznam chyby
-          throw new \Exception(get_class($this).'-'.__FUNCTION__.'-'.__LINE__, 'Hodnota musi byt skalar!');
+          // throw to error
+          throw new \Exception(get_class($this).'-'.__FUNCTION__.'-'.__LINE__, 'Item of query must be scalar!');
         } else {
-          // zapis hodnoty
+          // join with value
           $select .= $value.$join;
         }
       }
-      // orezanie poslednych hodnot
+      // substring delimeter
       $select = substr($select, 0, strlen($select) - strlen($join));
     }
-    // uspesny navrat
+    // success & return \Vendor\Database\Db_select_from
     return new \Vendor\Database\Db_select_from($this->connection, $select);
   }
 
@@ -206,6 +204,29 @@ class Database{
 
 		return TRUE;
 	}
+
+  /**
+  * Check if row exists in table
+  *
+  * @param  String   
+  * @return Bool
+  */
+  public function columnExists($column, $table)
+  {
+    // MySQL Syntax
+    $query = "SHOW COLUMNS FROM ".$table." LIKE '".ucfirst($column)."';";	
+    // execute query
+    $this->connection->executeQuery($query);
+    // check if number of rows > 0 
+    if (empty($this->connection->getRows())) {
+      // throw to exception with error message
+      Session::set("flash", "[".get_called_class()."]:[".__LINE__."]: Column <b>$column</b> in table <b>$table</b> doesn't exists!"); 
+      // unsuccess return
+      return false;
+    }
+    // exists
+    return true;
+  }
 
 	/***
 	 * Uprava retazca vhodneho do url adresy

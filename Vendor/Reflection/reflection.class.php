@@ -19,7 +19,10 @@ class Reflection {
   private $arguments = null;
 
   /** @var */
-  private $instances = array();
+  private $_interface = null;
+
+  /** @var */
+  private $_instances = array();
 
   /***
    * Constructor
@@ -32,15 +35,15 @@ class Reflection {
   }
 
   /***
-   * 
+   * Create and store service
    *
    * @param  
    * @return 
    */
-  public function createInstance ($class = false, $arguments = false)
+  public function service ($class = false)
   {
     // check if non empty value
-    if (func_num_args() > 2) {
+    if (func_num_args() > 1) {
       // throw to exception with error message
       throw new \Exception("[".get_called_class()."]:[".__LINE__."]: Too much arguments! Only <b>TWO</b> argument possible!"); 
     }    
@@ -59,22 +62,18 @@ class Reflection {
       // throw to exception with error message
       throw new \Exception("[".get_called_class()."]:[".__LINE__."]: Class <b>'$class'</b> doesn't exists!"); 
     }
-    // if non empty arguments
-    if (!empty($arguments)) {
-      // throw to exception with error message
-      $this->setArguments($arguments);
-    }
     // return reuired instance of class
-    return $this->instances[$class] = $this->resolve($class);
+    return $this->_instances[$class] = $this->resolve($class);
   }
 
   /***
-   * 
+   * Getter of stored service
    *
-   * @param  
+   * @param  String
+   * @param  Bool - Throw to exception
    * @return 
    */
-  public function getInstance ($name = false, $error = false)
+  public function get ($name = false, $error = false)
   {
     // check if non empty value
     if (func_num_args() > 2) {
@@ -92,7 +91,7 @@ class Reflection {
       throw new \Exception("[".get_called_class()."]:[".__LINE__."]: Key must be a <b>string</b>!"); 
     }
     // if class doesn't exist
-    if (!array_key_exists($name, $this->instances) && 
+    if (!array_key_exists($name, $this->_instances) && 
         $error = true) 
     {
       // throw to exception with error message
@@ -103,7 +102,7 @@ class Reflection {
       return null;
     }
     // return service
-    return $this->instances[$name];
+    return $this->_instances[$name];
   }
 
   /***
@@ -112,10 +111,10 @@ class Reflection {
    * @param  String  
    * @return Void
    */
-  public function setArguments ($arguments)
+  public function bind ($name, $arguments)
   {
     // store arguments
-    $this->arguments = $arguments;
+    $this->arguments[$name] = $arguments;
   }
 
   /***
@@ -126,68 +125,125 @@ class Reflection {
    */
   public function resolve ($class)
   {
+    // if already instantiated
+    if (array_key_exists($class, $this->_instances)) {
+      // return stored instance
+      return $this->_instances[$class];
+    }
     // dependencies
     $dependencies = array();
     // create instance of class
     $reflection = new \ReflectionClass($class);
+    // check if can be created
+    if (!$reflection->isInstantiable()) {
+      // if is not interface
+      if (!$reflection->isInterface()) {
+        // throw to exception with error message
+        throw new \Exception("[".get_called_class()."]:[".__LINE__."]: Class <b>'".$class."'</b> is not instantiable!");
+      }
+      // check if binded param with class interface
+      if (is_null($instance = $this->Iexecute($class))) {
+        // throw to exception with error message
+        throw new \Exception("[".get_called_class()."]:[".__LINE__."]: Instance <b>'".$class."'</b> can't be create! Bind param not defined");
+      }
+      // Interface execute
+      return $this->Iexecute($class);
+    }
     // get created class constructor
     $constructor = $reflection->getConstructor();
-    // if there is no constructor
-    if (null === $constructor ||
+    // check if constructor present
+    // or has no parameters
+    if (is_null($constructor) ||
        empty($constructor->getParameters())) 
     {
-      // check if instantiable
-      if (!$reflection->isInstantiable()) {
-        // throw to exception with error message
-        throw new \Exception("[".get_called_class()."]:[".__LINE__."]: Class is instantiable!"); 
-      }
       // check if backslash present
       if (strcmp($class[0], '\\') !== 0) {
         // append backslash
         $class = '\\'.$class;
       }
-      // if instance already created
-      if (array_key_exists($class, $this->instances)) {
-        // return existed instance
-        return $this->instances[$class];
-      }
       // return new instance
-      return new $class;
-    // check if constructor exists but without arguments
-    } else {
-      // if there is dependencies - loop through dependencies
-      foreach ($constructor->getParameters() as $parameter) {
-        // check if parameter is class
-        if (!is_null($parameter->getClass())) {
-          // constructor dependencies with recursion
-          $dependencies[] = $this->resolve($parameter->getClass()->getName());
-        // is non class
+      return $this->_instances[$class] = new $class;
+    }
+    // constructor parameters
+    $parameters = $constructor->getParameters();
+    // if there is dependencies - loop through dependencies
+    foreach ($parameters as $parameter) {
+      // check if parameter is class
+      if (!is_null($parameter->getClass())) {
+        // constructor dependencies with recursion
+        $dependencies[] = $this->resolve($parameter->getClass()->getName());
+      } else {
+        // if optional value, try to get default value
+        if ($parameter->isDefaultValueAvailable()) {
+          // get default value
+          $dependencies[] = $parameter->getDefaultValue();
         } else {
-          // if optional value, try to get default value
-          if (!$parameter->isOptional()) {
-            // if not null
-            if (!is_null($this->arguments)) {
-              // append dependency
-              $dependencies[] = $this->arguments;
-              // null
-              $this->arguments = null;
-            }
-          } else {
-            // check if default value is available
-            if (false === $parameter->isDefaultValueAvailable()) {
-              // throw to exception with error message
-              throw new \Exception("[".get_called_class()."]:[".__LINE__."]: Default value is not available!");
-            // default valu available
-            } else {
-              // get default value
-              $dependencies[] = $parameter->getDefaultValue();
-            }
-          }
+          // get default value
+          $dependencies[] = $this->append($class);
         }
       }
     }
     // return instance with parameters
-    return $reflection->newInstanceArgs($dependencies);
+    return $this->_instances[$class] = $reflection->newInstanceArgs($dependencies);
+
+  }
+
+  /***
+   * Execute interface
+   *
+   * @param  String  
+   * @return NULL | instance
+   */
+  private function Iexecute ($interface) 
+  {
+    $this->_interface = $interface;
+    // check if backslash present
+    if (strcmp($this->_interface[0], '\\') !== 0) {
+      // append backslash
+      $this->_interface = '\\'.$interface;
+    }
+    // check if array non empty
+    if (empty($this->arguments)) {
+      // unsuccess
+      return null;
+    }
+    // check if in array name of interface exists
+    if (!array_key_exists($this->_interface, $this->arguments)) {
+      // unsuccess
+      return null;
+    }
+    // return defined instance
+    // --------------------------------------------------
+    // !!! Closure object must be called with brackets ()
+    // --------------------------------------------------
+    return $this->arguments[$this->_interface]();
+  }
+
+  /***
+   * Append parameters
+   *
+   * @param  String  
+   * @return NULL | instance
+   */
+  private function append ($instance) 
+  {
+    // check if backslash present
+    if (strcmp($instance[0], '\\') !== 0) {
+      // append backslash
+      $instance = '\\'.$instance;
+    }
+    // check if array non empty
+    if (empty($this->arguments)) {
+      // unsuccess
+      return null;
+    }
+    // check if in array name of interface exists
+    if (!array_key_exists($instance, $this->arguments)) {
+      // unsuccess
+      return null;
+    }
+    // return defined instance
+    return $this->arguments[$instance];
   }
 }
 

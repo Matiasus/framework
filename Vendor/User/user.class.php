@@ -20,6 +20,7 @@ use \Vendor\Config\File as Config,
 /** @class User */
 class User {
 
+  const USER  = "User";
   const PREG_AGENT = "/[a-zA-Z0-9.\/]+/";
 
   const SESS_ID  = "Id";
@@ -90,28 +91,27 @@ class User {
   public function login($user = array(), $persistent = false)
   {
     // Autentifikacna trieda
-    $authenticate = new \Vendor\Authenticate\Authenticate($this->registry);
+    $authenticate = new \Vendor\Authenticate\Authenticate($this->database);
     $allUserData  = $authenticate->checkLogin($user);
-
     // Overenie, ci je vratena hodnota overenia prihlasovacich udajov neprazdne pole 		
     if(is_array($allUserData) && 
-      !empty($allUserData))
+       !empty($allUserData))
     {
       // Nastavenie prihlasenia uzivatela
-      $Session::set(self::USER, array(
-          self::SESS_LOGIN	=> TRUE,
-          self::SESS_ID => $allUserData[0]->Id,
-          self::SESS_EMAIL	=> $allUserData[0]->Email,
-          self::SESS_NAME	=> $allUserData[0]->Username,
-          self::SESS_PRIVILEGES	=> $allUserData[0]->Privileges,
-          self::SESS_LOGON	=> $allUserData[0]->Logon
+      Session::set(self::USER, array(
+        self::SESS_LOGIN	=> TRUE,
+        self::SESS_ID => $allUserData[0]->Id,
+        self::SESS_EMAIL	=> $allUserData[0]->Email,
+        self::SESS_NAME	=> $allUserData[0]->Username,
+        self::SESS_PRIVILEGES	=> $allUserData[0]->Privileges,
+        self::SESS_LOGON	=> $allUserData[0]->Logon
       ), True);
 
-      $this->setLoggedIn();
-      $this->setLoggedUser();
+      $this->LogOn();
 
       // Poziadavka na trvale prihlasovanie
-      if ($persistent === true) { 
+      if ($persistent === true) {
+        // 
         $authenticate->createPersistentLogin();
       }
       return true;
