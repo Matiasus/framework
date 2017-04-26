@@ -127,7 +127,7 @@ class Database{
     $query = "INSERT INTO $table ($names) VALUES ($binds);";
     // execute query
     $this->connection->executeQuery($query, $data);
-	}
+  }
 
   /***
    * Selektovanie udajov z tabulky podla hodnot a podmienky
