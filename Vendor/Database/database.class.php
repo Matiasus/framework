@@ -130,16 +130,16 @@ class Database{
   }
 
   /***
-   * Selektovanie udajov z tabulky podla hodnot a podmienky
+   * Select from databse
    *
    * @param String
    * @return Bool
    */
   public function select($query = false)
   {
-    // spojovnik
+    // joiner
     $join = ", ";
-    // vychodzi string
+    // init string
     $select = $this->select_query;
 
     if (empty($query) ||
@@ -164,7 +164,7 @@ class Database{
     }
     // uspesny navrat
     return new \Vendor\Database\Db_select_from($this->connection, $select);
-	}
+  }
 
   /**
    * Update udajov z tabulky podla hodnot a podmienky
