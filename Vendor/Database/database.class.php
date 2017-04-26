@@ -3,9 +3,9 @@
 /***
 * POZNAMKOVYBLOG Copyright (c) 2015 
 * 
-* Autor:      Mato Hrinko
-*	Datum:      07.12.2016 / update
-*	Adresa:     http://poznamkovyblog.cekuj.net
+* Autor:        Mato Hrinko
+* Datum:        07.12.2016 / update
+* Adresa:       http://poznamkovyblog.cekuj.net
 * 
 * ------------------------------------------------------------
 * Inspiration: 		
@@ -46,15 +46,14 @@ class Database{
     $this->connection = $connection;
   }
 
-	/**
-	 * Sql query
-	 *
-	 * @param  String
-	 * @return Array Or False	
-	 */
-	public function query($query)
-	{
-	
+  /**
+   * Sql query
+   *
+   * @param  String
+   * @return Array Or False	
+   */
+  public function query($query)
+  {
     // check if non empty value
     if (empty($query)) {
       // throw to exception with error message
@@ -75,17 +74,15 @@ class Database{
     $content = $this->connection->getRows();
     // return content
     return $content;
-		// navrat prazdne pole
-		return False;
-	}
+  }
 
-    /***
-    * Insert data into database
-    *
-    * @param  Array  
-    * @param  String  
-    * @return Void
-    */
+  /***
+   * Insert data into database
+   *
+   * @param  Array  
+   * @param  String  
+   * @return Void
+   */
   public function insert($data = array(), $table = false)
   {
     // binds
@@ -128,15 +125,15 @@ class Database{
     $query = "INSERT INTO $table ($names) VALUES ($binds);";
     // execute query
     $this->connection->executeQuery($query, $data);
-	}
+  }
 
-	/***
-	 * Selektovanie udajov z tabulky podla hodnot a podmienky
-	 *
-	 * @param String
-	 * @return Bool
-	 */
-	public function select($query = false)
+  /***
+   * Select from databse
+   *
+   * @param String
+   * @return Bool
+   */
+  public function select($query = false)
   {
     // joiner
     $join = ", ";
@@ -165,30 +162,28 @@ class Database{
     }
     // success & return \Vendor\Database\Db_select_from
     return new \Vendor\Database\Db_select_from($this->connection, $select);
-	}
+  }
 
-	/**
-	 * Update udajov z tabulky podla hodnot a podmienky
-	 *
-	 * @param Array - hodnoty
-	 * @param Array - podmienka
-	 * @param String - tabulka
-	 * @return Bool
-	 */
-	public function update($values = array(), $conditions = array(), $table)
-	{
-		$value = $this->process($values, self::WITHEQUAL);
-		$condition = $this->process($conditions, self::WITHEQUAL, " AND ");
+  /**
+   * Update udajov z tabulky podla hodnot a podmienky
+   *
+   * @param Array - hodnoty
+   * @param Array - podmienka
+   * @param String - tabulka
+   * @return Bool
+   */
+  public function update($values = array(), $conditions = array(), $table)
+  {
+    $value = $this->process($values, self::WITHEQUAL);
+    $condition = $this->process($conditions, self::WITHEQUAL, " AND ");
 
-		/**
-		** Sql prikaz na update udajov do databazy 
-		*/
-		$sqlquery = "UPDATE {$table} SET $value WHERE $condition;";
+    // Sql prikaz na update udajov do databazy
+    $sqlquery = "UPDATE {$table} SET $value WHERE $condition;";
 
-		$this->connection->executeQuery($sqlquery);
+    $this->connection->executeQuery($sqlquery);
 
-		return TRUE;
-	}
+    return TRUE;
+  }
 
 	/**
 	 * Vymazavanie udajov z databazy
