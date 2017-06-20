@@ -3,9 +3,9 @@
 /***
 * POZNAMKOVYBLOG Copyright (c) 2015 
 * 
-* Autor:        Mato Hrinko
-* Datum:        07.12.2016 / update
-* Address:      http://poznamkovyblog.cekuj.net
+* Autor:       Mato Hrinko
+* Datum:       16.05.2017 / update
+* Adresa:      http://poznamkovyblog.cekuj.net
 * 
 * ------------------------------------------------------------
 * Description: 		
@@ -97,14 +97,17 @@ class User {
     if(is_array($allUserData) && 
        !empty($allUserData))
     {
+      // ****************************************************************
+      // NUTNOST PREROBIT LOGIKU CEZ SESSSION ID
+      // ****************************************************************
       // Nastavenie prihlasenia uzivatela
       Session::set(self::USER, array(
-        self::SESS_LOGIN	  => TRUE,
-        self::SESS_ID         => $allUserData[0]->Id,
-        self::SESS_EMAIL	  => $allUserData[0]->Email,
-        self::SESS_NAME	      => $allUserData[0]->Username,
-        self::SESS_PRIVILEGES => $allUserData[0]->Privileges,
-        self::SESS_LOGON	  => $allUserData[0]->Logon
+        self::SESS_LOGIN	    => TRUE,
+        self::SESS_ID           => $allUserData[0]->Id,
+        self::SESS_EMAIL	    => $allUserData[0]->Email,
+        self::SESS_NAME	        => $allUserData[0]->Username,
+        self::SESS_PRIVILEGES	=> $allUserData[0]->Privileges,
+        self::SESS_LOGON	    => $allUserData[0]->Logon
       ), True);
       // 
       $this->LogOn();
