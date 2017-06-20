@@ -109,7 +109,7 @@ class User {
         self::SESS_PRIVILEGES	=> $allUserData[0]->Privileges,
         self::SESS_LOGON	    => $allUserData[0]->Logon
       ), True);
-
+      // 
       $this->LogOn();
 
       // Poziadavka na trvale prihlasovanie
