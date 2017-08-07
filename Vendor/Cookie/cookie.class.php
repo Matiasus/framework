@@ -80,7 +80,7 @@ class Cookie{
     }
     // return COOKIE
     return $_COOKIE[$key];
-	}
+  }
 
   /***
    * Destroy cookie
