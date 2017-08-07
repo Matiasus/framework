@@ -33,7 +33,6 @@ class Mysql implements \Vendor\Connection\Iconnection {
   /** @var Array - \PDO connections */
   private $connections = array();
 
-
   /**
    * Constructor
    *
