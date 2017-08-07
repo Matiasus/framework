@@ -97,25 +97,10 @@ class Replace {
 	}
 
 	/***
-	 * Errors replacement
+	 * Flash - show flash message
 	 *
-	 * @param String
-	 * @param String
-	 * @param String
-	 * @return Void
-	 */
-	public function errors($searched, $replace, $content)
-	{
-		// Error replace
-		return $this->includes($searched, $replace, $content);
-	}
-
-	/***
-	 * Flash - vypis flash spravy
-	 *
-	 * @param Object \Vendor\Session\Session
-	 * @param String
-	 * @param String
+	 * @param  String
+	 * @param  String
 	 * @return Void
 	 */
 	public function flash($searched, $page)
@@ -188,7 +173,7 @@ class Replace {
 	 * @param Void
 	 * @return Void
 	 */
-	protected function Editor()
+	protected function editor()
 	{
 		/* Obsah, ktory sa ma nahradit */
 		$Editor = new \Vendor\Editor\Editor();

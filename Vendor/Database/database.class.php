@@ -37,10 +37,10 @@ class Database{
   /***
    * Constructor
    *
-   * @param Object \Vendor\Connection\Connection
+   * @param Object \Vendor\Connection\Iconnection
    * @return Void
    */
-  public function __construct(\Vendor\Connection\Connection $connection) 
+  public function __construct(\Vendor\Connection\Iconnection $connection) 
   {
     // @var \Vendor\Connection\Mysql
     $this->connection = $connection;
@@ -69,7 +69,7 @@ class Database{
       return false;
     }    
     // query request
-    $qrespond = $this->connection->executeQuery($query);
+    $qrespond = $this->connection->execute($query);
     // get content
     $content = $this->connection->getRows();
     // return content
@@ -124,7 +124,7 @@ class Database{
     // query string
     $query = "INSERT INTO $table ($names) VALUES ($binds);";
     // execute query
-    $this->connection->executeQuery($query, $data);
+    $this->connection->execute($query, $data);
   }
 
   /***
@@ -180,7 +180,7 @@ class Database{
     // Sql prikaz na update udajov do databazy
     $sqlquery = "UPDATE {$table} SET $value WHERE $condition;";
 
-    $this->connection->executeQuery($sqlquery);
+    $this->connection->execute($sqlquery);
 
     return TRUE;
   }
@@ -200,7 +200,7 @@ class Database{
 		// Sql prikaz na vymazanie udajov z databazy 
 		$sqlquery = "DELETE FROM {$table} WHERE ".$condition.";";
 		// vykonanie dotazu
-		$this->connection->executeQuery($sqlquery);
+		$this->connection->execute($sqlquery);
 
 		return TRUE;
 	}
@@ -216,7 +216,7 @@ class Database{
     // MySQL Syntax
     $query = "SHOW COLUMNS FROM ".$table." LIKE '".ucfirst($column)."';";	
     // execute query
-    $this->connection->executeQuery($query);
+    $this->connection->execute($query);
     // check if number of rows > 0 
     if (empty($this->connection->getRows())) {
       // throw to exception with error message

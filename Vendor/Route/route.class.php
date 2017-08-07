@@ -49,6 +49,8 @@ class Route {
    */
   public function __construct() 
   {
+    // initialize values
+    $this->initValueUrl();
   }
 
   /***

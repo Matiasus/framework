@@ -59,7 +59,7 @@ class Buffer {
       throw new \Exception('\\'.get_class($this).'[Line: '.__LINE__.']: Path to file is empty! Can\'t  load file!');
     }
     // is string?
-    if (is_string($this->path)) {
+    if (!is_string($this->path)) {
       // throw to exception
       throw new \Exception('\\'.get_class($this).'[Line: '.__LINE__.']: Path to file must be string!');
     }

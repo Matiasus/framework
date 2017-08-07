@@ -113,6 +113,7 @@ class Template{
                        ->title(Config::get('TEMPL', 'RE_TIT'), 
                                Config::get('TEMPL', 'TITLE'), 
                                $this->page);
+
     // replace conntent
     $this->page = $this->replace
                        ->content($this->buffer,

@@ -16,44 +16,18 @@ class File {
   /***
   * Constructor
   *
-  * @param String - path to INI file
+  * @param  \Vendor\Config\Parser
   * @return Void
   */
-  public function __construct($path)
-  {
-    // check if is non empty String
-    if (!file_exists($path) ||
-        !is_readable($path))
-    {
-      // throw to exception
-      throw new \Exception('\\'.get_class($this).' -> '.ucfirst(__FUNCTION__).' ( ) [Line: '.__LINE__.']: File <b>'.$path.'</b> is not exists or is not readable!');
-    }
-    // check if is non empty String
-    if (!is_string($path) ||
-        !(strlen($path) > 0))
-    {
-      // throw to exception
-      throw new \Exception('\\'.get_class($this).' -> '.ucfirst(__FUNCTION__).' ( ) [Line: '.__LINE__.']: Path must be string with <strong>string length ></strong> 0!');
-    }
-    // $parameter is not a string || strlen  = 0
-    // @param String path to file
-    // @return Object \Vendor\Config\Parser
-    $this->parser = new \Vendor\Config\Parser($path);
-  }
-  
-  /***
-  * Parse ini file
-  *
-  * @param Void
-  * @return Void
-  */
-  public function parse()
+  public function __construct($parser)
   {
     // check if parser is loaded
-    if ($this->parser === null) {
+    if ($parser === null) {
       // parser not loaded - throw to exception
-      throw new \Exception("Method <strong>'".__METHOD__."()'</strong> in class <strong>'".__CLASS__."'</strong> must be not NULL!");
+      throw new \Exception("Class <strong>'\Vendor\Config\Parser'</strong> not parameter!");
     }
+    // @var \Vendor\Config\Parser - config file parser
+    $this->parser = $parser;
     // return @var Object \Vendor\Config\Parser
     self::$config = $this->parser->load();
   }

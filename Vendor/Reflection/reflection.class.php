@@ -20,7 +20,7 @@ class Reflection {
 
   /** @var */
   private $_interface = null;
-
+ 
   /** @var */
   private $_instances = array();
 
@@ -147,7 +147,7 @@ class Reflection {
         throw new \Exception("[".get_called_class()."]:[".__LINE__."]: Instance <b>'".$class."'</b> can't be create! Bind param not defined");
       }
       // Interface execute
-      return $this->Iexecute($class);
+      return $this->_instances[$class] = $this->Iexecute($class);
     }
     // get created class constructor
     $constructor = $reflection->getConstructor();
@@ -196,6 +196,7 @@ class Reflection {
    */
   private function Iexecute ($interface) 
   {
+    // store interface
     $this->_interface = $interface;
     // check if backslash present
     if (strcmp($this->_interface[0], '\\') !== 0) {
