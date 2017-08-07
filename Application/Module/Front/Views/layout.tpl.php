@@ -27,10 +27,6 @@
       <div id="contentwrapper">
         {include content}
       </div>
-      <!-- Vypis chybovej hlasky -->
-      <div id="error">
-        {include errormessage}
-      </div>
     </div>
     <!-- Paticka stranky -->
     <div id="bar-foot">

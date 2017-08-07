@@ -18,51 +18,41 @@
     // @param Void
     // @return Instance \Vendor\Autoloader\Autoloader 
     $autoload = new \Vendor\Autoloader\Autoloader();
-
     // Reflection
     // @param void
     // @return Instance of \Vendor\Reflection\Reflection
     $reflection = new \Vendor\Reflection\Reflection();
-
     // Parser
     // @param String - path to config file
     // @return Instance \Vendor\Config\Parser
     $parser = new \Vendor\Config\Parser($config_ini_file);
-
     // Config
     // @param \Vendor\Config\Parser
     // @return Instance of \Vendor\Config\File
     $config = new \Vendor\Config\File($parser);
-
     // Route
     // @param void
     // @return Instance of \Vendor\Route\Route
     $route = new \Vendor\Route\Route();
-
     // Datum
     // @param void
     // @return Instance of \Vendor\Date\Date
     $date = new \Vendor\Date\Date();
-
     // Cookie
     // @param void
     // @param \Vendor\Datum\Datum
     // @return Instance of \Vendor\Cookie\Cookie
     $cookie = new \Vendor\Cookie\Cookie();
-
     // Session
     // @param void
     // @return Instance of \Vendor\Session\Session
     $session = new \Vendor\Session\Session();
-
     // Mysql arguments 
-    // @param - define host
-    // @param - define database
+    // @param - define dsn
     // @param - define name
     // @param - define password
     $arguments = array(
-        \Vendor\Config\File::getArray('ICONNECTION')['MYSQL']['HOST']
-      , \Vendor\Config\File::getArray('ICONNECTION')['MYSQL']['DTBS']
+        \Vendor\Config\File::getArray('ICONNECTION')['MYSQL']['DSN']
       , \Vendor\Config\File::getArray('ICONNECTION')['MYSQL']['NAME']
       , \Vendor\Config\File::getArray('ICONNECTION')['MYSQL']['PASS']
       , array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION)
@@ -74,6 +64,8 @@
     // Create controller
     $reflection->service(\Vendor\Route\Route::get('controller_namespace'));
 
+    // CONTROLLER
+    // -----------------------------------------------------
     // called controller
     $controller = $reflection->get(Vendor\Route\Route::get('controller_namespace'));
     // called method
@@ -81,6 +73,8 @@
     // render method
     $controller->$method();
 
+    // TEMPLATE
+    // -----------------------------------------------------
     // set arguments before creating interface class
     $reflection->bind('\Vendor\Controller\Icontroller', function () use ($controller) { return $controller; });
     // Create Template
