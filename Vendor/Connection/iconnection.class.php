@@ -4,7 +4,7 @@
  * POZNAMKOVYBLOG Copyright (c) 2015 
  * 
  * Autor:        Mato Hrinko
- * Datum:        07.12.2016 / update
+ * Datum:        08.08.2017
  * Address:      http://poznamkovyblog.cekuj.net
  * 
  * ------------------------------------------------------------
@@ -22,12 +22,20 @@ namespace Vendor\Connection;
 interface Iconnection
 {
   /**
-   * Connect to database 
+   * Constructor
    *
    * @param  Array
-   * @return \PDO
+   * @return Void
    */	
   public function __construct($parameters = array());
+  
+  /**
+   * Connect to database 
+   *
+   * @param  Void
+   * @return Void
+   */	
+  public function connect();
 
   /**
    * Deactive all connections
