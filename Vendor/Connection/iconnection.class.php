@@ -26,8 +26,8 @@ interface Iconnection
    *
    * @param  Array
    * @return \PDO
-  */	
-	public function __construct($parameters = array());
+   */	
+  public function __construct($parameters = array());
 
   /**
    * Deactive all connections
