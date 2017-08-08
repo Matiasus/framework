@@ -18,9 +18,6 @@ class Mysql implements \Vendor\Connection\Iconnection {
   /** @var \PDO Object - last connection	*/
   private $last = null;
 
-  /** @var String - user name */
-  private $user = null;
-
   /** @var String - active connection */
   private $active = null;
 
