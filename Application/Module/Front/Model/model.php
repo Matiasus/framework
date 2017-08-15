@@ -58,77 +58,69 @@ class Model {
   */
   public function autoLogon()
   {
-    // default value
-    $user = null;
-    // Vytvorenie tokenu
-    $token = $this->generator->create();
-    // token agenta
-    $token_agent = Cookie::get(Config::get('COOKIES', 'AGENT'));
     // token session id
-    $token_sessionid = Cookie::get(Config::get('COOKIES', 'SESID'));
+    $uri = Cookie::get(Config::get('COOKIES', 'LAST_URI'));    
+    // token session id
+    $sessid = Cookie::get(Config::get('COOKIES', 'SESID'));
     // overi existenciu COOKIES
-    if (!empty($token_agent) && 
-        !empty($token_sessionid))	
-    {
-      // Porovnanie tokena v $_COOKIE s vygenerovanym tokenom
-      if (strcmp($token_agent, $token) === 0) {
-        // Dotaz na uzivatela
-        // ~~~~~~~~~~~~~~~~~~
-        // vyber vsetko
-        $select = array('*');
-        // z tabulky Articles
-        $from = array(Config::get('MYSQL', 'TB_AUT'));
-        // podla zhody id s parametrom v url
-        $where = array(
-          array('=', Config::get('MYSQL', 'TB_AUT').'.Session'=>$token_sessionid)
-        );
-        // Overenie existencie tokena v databaze
-        $item = $this->database
-                     ->select($select)
-                     ->from($from) 
-                     ->where($where)
-                     ->query();
-        // Ak zaznam s tokenom existuje
-        if ($item !== false) {
-          // Porovnanie zhody tokena a id uzivatela v databaze s $_COOKIE
-          if (strcmp($token_agent, $item[0]->Token) === 0) {	
-            // Overenie, ci nie expirovany datum a cas
-            if ($this->datum
-                     ->difference($item[0]->Expires))
-            {
-              // Overenie existencie tokena v databaze
-              // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-              // vyber vsetko
-              $select = array('*');
-              // z tabulky Articles
-              $from = array(Config::get('MYSQL', 'TB_USE'));
-              // podla zhody id s parametrom v url
-              $where = array(
-                array('=', Config::get('MYSQL', 'TB_USE').'.Id'=>$item[0]->Usersid)
-              );
-              // Overenie existencie tokena v databaze
-              $answer = $this->database
-                             ->select($select)
-                             ->from($from) 
-                             ->where($where)
-                             ->query();
-              // prihlaseny uzivatel
-              $user = $answer[0];
-            }
-          }
-        }
-      }
+    if (!empty($sessid)) {
+      // exit
+      return false;
     }
-    // get last visit page
-    $uri = Cookie::get(Config::get('COOKIES','LAST_URI'));
+    // select Token correspond to sessionid
+    $select = array('Token');
+    // table Authentication
+    $from = array(Config::get('MYSQL', 'TB_AUT'));
+    // condition
+    $where = array(
+      array('=', Config::get('MYSQL', 'TB_AUT').'.Session'=>$sessid)
+    );
+    // query
+    $record = $this->database
+      ->select($select)
+      ->from($from) 
+      ->where($where)
+      ->query();
+    // record exists
+    if ($record === false) {
+      // unsuccess
+      return false;
+    }
+    // create token
+    $token = $this->generator->create();
+    // generated token match with stored token?
+    if (strcmp($token, $record[0]->Token) === 0) {
+      // unsuccess
+      return false;
+    }
+    // check time expiration
+    if (!$this->datum->difference($record[0]->Expires)) {
+      // unsuccess
+      return false;
+    }
+    // select all
+    $select = array('*');
+    // table Users
+    $from = array(Config::get('MYSQL', 'TB_USE'));
+    // condition
+    $where = array(
+      array('=', Config::get('MYSQL', 'TB_USE').'.Id'=>$record[0]->Usersid)
+    );
+    // query
+    $query = $this->database
+      ->select($select)
+      ->from($from) 
+      ->where($where)
+      ->query();
+    // user
+    $user = $query[0];
     // check if user log on
-    if (null !== $user) {
-      // redirect to last visited uri
-      $this->route
-           ->redirect($uri);
+    if (empty($user)) {
+      // unsuccess
+      return false;
     }
-    // return false
-    return false;
+    // redirect to last visited uri
+    $this->route->redirect($uri);
   }
 
   /***
