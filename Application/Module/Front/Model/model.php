@@ -314,8 +314,8 @@ class Model {
       // insert data
       $this->database
            ->insert(array(
-              'Id_Users'   => $logged_user['Id'],
-              'Datum'     => date("Y-m-d H:i:s"), 
+              'Datum'      => date("Y-m-d H:i:s"),
+              'Id_Users'   => $logged_user['Id'],               
               'Ip_address' => $_SERVER['REMOTE_ADDR'].':'.$_SERVER['REMOTE_PORT'], 
               'User_agent' => $_SERVER['HTTP_USER_AGENT'] 
              ), 
