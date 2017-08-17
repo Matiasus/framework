@@ -89,7 +89,7 @@ class Model {
     // create token
     $token = $this->generator->create();
     // generated token match with stored token?
-    if (strcmp($token, $record[0]->Token) === 0) {
+    if (strcmp($token, $record[0]->Token) !== 0) {
       // unsuccess
       return false;
     }
