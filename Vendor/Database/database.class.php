@@ -67,7 +67,7 @@ class Database{
       Session::set("flash", "[".get_called_class()."]:[".__LINE__."]: Query must be <b>string</b>!"); 
       // unsuccess return
       return false;
-    }    
+    }
     // query request
     $qrespond = $this->connection->execute($query);
     // get content
@@ -123,6 +123,10 @@ class Database{
     $binds = substr($binds, 0, strlen($binds) - 2);
     // query string
     $query = "INSERT INTO $table ($names) VALUES ($binds);";
+    
+    echo $query;
+    
+    
     // execute query
     $this->connection->execute($query, $data);
   }

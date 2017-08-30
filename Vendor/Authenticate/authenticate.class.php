@@ -3,9 +3,9 @@
 /***
 * POZNAMKOVYBLOG Copyright (c) 2015 
 * 
-* Autor:		Mato Hrinko
-*	Datum:		07.12.2016 / update
-*	Adresa:		http://poznamkovyblog.cekuj.net
+* Autor:        Mato Hrinko
+* Datum:        07.12.2016 / update
+* Adresa:       http://poznamkovyblog.cekuj.net
 * 
 * ------------------------------------------------------------
 * Inspiracia: 		
@@ -13,126 +13,156 @@
 ***/
 namespace Vendor\Authenticate;
 
+// use
+use \Vendor\Session\Session as Session,
+    \Vendor\Cookie\Cookie as Cookie,
+    \Vendor\Config\File as Config,
+    \Vendor\Date\Date as Date;
+
 /** @class Authenticate */
 class Authenticate {
 
   /** @const */
-	const CONNECTION = " AND ";
-
-	/** @var Objekt \Vendor\Database\Database	*/
-	private $database;
-
-	/***
-	 * Konstruktor databázového objektu - ulozenie do premennej registry odkaz na register
-	 *
-	 * @param Objekt \Vendor\Database\Database
-	 * @return Void
-	 */
-	public function __construct(\Vendor\Database\Database $database)
-	{
-		// Objekt databazoveho spojenia a spracovania
+  const CONNECTION = " AND ";
+  
+  /** @var String */
+  private $tb_session;
+  
+  /** @var Objekt \Vendor\User\User */
+  private $user;
+  
+  /** @var Objekt \Vendor\Database\Database */
+  private $database;
+  
+  /** @var Objekt \Vendor\Generator\Generator */
+  private $generator;  
+  
+  /***
+   * Constructor
+   *
+   * @param \Vendor\User\User
+   * @return Void
+   */
+  public function __construct(
+    \Vendor\User\User $user,
+    \Vendor\Database\Database $database,
+    \Vendor\Generator\Generator $generator)
+  {
     // @var Object \Vendor\Database\Database
-		$this->database = $database;	
-	}
+    $this->user = $user;    
+    // @var Object \Vendor\Database\Database
+    $this->database = $database;
+    // @var Object \Vendor\Generator\Generator
+    $this->generator = $generator;
+    // authentication table
+    $this->tb_session = Config::get('ICONNECTION', 'MYSQL', 'T_AUT');    
+  }
 
-	/**
-	 * Konstruktor
-	 *
-	 * @param Array - Prihlasovacie udaje
-	 * @return False | Array - Zaznam o uzivatelovy ak je uspesne zvalidovany 
-	 */
-	public function checkLogin($user = array())
-	{
-
-    if (!empty($user)) {
-      // vylistovanie poziadavky
-      list($select, $from, $where) = $user;
-      // spracovanie poziadavky
-      $user = $this->database
-                   ->select($select)
-                   ->from($from) 
-                   ->where($where)
-                   ->query();
-			// Overenie, ci podla podmienky existuje iba jeden zaznam v tabulke Users 
-			if (count($user) === 1) { 
-        // prihlaseny uzivatel      
-	      return $user;
+  /**
+   * Check login
+   *
+   * @param Array
+   * @return False | Array
+   */
+  public function loginUser($data = array(), $table)
+  {
+    // condition
+    $condition = '';
+    // check if user not empty
+    if (!empty($data)) {
+      // loop
+      foreach ($data as $key => $value) {
+	// build condition
+	$condition .= $table.$key.'='.$value.' AND ';	
+      }
+      // substring last ' AND '
+      $condition = substr($condition, 0, strlen($condition) - 5);
+      // query
+      $query = "SELECT Id, Username, Email, Privileges, Registration FROM ".$table." WHERE ".$condition.";";
+      // user
+      $user = $this->database->query($query);
+      // user exists? 
+      if (count($user) === 1) {
+	// store user
+	$this->user->store($user[0]);
+	// store session of user
+	$this->storeLoginSession($user[0]);
+    
+	exit;
+	// return user      
+	return $user[0];
       }
     }
+    // unsuccess
     return false;
-	}
-	/**
-	** Vytvorenie trvaleho prihlasenia prostrednictvom cookie
-	**
-	** @parameter Void
-	** @return Void
-	*/
-	public function createPersistentLogin()
-	{
-		// Volanie generatora tokenu
-		$generator = new \Vendor\Generator\Generator($this->registry);
-		// Vytvorenie tokenu */
-		$token = $generator->create();
-		// Naciatnie nastavenych hodnot expiracie zo suboru config.php.ini
-		$expiration = \Application\Config\Settings::$Detail->Cookies->Expiration;
+  }
 
-		// Trieda pracujuca s datumom a casom
-		$datum = new \Vendor\Datum\Datum($this->registry);
-		$nowday = $datum->getActualTime();
-
-		// Ak prihlasenie uzivatela prebehlo uspesne
-		if ($this->registry->user->getLoggedUser() !== False)
-		{
-			// Konverzia do objektu
-			$loggeduser = $this->registry->session->toObject($this->registry->user->getLoggedUser());
-			// Overenie, ci uz bol niekedy uzivatle prihlaseny */
-			$last = $this->database
-									 ->select(array("*"))
-                   ->from(array(self::AUTH_TABLE))
-									 ->where(array("Usersid"=>$loggeduser->Id))
-                   ->query();
-
-			// Ak uzivatel nebol prihlaseny nikdy vloz aktualny datum a cas
-			if ($last === FALSE)
-			{
-				// Predpriprava pola na ulozenie do databazy
-				$insert = array("Token" 	=> $token,
-												"Usersid" => $loggeduser->Id,
-												"Session" => session_id(),
-												"Expires" => $datum->getFutureTime());
-
-				// Vlozenie udajov do databazy
-				$this->database
-             ->insert($insert, 
-                      self::AUTH_TABLE);
-
-				// Ulozenie platne Session uzivatela 
-				$this->registry->cookie->set(\Application\Config\Settings::$Detail->Cookies->Token->Two, 
-                                     session_id(), 
-																		 time() + $datum->getFutureTimeInSeconds());
-			}	else {
-				// Updejtuje hodnoty
-				$update = array("Token" 	=> $token,
-												"Session" => session_id(),
-												"Expires" => $datum->getFutureTime());
-				// Update udajov do databazy
-				$this->database
-						 ->update($update, 
-											array("Usersid"	=> $loggeduser->Id), 
-											self::AUTH_TABLE);
-				// Ulozenie platnej Session uzivatela
-				$this->registry
-             ->cookie
-             ->set(\Application\Config\Settings::$Detail->Cookies->Token->Two, 
-                   session_id(), 
-									 time() + $datum->getFutureTimeInSeconds());
-			}
-			// Ulozenie tokena
-			$this->registry->cookie
-                     ->set(\Application\Config\Settings::$Detail->Cookies->Token->One, 
-                           $token, 
-													 time() + $datum->getFutureTimeInSeconds());
-		}
-
-	}
+  /**
+   * Persistent login
+   *
+   * @param Array
+   * @return False | Array
+   */
+  public function storeLoginSession($user)
+  {
+    // create token
+    $token = $this->generator->create();
+    // Get actual time
+    $actual = Date::getActualTime();
+    // expire date
+    $expire = Date::getFutureTime(Config::getArray('DATE')['EXPIR']);
+    
+    // query
+    $query = "SELECT Current FROM ".$this->tb_session." WHERE Id_Users = '".$user->Id."';";
+    // user
+    $last = $this->database->query($query);
+    
+    // user not exists in table
+    if (empty($last)) {
+	// insert data
+	$insert = array(
+	  "Token"     => $token,
+	  "Id_Users"  => $user->Id,
+	  "Session"   => session_id(),
+	  "Current"   => $actual,
+	  "Expires"   => $expire
+	);
+	// insert data
+	$this->database->insert($insert, $this->tb_session);
+      // if exists
+      } else {
+	// update values
+	$update = array(
+	  "Token"   => $token,
+	  "Session" => session_id(),
+	  "Current" => $actual,	    
+	  "Expires" => $expire,
+	  "Last"    => $last[0]->Current
+	);
+	// Update udajov do databazy
+	$this->database
+	  ->update(
+	      $update, 
+	      array("Id_Users" => $user->Id),
+	      $this->tb_session
+	    ); 
+      }
+      // store session id into cookie
+      Cookie::set(Config::get('COOKIES', 'SESID'), 
+	session_id(),
+	Date::getInSec(Config::getArray('DATE')['EXPIR'])
+      );
+  }
+  
+  /**
+   * Hash
+   *
+   * @param  String 
+   * @return String 
+   */
+  public function hashpassword($password)
+  {
+    // HASH pasword
+    return hash("sha256", $password);
+  }    
 }

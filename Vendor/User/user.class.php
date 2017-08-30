@@ -27,29 +27,31 @@ class User {
   const SESS_NAME  = "Username";
   const SESS_EMAIL = "Email";
   const SESS_LOGIN = "isLoggedIn";
-  const SESS_LOGON  = "Logon";
   const SESS_PRIVILEGES  = "Privileges";
+  const SESS_REGISTRATION  = "Registration";
   const SESS_CODEVALIDATION  = "Codevalidation";
 
-  /** @var Objekt \Vendor\Database\Database	*/
+  /** @var Objekt \Vendor\Database\Database */
   private $database;
+  
 
-  /** @var Array Detaily, popis uzivatela */
+  /** @var Array */
   private $loggeduser = null;
 
-  /** @var Boolean Prihlasenost uzvatela	*/
+  /** @var Boolean */
   private $isLoggedIn = false;
 
   /***
-  * Constructor
-  *
-  * @param \Vendor\Database\Database
-  * @return Void
-  */
+   * Constructor
+   *
+   * @param \Vendor\Database\Database
+   * @param \Vendor\Authenticate\Authenticate
+   * @return Void
+   */
   public function __construct(\Vendor\Database\Database $database)
   {
     // @var \Vendor\Database\Database
-    $this->database = $database;
+    $this->database = $database;  
   }
 
   /***
@@ -68,11 +70,11 @@ class User {
     $user = Session::get(Config::get('USER', 'NAME'));
     // if user logged on
     if(false !== $user) {
-      // ak existuje SESSION uzivatela
+      // SESSION User exists?
       if (is_array($user))	{
-        // uzivatel
+        // user
         $this->loggeduser = $user;
-        // uzivatel prihlasny
+        // user login
         $this->isLoggedIn = true;
         // success
         return true;
@@ -83,73 +85,51 @@ class User {
   }
 
   /***
-  * Prihlasenie uzivatela prostrednictvom triedy Authenticate
-  *		 
-  * @param  String - nick a heslo
-  * @return Boolean
-  */
-  public function login($user = array(), $persistent = false)
+   * Login user
+   *		 
+   * @param  Array
+   * @return Boolean
+   */
+  public function store($user)
   {
-    // Autentifikacna trieda
-    $authenticate = new \Vendor\Authenticate\Authenticate($this->database);
-    $allUserData  = $authenticate->checkLogin($user);
     // Overenie, ci je vratena hodnota overenia prihlasovacich udajov neprazdne pole 		
-    if(is_array($allUserData) && 
-       !empty($allUserData))
+    if(!empty($user))
     {
-      // ****************************************************************
-      // NUTNOST PREROBIT LOGIKU CEZ SESSSION ID
-      // ****************************************************************
-      // Nastavenie prihlasenia uzivatela
+      // store user values
       Session::set(self::USER, array(
-        self::SESS_LOGIN	    => TRUE,
-        self::SESS_ID           => $allUserData[0]->Id,
-        self::SESS_EMAIL	    => $allUserData[0]->Email,
-        self::SESS_NAME	        => $allUserData[0]->Username,
-        self::SESS_PRIVILEGES	=> $allUserData[0]->Privileges,
-        self::SESS_LOGON	    => $allUserData[0]->Logon
+        self::SESS_LOGIN        => TRUE,
+        self::SESS_ID           => $user->Id,
+        self::SESS_EMAIL        => $user->Email,
+        self::SESS_NAME         => $user->Username,
+        self::SESS_PRIVILEGES	=> $user->Privileges,
+        self::SESS_REGISTRATION => $user->Registration
       ), True);
-      // 
+      // log on user
       $this->LogOn();
-
-      // Poziadavka na trvale prihlasovanie
-      if ($persistent === true) {
-        // 
-        $authenticate->createPersistentLogin();
-      }
+      // success
       return true;
     }
-    //
+    // unsuccess
     return false;
   }
 
-  /**
-  * Hash
-  *
-  * @param  String 
-  * @return String 
-  */
-  public function hashpassword($password)
-  {
-    return hash("sha256", $password);
-  }
-    /***
-  * Nastavenie prihlasenie uzivatela
-  *
-  * @param Void
-  * @return Bool
-  */
+  /***
+   * Nastavenie prihlasenie uzivatela
+   *
+   * @param Void
+   * @return Bool
+   */
   public function getLoggedIn()
   {
     return $this->isLoggedIn;
   }
 
   /**
-  * Volanie prihlaseneho uzivatela
-  * 
-  * @param Void
-  * @return Object | null
-  */
+   * Volanie prihlaseneho uzivatela
+   * 
+   * @param Void
+   * @return Object | null
+   */
   public function getLoggedUser()
   {
     return $this->loggeduser;
