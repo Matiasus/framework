@@ -22,32 +22,40 @@ use \Vendor\Session\Session as Session,
 
 /** @class formproccess */
 class Model {
-
-  /** @var Object \Vendor\User\User */
-  private $user;
-
+  
+  /** @const  */
+  const USERNAME = 'Username';
+  /** @const  */
+  const PASSNAME = 'Passwordname';
+  /** @const  */
+  const VALIDATE = 'Validation';  
+  
   /** @var Object \Vendor\Database\Database */
   private $database;
 
   /** @var Object \Vendor\Generator\Generator */
   private $generator;
-
+  
+  /** @var Object \Vendor\Authenticate\Authenticate */
+  private $authenticator;    
+  
   /***
-  * Constructor
-  *
-  * @param  
-  * @return Void
-  */
-  public function __construct(\Vendor\User\User $user, 
-                              \Vendor\Database\Database $database,
-                              \Vendor\Generator\Generator $generator)
+   * Constructor
+   *
+   * @param  
+   * @return Void
+   */
+  public function __construct(
+    \Vendor\Database\Database $database,
+    \Vendor\Generator\Generator $generator,
+    \Vendor\Authenticate\Authenticate $authenticator)
   {
-    // @var \Vendor\User\User
-    $this->user = $user;
     // @var \Vendor\Database\Database
     $this->database = $database;
     // @var \Vendor\Generator\Generator
     $this->generator = $generator;
+    // @var \Vendor\Authenticate\Authenticate
+    $this->authenticator = $authenticator;      
   }
 
   /***
@@ -70,10 +78,10 @@ class Model {
     // select Token correspond to sessionid
     $select = array('Token');
     // table Authentication
-    $from = array(Config::get('MYSQL', 'TB_AUT'));
+    $from = array(Config::get('ICONNECTION', 'MYSQL', 'T_AUT'));
     // condition
     $where = array(
-      array('=', Config::get('MYSQL', 'TB_AUT').'.Session'=>$sessid)
+      array('=', Config::get('ICONNECTION', 'MYSQL', 'T_AUT').'.Session'=>$sessid)
     );
     // query
     $record = $this->database
@@ -82,7 +90,7 @@ class Model {
       ->where($where)
       ->query();
     // record exists
-    if ($record === false) {
+    if (empty($record)) {
       // unsuccess
       return false;
     }
@@ -101,10 +109,10 @@ class Model {
     // select all
     $select = array('*');
     // table Users
-    $from = array(Config::get('MYSQL', 'TB_USE'));
+    $from = array(Config::get('ICONNECTION', 'MYSQL', 'T_USER'));
     // condition
     $where = array(
-      array('=', Config::get('MYSQL', 'TB_USE').'.Id'=>$record[0]->Usersid)
+      array('=', Config::get('ICONNECTION', 'MYSQL', 'T_USER').'.Id'=>$record[0]->Usersid)
     );
     // query
     $query = $this->database
@@ -119,8 +127,9 @@ class Model {
       // unsuccess
       return false;
     }
+    echo $uri;
     // redirect to last visited uri
-    $this->route->redirect($uri);
+    //$this->route->redirect($uri);
   }
 
   /***
@@ -139,17 +148,13 @@ class Model {
     $form->setInline(true);
     // input text field
     $form->input()
-         ->text('Username', 'Meno/Name')
+         ->text(self::USERNAME, 'Meno/Name')
          ->html5Attrs('required')
          ->create();
     // input password field
     $form->input()
-         ->password('Passwordname', 'Heslo/Pasword')
+         ->password(self::PASSNAME, 'Heslo/Pasword')
          ->html5Attrs('required')
-         ->create();
-    // input checkbox field
-    $form->input()
-         ->checkbox('Persistentlog', 'Trvalé prihlásenie', 'Pamataj')
          ->create();
     // submit
     $form->input()
@@ -185,12 +190,12 @@ class Model {
          ->create();
     // input text field
     $form->input()
-         ->text('Username', 'Meno/Name')
+         ->text(self::USERNAME, 'Meno/Name')
          ->html5Attrs('required')
          ->create();
     // input password field
     $form->input()
-         ->password('Passwordname', 'Heslo/Pasword')
+         ->password(self::PASSNAME, 'Heslo/Pasword')
          ->html5Attrs('required')
          ->create();
     // submit
@@ -276,59 +281,39 @@ class Model {
   */
   public function logon($form)
   {
-    // Odoslane data
+    // get data
     $data = $form->getData();
-    // Trvale prihlasenie
-    $persistent = false;
-    // Overenie, ci je poziadavka na trvale prihlasenie
-    if (isset($_POST['Persistentlog'])) { 
-      // persistent login
-      $persistent = true;	
-    }
-    // Poziadavka / dotaz
-    $select = array("*");
-    // odkial
-    $from = array(
-      Config::get('ICONNECTION', 'MYSQL', 'T_USER')
-    );
-    // podmienka
-    $where = array(
-      array(
-        '=', Config::get('ICONNECTION', 'MYSQL', 'T_USER').'.Username'=>$data['Username']), 
-      'AND', 
-      array(
-        '=', Config::get('ICONNECTION', 'MYSQL', 'T_USER').'.Passwordname'=>$this->user->hashpassword($data['Passwordname'])),
-      'AND',
-      array(
-        '=', Config::get('ICONNECTION', 'MYSQL', 'T_USER').'.Validation'=>'valid')
-    );
+    // table
+    $table = Config::get('ICONNECTION', 'MYSQL', 'T_USER');
 
-    // poziadavaka na overenie uzivatela
-    $query_select = array($select, $from, $where);
-    // Overenie prihlasovacich udajov
-    if ($this->user->login($query_select, $persistent)) {
-      // logged user
-      $logged_user = $this->user->getLoggedUser();
-      // privileges
-      $privileges = $logged_user['Privileges'];
-      // insert data
-      $this->database
-           ->insert(array(
-              'Datum'      => date("Y-m-d H:i:s"),
-              'Id_Users'   => $logged_user['Id'],               
-              'Ip_address' => $_SERVER['REMOTE_ADDR'].':'.$_SERVER['REMOTE_PORT'], 
-              'User_agent' => $_SERVER['HTTP_USER_AGENT'] 
-             ), 
-            Config::get('ICONNECTION', 'MYSQL', 'T_LOG'),
-            true);
-      // redirect
-      Route::redirect($privileges . "/home/default");
-    } else {
+    // username
+    $valid['.'.self::USERNAME] = "'".$data[self::USERNAME]."'";
+    // passwordname
+    $valid['.'.self::PASSNAME] = "'".$this->authenticator->hashpassword($data[self::PASSNAME])."'";
+    // validation    
+    $valid['.'.self::VALIDATE] = "'Valid'";
+    // Authenticate user
+    // @var Array, Bool, table
+    $user = $this->authenticator->loginUser($valid, $table);
+    // user invalid?
+    if (empty($user)) {
       // flash message
       Session::set("flash", "Nesprávne meno, heslo alebo neaktívnosť účtu !!!", false);
       // redirect
       Route::redirect("");
     }
+    // insert data
+    $this->database
+      ->insert(array(
+	'Datum'      => date("Y-m-d H:i:s"),
+        'Id_Users'   => $user->Id,               
+	'Ip_address' => $_SERVER['REMOTE_ADDR'].':'.$_SERVER['REMOTE_PORT'], 
+	'User_agent' => $_SERVER['HTTP_USER_AGENT'] 
+	), 
+	Config::get('ICONNECTION', 'MYSQL', 'T_LOG'),
+	true);
+    // redirect
+    Route::redirect($user->Privileges . "/articles/default/");
   }
 
   /***
