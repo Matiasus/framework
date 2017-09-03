@@ -67,12 +67,12 @@ class Model {
   }
 
   /***
-  * Overenie platnosti tokenu
-  * 
-  * @param Void
-  * @return String - token
-  */
-  public function autoLogon()
+   * Session login
+   * 
+   * @param  Void
+   * @return String
+   */
+  public function sessionLogin()
   {
     // token session id
     $uri = Cookie::get(Config::get('COOKIES', 'LAST_URI'));    
@@ -171,18 +171,62 @@ class Model {
     // check if created columns exist in database
     if ($form->succeedSend($this->database, Config::get('ICONNECTION', 'MYSQL', 'T_USER'))) {
         // process form
-        $this->logon($form);
+        $this->prihlasenieProcess($form);
     }
     // return code
     return $form;
   }
 
- /***
-  * 
-  * 
-  * @param  \Vendor\Form\Form
-  * @return Void
-  */
+  /***
+   * Process login
+   * 
+   * @param \Vendor\Vendor\Form
+   * @return Void
+   */
+  public function prihlasenieProcess($form)
+  {
+    // get data
+    $data = $form->getData();
+    // table
+    $table = Config::get('ICONNECTION', 'MYSQL', 'T_USER');
+
+    // username
+    $valid[self::USERNAME] = "'".$data[self::USERNAME]."'";
+    // passwordname
+    $valid[self::PASSNAME] = "'".$this->authenticator->hashpassword($data[self::PASSNAME])."'";
+    // validation    
+    $valid[self::VALIDATE] = "'Valid'";
+    // Authenticate user
+    // @var Array, Bool, table
+    $user = $this->authenticator->loginUser($valid, $table);
+    // user invalid?
+    if (empty($user)) {
+      // flash message
+      Session::set("flash", "Nesprávne meno, heslo alebo neaktívnosť účtu !!!", false);
+      // redirect
+      Route::redirect("");
+    }
+    // insert data
+    $this->database
+      ->insert(array(
+	      'Datum'      => date("Y-m-d H:i:s"),
+        'Id_Users'   => $user->Id,               
+	      'Ip_address' => $_SERVER['REMOTE_ADDR'].':'.$_SERVER['REMOTE_PORT'], 
+	      'User_agent' => $_SERVER['HTTP_USER_AGENT'] 
+	    ), 
+	    Config::get('ICONNECTION', 'MYSQL', 'T_LOG'), 
+      true
+    );
+    // redirect
+    Route::redirect($user->Privileges . "/articles/default/");
+  }
+
+  /***
+   * 
+   * 
+   * @param  \Vendor\Form\Form
+   * @return Void
+   */
   public function showFormRegistracia(\Vendor\Form\Form $form)
   {
     // set method
@@ -221,11 +265,11 @@ class Model {
   }
 
   /***
-  * Registracia po uspesnej kontrole nazvov stlpcov
-  * 
-  * @param Formular
-  * @Return Void
-  */
+   * Registration process
+   * 
+   * @param  \Vendor\Vendor\Form
+   * @Return Void
+   */
   public function registrationProcess($form)
   {
     // get data
@@ -277,7 +321,7 @@ class Model {
     // add validation key
     $data["Codevalidation"] = $parameters[4];
     // insert into table
-    //$this->database->insert($data, $table);
+    $this->database->insert($data, $table);
     // remove last element
     array_pop($parameters);
     // Odoslanie emailu podla predspracovanych udajov
@@ -285,55 +329,11 @@ class Model {
   }
 
   /***
-  * Spracovanie prihlasovacieho formulara
-  * 
-  * @param \Vendor\Vendor\Form
-  * @return Void
-  */
-  public function logon($form)
-  {
-    // get data
-    $data = $form->getData();
-    // table
-    $table = Config::get('ICONNECTION', 'MYSQL', 'T_USER');
-
-    // username
-    $valid[self::USERNAME] = "'".$data[self::USERNAME]."'";
-    // passwordname
-    $valid[self::PASSNAME] = "'".$this->authenticator->hashpassword($data[self::PASSNAME])."'";
-    // validation    
-    $valid[self::VALIDATE] = "'Valid'";
-    // Authenticate user
-    // @var Array, Bool, table
-    $user = $this->authenticator->loginUser($valid, $table);
-    // user invalid?
-    if (empty($user)) {
-      // flash message
-      Session::set("flash", "Nesprávne meno, heslo alebo neaktívnosť účtu !!!", false);
-      // redirect
-      Route::redirect("");
-    }
-    // insert data
-    $this->database
-      ->insert(array(
-	      'Datum'      => date("Y-m-d H:i:s"),
-        'Id_Users'   => $user->Id,               
-	      'Ip_address' => $_SERVER['REMOTE_ADDR'].':'.$_SERVER['REMOTE_PORT'], 
-	      'User_agent' => $_SERVER['HTTP_USER_AGENT'] 
-	    ), 
-	    Config::get('ICONNECTION', 'MYSQL', 'T_LOG'), 
-      true
-    );
-    // redirect
-    Route::redirect($user->Privileges . "/articles/default/");
-  }
-
-  /***
-  * Aktivacia na zaklade url tokenu
-  * 
-  * @param Void
-  * @return Void
-  */
+   * Activation process
+   * 
+   * @param  Void
+   * @return Void
+   */
   public function activation()
   {
     $parameters = Route::getParameters();
