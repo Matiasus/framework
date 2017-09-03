@@ -17,7 +17,7 @@ namespace Vendor\Database;
 use \Vendor\Session\Session as Session;
 
 /** @class Database */	
-class Database{
+class Database {
 
   /** @const */
   const NOTEQUAL  = 0;
@@ -123,10 +123,6 @@ class Database{
     $binds = substr($binds, 0, strlen($binds) - 2);
     // query string
     $query = "INSERT INTO $table ($names) VALUES ($binds);";
-    
-    echo $query;
-    
-    
     // execute query
     $this->connection->execute($query, $data);
   }

@@ -72,8 +72,8 @@ class Authenticate {
     if (!empty($data)) {
       // loop
       foreach ($data as $key => $value) {
-	// build condition
-	$condition .= $table.$key.'='.$value.' AND ';	
+	      // build condition
+	      $condition .= $table.'.'.$key.'='.$value.' AND ';	
       }
       // substring last ' AND '
       $condition = substr($condition, 0, strlen($condition) - 5);
@@ -83,18 +83,49 @@ class Authenticate {
       $user = $this->database->query($query);
       // user exists? 
       if (count($user) === 1) {
-	// store user
-	$this->user->store($user[0]);
-	// store session of user
-	$this->storeLoginSession($user[0]);
-    
-	exit;
-	// return user      
-	return $user[0];
+	      // store user
+	      $this->user->store($user[0]);
+	      // store session of user
+	      $this->storeLoginSession($user[0]);
+	      // return user      
+	      return $user[0];
       }
     }
     // unsuccess
     return false;
+  }
+
+  /**
+   * Check if user exists
+   *
+   * @param  Array
+   * @return Boolean
+   */
+  public function userExists($data = array(), $table)
+  {
+    // condition
+    $condition = '';
+    // check if user not empty
+    if (!empty($data)) {
+      // loop
+      foreach ($data as $key => $value) {
+	      // build condition
+	      $condition .= $table.'.'.$key.'=\''.$value.'\' AND ';	
+      }
+      // substring last ' AND '
+      $condition = substr($condition, 0, strlen($condition) - 5);
+      // compose query
+      $query = "SELECT Id FROM ".$table." WHERE ".$condition.";";
+      // query table
+      $user = $this->database->query($query);
+      // user exists? 
+      if (count($user) > 0) {
+	      // user exists
+	      return false;
+      }
+    }
+    // user not exists
+    return true;
   }
 
   /**
@@ -119,39 +150,38 @@ class Authenticate {
     
     // user not exists in table
     if (empty($last)) {
-	// insert data
-	$insert = array(
-	  "Token"     => $token,
-	  "Id_Users"  => $user->Id,
-	  "Session"   => session_id(),
-	  "Current"   => $actual,
-	  "Expires"   => $expire
-	);
-	// insert data
-	$this->database->insert($insert, $this->tb_session);
+	    // insert data
+	    $insert = array(
+	      "Token"     => $token,
+	      "Id_Users"  => $user->Id,
+	      "Session"   => session_id(),
+	      "Current"   => $actual,
+	      "Expire"    => $expire
+	    );
+	    // insert data
+	    $this->database->insert($insert, $this->tb_session);
       // if exists
-      } else {
-	// update values
-	$update = array(
-	  "Token"   => $token,
-	  "Session" => session_id(),
-	  "Current" => $actual,	    
-	  "Expires" => $expire,
-	  "Last"    => $last[0]->Current
-	);
-	// Update udajov do databazy
-	$this->database
-	  ->update(
-	      $update, 
-	      array("Id_Users" => $user->Id),
-	      $this->tb_session
-	    ); 
-      }
-      // store session id into cookie
-      Cookie::set(Config::get('COOKIES', 'SESID'), 
-	session_id(),
-	Date::getInSec(Config::getArray('DATE')['EXPIR'])
-      );
+    } else {
+	    // update values
+	    $update = array(
+	      "Token"   => $token,
+	      "Session" => session_id(),
+	      "Current" => $actual,	    
+	      "Expire"  => $expire,
+	      "Last"    => $last[0]->Current
+	    );
+	    // Update udajov do databazy
+	    $this->database->update(
+          $update, 
+          array("Id_Users" => $user->Id),
+          $this->tb_session
+        ); 
+    }
+    // store session id into cookie
+    Cookie::set(Config::get('COOKIES', 'SESID'), 
+      session_id(),
+      Date::getInSec(Config::getArray('DATE')['EXPIR'])
+    );
   }
   
   /**
