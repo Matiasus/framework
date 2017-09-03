@@ -27,8 +27,8 @@ class formController extends \Vendor\Controller\Controller {
    */
   public function renderDefault()
   {
-    // check if persistent login on
-    $this->model->autoLogon();
+    // session login
+    $this->model->sessionLogin();
   }
 
   /***
