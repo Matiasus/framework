@@ -207,14 +207,12 @@ class Model {
       Route::redirect("");
     }
     // insert data
-    $this->database
-      ->insert(array(
-	      'Datum'      => date("Y-m-d H:i:s"),
-        'Id_Users'   => $user->Id,               
-	      'Ip_address' => $_SERVER['REMOTE_ADDR'].':'.$_SERVER['REMOTE_PORT'], 
-	      'User_agent' => $_SERVER['HTTP_USER_AGENT'] 
-	    ), 
-	    Config::get('ICONNECTION', 'MYSQL', 'T_LOG'), 
+    $this->database->insert(array(
+      'Datum'      => date("Y-m-d H:i:s"),
+      'Id_Users'   => $user->Id,               
+      'Ip_address' => $_SERVER['REMOTE_ADDR'].':'.$_SERVER['REMOTE_PORT'], 
+      'User_agent' => $_SERVER['HTTP_USER_AGENT']), 
+      Config::get('ICONNECTION', 'MYSQL', 'T_LOG'), 
       true
     );
     // redirect
