@@ -8,6 +8,7 @@ Simple example of creating html tag starts with a new Instance of class <i>\Vend
 $html = new \Vendor\Html\Html();
 </pre>
 and then should be created required elements with attributes and content
+```php
 <pre>
 // table element
 $html->tag('div')
@@ -16,6 +17,7 @@ $html->tag('div')
      ->content('This is my first div container!')
      ->create();
 </pre>
+```
 or with attributes but without content
 <pre>
 // new instance of simple html tag creator
