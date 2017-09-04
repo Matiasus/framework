@@ -3,7 +3,7 @@ Simple PHP framework with Dependency Injection pattern. Preview of functional fr
 ## Objects
 ### Html
 This instance creates html tags. Class doesn not check proper attributes for given html tag according to **w3c**.(for example paragraph tag *p* has only one attribute *align* according to [w3c](https://www.w3schools.com/tags/tag_p.asp)) but recognizes self closing tags.
-Example of creating html tag that contain attributes and content can be done by following code
+For example create div **<tag>** with attribute id *'id-div'* and with content 'This is content!' should be done with following code
 ```php
 // new instance of simple html tag creator
 $html = new \Vendor\Html\Html();
@@ -11,11 +11,11 @@ $html = new \Vendor\Html\Html();
 $html->tag('div')
      ->attributes(array(
           'id'=>'id-div'))
-     ->content('This is my first div container!')
+     ->content('This is content!')
      ->create();
 ```
 ```html
-<div id='id-div>This is my first div container</div>
+<div id='id-div>This is content!</div>
 ```
 Example of creating html tag that contain attributes without content can be done by following code
 ```php
