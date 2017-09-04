@@ -7,16 +7,19 @@ Simple example of creating html tag starts with a new Instance of class <i>\Vend
 // new instance of simple html tag creator
 $html = new \Vendor\Html\Html();
 </pre>
+```
+function test() {
+  console.log("notice the blank line before this function?");
+}
+```
 and then should be created required elements with attributes and content
 ```php
-<pre>
 // table element
 $html->tag('div')
      ->attributes(array(
           'id'=>'id-div'))
      ->content('This is my first div container!')
      ->create();
-</pre>
 ```
 or with attributes but without content
 <pre>
