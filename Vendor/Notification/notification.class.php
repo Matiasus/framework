@@ -67,12 +67,12 @@ class Notification {
     $headers .= 'From: '.self::NAME.' <poznamkovyblog@srv4.endora.cz>' . "\r\n";
     $headers .= 'Cc: '.self::NAME.' <poznamkovyblog@srv4.endora.cz>' . "\r\n";
     $headers .= 'Bcc: '.self::NAME.' <poznamkovyblog@srv4.endora.cz>' . "\r\n";
-
+    // return array
     return array($to, self::SUBJECT, $message, $headers, $code);
   }
 
   /***
-   * Emial notification
+   * Email notification
    *
    * @param  String
    * @return Void
