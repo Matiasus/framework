@@ -34,43 +34,25 @@ Simple html form creator allows to create custimised html form element. Starts w
 ```php
 // new instance of form tag
 $html = new \Vendor\Form\Form();
-```
-Then must be defined form method (POST, GET)
-```php
 // set method
 $form->setMethod('POST');
-```
-and form action
-```php
 // set action
 $form->setAction('index.php');
-```
-Optionale parameter is inline form. It enables select between two visual forms (<i>inline form true</i> - more columns in one row and <i>inline form false</i> - one column for every row)
-```php
 // set display form - more columns in one row
 $form->setInline(true);
-```
-Create element *text* should be done  
-```php
 // input text field
 $form->input()
      ->text('name', 'Name')
      ->html5Attrs('required')
      ->create();
-```
-element *password*
-```php
 // input password field
 $form->input()
      ->password('password', 'Pasword')
      ->html5Attrs('required')
      ->create();
-```
-element *checkbox*
-```php
-// input checkbox field
+         // submit
 $form->input()
-     ->checkbox('login', 'Remember', 'Remmember')
+     ->submit('submit', '', 'Login')
      ->create();
 ```
 where arguments are defined in order *name, label, value, id and maxlength*. Finally html code is got by calling public method *getCode()*
