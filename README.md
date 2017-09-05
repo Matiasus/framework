@@ -69,5 +69,4 @@ which generate following html code
   <input type='password' name='Passwordname' id='id-passwordname' value='' required/>
   <input type='submit' name='submit' value='Prihlásiť' class='submit' />
 </form>
-</div>
 ```
