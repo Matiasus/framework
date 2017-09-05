@@ -64,7 +64,7 @@ $form->getCode();
 ```
 which generate following html code
 ```html
-<form action='index.php' method='post' id='prihlasenie'>
+<form action='index.php' method='POST'>
   <input type='text'  name='Username' id='id-username' value='' required/>
   <input type='password' name='Passwordname' id='id-passwordname' value='' required/>
   <input type='submit' name='submit' value='Prihlásiť' class='submit' />
