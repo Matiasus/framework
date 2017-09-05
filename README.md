@@ -1,6 +1,6 @@
 # Framework PHP
 Simple PHP framework with Dependency Injection pattern. Preview of functional framework can be seen on web site [poznamkovyblog](http://poznamkovyblog.cekuj.net).
-## Objects
+## Classes
 - [Html](#html)
 - [Form](#form)
 ### Html
