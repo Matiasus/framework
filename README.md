@@ -66,9 +66,9 @@ which generate following html code
 ```html
 <form action='index.php' method='POST'>
   <table>
-   <tr><td>Meno/Name*</td><td> <!-- label -->
+   <tr><td>Name*</td><td> <!-- label -->
     <input type='text' name='Name' id='id-name' value='' required /></td></tr>
-   <tr><td>Heslo/Password*</td><td> <!-- label -->
+   <tr><td>Password*</td><td> <!-- label -->
     <input type='password' name='Password' id='id-password' value='' required /></td></tr>
    <tr><td>
     <input type='submit' name='submit' value='Login' /></td></tr>
