@@ -1,6 +1,8 @@
 # Framework PHP
 Simple PHP framework with Dependency Injection pattern. Preview of functional framework can be seen on web site [poznamkovyblog](http://poznamkovyblog.cekuj.net).
 ## Objects
+- [Html](#html)
+- [Form](#form)
 ### Html
 Html tag creator with recognizing self closing tags. For example create *\<div\>* tag with attribute *id='id-div'* and content 'This is content!' should be done with following code:
 ```php
@@ -30,7 +32,7 @@ $html->tag('input')
 <input type='text' \>
 ```
 ### Form
-Simple html form creator allows to create custimised html form element. Starts with creating a new Instance of class 
+Simple html form creator allows to create custimised html form element. For example create form with two inputs (text, password) and submit should by done by following piece of code:
 ```php
 // new instance of form tag
 $html = new \Vendor\Form\Form();
@@ -55,8 +57,17 @@ $form->input()
      ->submit('submit', '', 'Login')
      ->create();
 ```
-where arguments are defined in order *name, label, value, id and maxlength*. Finally html code is got by calling public method *getCode()*
+Arguments of form elements are defined in order *name*, *label*, *value*, *id* and *maxlength*. Html code of form can be get by calling public method *getCode()*
 ```php
 // get created html code     
 $form->getCode();
+```
+which generate following html code
+```html
+<form action='index.php' method='post' id='prihlasenie'>
+  <input type='text'  name='Username' id='id-username' value='' required/>
+  <input type='password' name='Passwordname' id='id-passwordname' value='' required/>
+  <input type='submit' name='submit' value='Prihlásiť' class='submit' />
+</form>
+</div>
 ```
