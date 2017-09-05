@@ -65,8 +65,13 @@ $form->getCode();
 which generate following html code
 ```html
 <form action='index.php' method='POST'>
-  <input type='text' name='name' label='Name' required />
-  <input type='password' name='password' label='Password' required />
-  <input type='submit' name='submit' value='Login' />
+  <table>
+   <tr><td>Meno/Name*</td><td>
+    <input type='text' name='Name' id='id-name' value='' required/></td></tr>
+   <tr><td>Heslo/Password*</td><td>
+    <input type='password' name='Password' id='id-password' value='' required/></td></tr>
+   <tr><td>
+    <input type='submit' name='submit' value='Login' /></td></tr>
+  </table>
 </form>
 ```
