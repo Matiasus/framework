@@ -4,7 +4,7 @@ Simple PHP framework with Dependency Injection pattern. Preview of functional fr
 - [Html](#html)
 - [Form](#form)
 ### Html
-Html tag creator with recognizing self closing tags. For example create *\<div\>* tag with attribute *id='id-div'* and content 'This is content!' should be done with following code:
+Html tag creator with recognizing self closing tags. For example create *\<div\>* tag with attribute *id='id-div'* and content *'This is content!'* should be done with following code:
 ```php
 // new instance of simple html tag creator
 $html = new \Vendor\Html\Html();
@@ -18,7 +18,7 @@ $html->tag('div')
 ```html
 <div id='id-div>This is content!</div>
 ```
-Another example is html tag without any content (self closing tags):
+Another example is html tag without any content (self closing tag):
 ```php
 // new instance of simple html tag creator
 $html = new \Vendor\Html\Html();
@@ -52,7 +52,7 @@ $form->input()
      ->password('password', 'Password')
      ->html5Attrs('required')
      ->create();
-         // submit
+// submit
 $form->input()
      ->submit('submit', '', 'Login')
      ->create();
@@ -67,9 +67,9 @@ which generate following html code
 <form action='index.php' method='POST'>
   <table>
    <tr><td>Meno/Name*</td><td> <!-- label -->
-    <input type='text' name='Name' id='id-name' value='' required/></td></tr>
+    <input type='text' name='Name' id='id-name' value='' required /></td></tr>
    <tr><td>Heslo/Password*</td><td> <!-- label -->
-    <input type='password' name='Password' id='id-password' value='' required/></td></tr>
+    <input type='password' name='Password' id='id-password' value='' required /></td></tr>
    <tr><td>
     <input type='submit' name='submit' value='Login' /></td></tr>
   </table>
