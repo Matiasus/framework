@@ -49,7 +49,7 @@ $form->input()
      ->create();
 // input password field
 $form->input()
-     ->password('password', 'Pasword')
+     ->password('password', 'Password')
      ->html5Attrs('required')
      ->create();
          // submit
@@ -65,8 +65,8 @@ $form->getCode();
 which generate following html code
 ```html
 <form action='index.php' method='POST'>
-  <input type='text'  name='Username' id='id-username' value='' required/>
-  <input type='password' name='Passwordname' id='id-passwordname' value='' required/>
-  <input type='submit' name='submit' value='Prihlásiť' class='submit' />
+  <input type='text'  name='name' value='' label='Name' required />
+  <input type='password' name='password' value='' label='Password' required />
+  <input type='submit' name='submit' value='Login' />
 </form>
 ```
