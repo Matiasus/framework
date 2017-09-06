@@ -1,5 +1,11 @@
 # Framework PHP
-Simple PHP framework with Dependency Injection pattern. Preview of functional framework can be seen on web site [poznamkovyblog](http://poznamkovyblog.cekuj.net).
+Simple PHP framework with Dependency Injection pattern. Preview of functional framework can be seen on web site [poznamkovyblog](http://poznamkovyblog.cekuj.net). 
+At the beggining of application are called five static classes about which is supposed that will be the only one in whole application.
+- [Config](#config)
+- [Route](#route)
+- [Date](#date)
+- [Cookie](#cookie)
+- [Session](#session)
 ## Classes
 - [Html](#html)
 - [Form](#form)
