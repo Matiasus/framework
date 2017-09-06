@@ -1,12 +1,17 @@
 # Framework PHP
 Simple PHP framework with Dependency Injection pattern. Preview of functional framework can be seen on web site [poznamkovyblog](http://poznamkovyblog.cekuj.net). 
-At the beggining of application are called five static classes about which is supposed that will be the only one in whole application.
+## Static classes
+At the beginning are called five static classes about which is supposed that will be the only one in whole application. These static classes are
 - [Config](#config)
 - [Route](#route)
 - [Date](#date)
 - [Cookie](#cookie)
 - [Session](#session)
-## Classes
+### Config
+Class is responded for load and parse config ini file. Contain parse objects that decompose config file into array. Config variable can be called by two getter method 
+- ```php get($key)``` - which return string stored under called key and throw exception if no exists 
+- ```php getArray($key)``` - return array stored under called key and throw exception if no exists
+## Objects
 - [Html](#html)
 - [Form](#form)
 ### Html
