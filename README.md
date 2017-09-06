@@ -9,8 +9,8 @@ At the beginning are called five static classes about which is supposed that wil
 - [Session](#session)
 ### Config
 Class is responded for load and parse config ini file. Contain parse objects that decompose config file into array. Config variable can be called by two getter method 
-- ```php get($key)``` - which return string stored under called key and throw exception if no exists 
-- ```php getArray($key)``` - return array stored under called key and throw exception if no exists
+- ```get($key)``` - which return string stored under called key and throw exception if no exists 
+- ```getArray($key)``` - return array stored under called key and throw exception if no exists
 ## Objects
 - [Html](#html)
 - [Form](#form)
