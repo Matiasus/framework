@@ -43,7 +43,7 @@ $html->tag('input')
 <input type='text' \>
 ```
 ### Form
-Simple html form creator allows to create custimised html form element. For example create form with two inputs (text, password) and submit should by create by following piece of code:
+Simple html form creator allows to create custimised html form element. For example create form with two inputs (text, password) and submit should by done by following piece of code:
 ```php
 // new instance of form tag
 $html = new \Vendor\Form\Form();
