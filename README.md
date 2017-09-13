@@ -29,7 +29,7 @@ $html->tag('div')
 ```html
 <div id='id-div>This is content!</div>
 ```
-Another example creates slef closing html tag:
+Another example creates self closing html tag:
 ```php
 // new instance of simple html tag creator
 $html = new \Vendor\Html\Html();
