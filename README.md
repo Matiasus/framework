@@ -8,7 +8,7 @@ At the beginning are called five static classes about which is supposed that wil
 - [Cookie](#cookie)
 - [Session](#session)
 ### Config
-Class is responded for load and parse config ini file. Contain parse objects that decompose config file into array. Config variable can be called by two getter methods 
+Class is responded for load and parse config ini file. It contains instance of parse class that decompose config file into array. Config variable can be called by two getter methods 
 - ```get($key)``` - which return string stored under called key and throw exception if no exists 
 - ```getArray($key)``` - return array stored under called key and throw exception if no exists
 ## Objects
