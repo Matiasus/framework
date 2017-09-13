@@ -15,7 +15,7 @@ Class is responded for load and parse config ini file. It contains instance of p
 - [Html](#html)
 - [Form](#form)
 ### Html
-Html class creates html tag with recognizing self closing tags. For example create *\<div\>* tag with attribute *id='id-div'* and content *'This is content!'* should be done with following code:
+Html class creates html tag with recognizing self closing tags. For example tag *\<div\>* with attribute *id='id-div'* and with content *'This is content!'* should be created with following piece of code:
 ```php
 // new instance of simple html tag creator
 $html = new \Vendor\Html\Html();
@@ -43,7 +43,7 @@ $html->tag('input')
 <input type='text' \>
 ```
 ### Form
-Simple html form creator allows to create custimised html form element. For example create form with two inputs (text, password) and submit should by done by following piece of code:
+Simple html form creator allows to create custimised html form element. For example create form with two inputs (text, password) and submit should by create by following piece of code:
 ```php
 // new instance of form tag
 $html = new \Vendor\Form\Form();
