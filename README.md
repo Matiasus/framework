@@ -15,7 +15,7 @@ Class is responded for load and parse config ini file. It contains instance of p
 - [Html](#html)
 - [Form](#form)
 ### Html
-Html tag creator with recognizing self closing tags. For example create *\<div\>* tag with attribute *id='id-div'* and content *'This is content!'* should be done with following code:
+Html class creates html tag with recognizing self closing tags. For example create *\<div\>* tag with attribute *id='id-div'* and content *'This is content!'* should be done with following code:
 ```php
 // new instance of simple html tag creator
 $html = new \Vendor\Html\Html();
