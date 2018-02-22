@@ -67,8 +67,8 @@ class Model {
       // redirect to login
       Route::redirect("");
     }
-		// articles
-		$select = array(
+    // articles
+    $select = array(
       $this->tab_articles.'.Id as id',
 			$this->tab_articles.'.Title as title',
 			$this->tab_articles.'.Title_unaccent as title_unaccent',
@@ -78,13 +78,15 @@ class Model {
       'DATE_FORMAT('.$this->tab_articles.'.Registered, \'%d.%b. %Y\') as registered',
 			$this->tab_users.'.Username',
       'LOWER('.$this->tab_users.'.Username) as username');
-    // odkial
+    // from
     $from = array($this->tab_articles, 
-                  array($this->tab_users,
-										$this->tab_articles.'.Id_Users'=>$this->tab_users.'.Id'));
-    // podmienka
+      array($this->tab_users,
+        $this->tab_articles.'.Id_Users'=>$this->tab_users.'.Id'
+    ));
+    // where
     $where = array(
-               array('=',$this->tab_articles.'.Id_Users'=>$user['Id']));
+      array('=',$this->tab_articles.'.Id_Users'=>$user['Id']
+    ));
     // zotriedenie
     $order = array($this->tab_articles.'.Category', $this->tab_articles.'.Title');
     // spracovanie poziadavky
