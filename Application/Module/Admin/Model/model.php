@@ -30,11 +30,11 @@ class Model {
   /** @var Object \Vendor\Database\Database */
   private $database;
 
-	/** @var String - tabulka Uzivatelov */
-	private $tab_users;
+  /** @var String - tabulka Uzivatelov */
+  private $tab_users;
 
-	/** @var String - tabulka Poznamok */
-	private $tab_articles;
+  /** @var String - tabulka Poznamok */
+  private $tab_articles;
   
   /***
    * Constructor
