@@ -53,7 +53,6 @@ class Autoloader{
     $file = implode("/", $class);
     // append file
     $file = $file."/".$phpfile;
-
     // check if exists
     if (file_exists($file. 
                     self::EXTENSION_CLASS. 

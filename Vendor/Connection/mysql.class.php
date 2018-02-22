@@ -1,88 +1,79 @@
 <?php
 
 /**
-* POZNAMKOVYBLOG Copyright (c) 2015 
-* 
-* Autor:        Mato Hrinko
-* Datum:        07.12.2016 / update
-* Address:      http://poznamkovyblog.cekuj.net
-* 
-* ------------------------------------------------------------
-* Inspiration:  
-*
-***/
+ * POZNAMKOVYBLOG Copyright (c) 2015 
+ * 
+ * Autor:        Mato Hrinko
+ * Datum:        07.12.2016 / update
+ * Address:      http://poznamkovyblog.cekuj.net
+ * 
+ * ------------------------------------------------------------
+ * Inspiration:  
+ *
+ */
 namespace Vendor\Connection;
 
-class Mysql {
+class Mysql implements \Vendor\Connection\Iconnection {
 
-  /** @const HOST*/
-  const HOST = ":host=";
+  /** @var \PDO Object - last connection	*/
+  private $last = null;
 
-  /** @const DBNAME*/
-  const DBNAME = ";dbname=";
+  /** @var String - active connection */
+  private $active = null;
 
-  /** @var Array - Docasne ulozenie dat vykonanych z poziadaviek */
+  /** @var Array - Temporarty data storage from queries */
   private $data = array();
 
-  /** @var \PDO->prepare - Posledna ziadost	*/
-  private $last;
+  /** @var Array - PDO parameters */
+  private $parameters = array();
 
-  /** @var Array - Pripojenia k databazam */
+  /** @var Array - \PDO connections */
   private $connections = array();
 
-  /** @var String Zvolenie aktivnej tabulky	*/
-  private $table;
-
-  /** @var String - nazov pripojenia */
-  private $active;
-
-  /** @var String - nazov pripojenia */
-  private $name;
-
   /**
-  * Constructor
-  *
-  * @param  Void
-  * @return Void
-  */
-  public function __construct() 
+   * Constructor
+   *
+   * @param  String - dsn
+   * @param  String - user
+   * @param  String - password
+   * @param  Array  - options
+   * @return Void
+   */
+  public function __construct($parameters = array()) 
   {
+    // active dsn connection
+    $this->parameters = $parameters;
+    // connect to db
+    $this->connect();
   }
 
   /**
-  * Connect through PDO
-  *
-  * @param String - connection name
-  * @param String - host - localhost
-  * @param String - db name
-  * @param String - user
-  * @param String - password
-  * @param Array  - options
-  * @return \PDO
+   * Connect to database 
+   *
+   * @param  Void
+   * @return \PDO
   */		
-  public function connect($name, $host, $dbname, $user, $password, $options = array())
+  public function connect()
   {
-    // connection name
-    $this->name = $name;
-    // if exists connection
-    if ($this->existsName() === true) {
+    // check if non empty value
+    if (empty($this->parameters[0])) {
       // throw to exception with error message
-      throw new \Exception("[".get_called_class()."]:[".__LINE__."]: Connection <b>".$this->name."</b> exists! Please, choose other connection name!!"); 
+      throw new \Exception("[".get_called_class()."]:[".__LINE__."]: Key must be <b>NON</b> empty value!"); 
+    }    
+    // if exists connection
+    if (array_key_exists($this->active, $this->connections)) {
+      // throw to exception with error message
+      throw new \Exception("[".get_called_class()."]:[".__LINE__."]: Connection <b>".$this->active."</b> exists! Please, choose other connection name!!"); 
     }
-    // connect through PDO
+    // connect with PDO
     try {
-      // dsn
-      $dsn = 'mysql'.self::HOST.$host.self::DBNAME.$dbname.';';
       // connect to db
-      $this->connections[$this->name] = new \PDO($dsn  
-                        ,$user
-                        ,$password
-                        ,$options
-                        );
-      // set coding to utf8
-      $this->connections[$this->name]->exec("set names utf8");
-      // active connection
-      $this->active = $this->name;
+      $this->connections[$this->active = $this->parameters[0]] = new \PDO(
+         $this->active 
+        ,$this->parameters[1]
+        ,$this->parameters[2]
+        ,$this->parameters[3]
+      );
     }
     // Exception occured
     catch(\PDOException $exception) {
@@ -90,18 +81,17 @@ class Mysql {
       throw new \Exception("[".get_called_class()."]:[".__LINE__."]: Error in SQL syntax or query! <b>Error message: </b>".$exception->getMessage());     
     }
     // return \PDO Object
-    return $this->connections[$this->name];
+    return $this->connections[$this->active];
   }
 
   /**
-  * Process request
-  *
-  * @param String 
-  * @param Array 
-  * @param Bool   - bind param
-  * @return Bool
-  */
-  public function executeQuery($statement, $values = array())
+   * Process request
+   *
+   * @param  String 
+   * @param  Array 
+   * @return Void
+   */
+  public function execute($statement, $values = array())
   {
     try {
       // prepare parameters
@@ -136,85 +126,34 @@ class Mysql {
   }
   
   /**
-  * Connection exists
-  *
-  * @param  Void
-  * @return Boolean
-  */
-  private function existsName()
-  {
-    // check if exists?
-    if (array_key_exists($this->name
-                        ,$this->connections)) {
-      // exists
-      return true;
-    }
-    // no exists
-    return false;
-  }
-
-  /**
-  * Get rows
-  *
-  * @param  Void
-  * @return Object
-  */
-  public function getRows()
-  {
-    // array of all items or zero array
-    return $this->last->fetchAll(\PDO::FETCH_OBJ);
-  }
-  
-  /**
-  * Get active connection
-  *
-  * @param  Void
-  * @return \PDO
-  */
+   * Get active connection
+   *
+   * @param  Void
+   * @return \PDO
+   */
   public function getActiveConnection()
   {
     return $this->connections[$this->active];
   }
 
   /**
-  * Get last inserted Id
-  *
-  * @param  Void
-  * @return Object
-  */
-  public function lastInsertId()
+   * Get rows
+   *
+   * @param  Void
+   * @return Object
+   */
+  public function getRows()
   {
-    return $this->connections[$this->active]->lastInsertId();
+    // array of all items or zero array
+    return $this->last->fetchAll(\PDO::FETCH_OBJ);
   }
 
   /**
-  * Set table
-  *
-  * @param  String
-  * @return Void
-  */
-  public function setTable($table)
-  {
-    $this->table = $table;
-  }
-
-  /**
-  * Get table name
-  *
-  * @param  Void
-  * @return String
-  */
-  public function getTable()
-  {
-    return $this->table;
-  }
-
-  /**
-  * Destructor
-  *
-  * @param  Void
-  * @return Void
-  */
+   * Destructor
+   *
+   * @param  Void
+   * @return Void
+   */
   public function __deconstruct() 
   {
     // loop through all connection

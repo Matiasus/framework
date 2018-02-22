@@ -1,5 +1,15 @@
 <?php 
-
+/***
+* POZNAMKOVYBLOG Copyright (c) 2015 
+* 
+* Autor:          Mato Hrinko
+* Datum:          07.12.2016 / update
+* Adresa:         http://poznamkovyblog.cekuj.net
+* 
+* ------------------------------------------------------------
+* Description: 		
+*
+***/
 namespace Vendor\Generator;
 
 class Generator{
@@ -41,17 +51,6 @@ class Generator{
     // @var Object \Vendor\User\User->getLoggedUser()
     $this->user = $user->getLoggedUser();
   }
-  
-  /**
-   * 
-   *
-   * @param Void
-   * @return Void
-   */
-  private function validate()
-  {
-    $token = $this->create();
-  }
     
   /***
   * Create token
@@ -59,30 +58,18 @@ class Generator{
   * @param Void
   * @return Void
   */
-  private function create()
+  public function create()
   {
-    // Spracovanie glabalneho pola $_SERVER s pozadovanymi exponentmi
+    // init value
+    $token = array();
+    // loop server values
     foreach (self::$indices as $key => $value) {
-      // zapis hodnot z globalnej premennej $_SERVER
+      // write into array
       $token[$key] = (!empty($_SERVER[$value])) ? $_SERVER[$value] : "";
     }
-    // @Array explode agent
-    preg_match_all(self::PATTERN_USER_AGENT, $token[self::AGENT], $result);
-    // check if no empty
-    if (is_array($result) && 
-        !empty($result))	
-    {
-      // loop
-      foreach($result[0] as $key => $value)	{
-        // save to array
-        $agent[] = $value;
-      }
-      // join into string without empty space
-      $token[self::AGENT] = implode("\0", $agent);
-      // implode items of saved array
-      $this->token = implode(self::TOKEN_DELIMITER, $token);
-      // hash token
-      return $this->token = md5($this->token);
-    }
+    // implode items of saved array
+    $this->token = implode(self::TOKEN_DELIMITER, $token);
+    // hash token
+    return $this->token = md5($this->token);
   }
 }

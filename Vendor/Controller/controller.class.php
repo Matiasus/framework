@@ -20,6 +20,9 @@ class Controller implements \Vendor\Controller\Icontroller {
 
   /** @const */
   const RENDER = 'render';
+  
+  /** @var Variables */
+  protected $variables = array();
 
   /***
    * Constructor
@@ -29,6 +32,38 @@ class Controller implements \Vendor\Controller\Icontroller {
    */
   public function __construct()
   {
+  }
+
+  /***
+   * Get variables
+   *
+   * @param  Void
+   * @return Void
+   */
+  public function getVariable($key)
+  {
+    // check if non empty value
+    if (func_num_args() > 1) {
+      // throw to exception with error message
+      throw new \Exception("[".get_called_class()."]:[".__LINE__."]: Too much arguments! Only <b>1</b> arguments allowed!"); 
+    }    
+    // check if non empty value
+    if (empty($key)) {
+      // throw to exception with error message
+      throw new \Exception("[".get_called_class()."]:[".__LINE__."]: Key must be <b>NON</b> empty value!"); 
+    }
+    // check if string
+    if (!is_string($key)) {
+      // throw to exception with error message
+      throw new \Exception("[".get_called_class()."]:[".__LINE__."]: Key must be a <b>string</b>!"); 
+    }
+    // check if variable exists
+    if (!array_key_exists($key, $this->variables)) {
+      // variable not exists
+      return false;
+    }
+    // return variable from storage
+    return $this->variables[$key];
   }
 
   /***

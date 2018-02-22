@@ -231,9 +231,9 @@ class Form {
     $code = $this->input->getCode();
     // table element
     $code = $this->html->tag('table')
-                 ->attributes(array('id'=>'table'))
-                 ->content("\n".$code)
-                 ->create();
+      ->attributes(array('id'=>'table'))
+      ->content("\n".$code)
+      ->create();
     // form attribute
     $attributes = array(
       'action' => $this->getAction(),
@@ -242,9 +242,9 @@ class Form {
     );
     // create form
     $code = $this->html->tag('form')
-                 ->attributes($attributes)
-                 ->content("\n".$code)
-                 ->create();
+      ->attributes($attributes)
+      ->content("\n".$code)
+      ->create();
     // return html code
     return $code;
   }

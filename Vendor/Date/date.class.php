@@ -13,13 +13,10 @@
 ***/
 namespace Vendor\Date;
 
-use \Vendor\Config\Config as Config;
+use \Vendor\Config\File as Config;
 
 class Date extends \DateTime {
   
-  /** @var Object \DateTime Instancia triedy DateTime	*/
-  private $instance;
-
   /** @var String Actual time	*/
   private static $actual_time;
 
@@ -34,64 +31,50 @@ class Date extends \DateTime {
   );  
 
   /***
-  * Constructor
-  *
-  * @param Void
-  * @return Void
-  */
+   * Constructor
+   *
+   * @param Void
+   * @return Void
+   */
   public function __construct() 
   {
-    // @var \DateTime instance of parrent class
-    $this->instance = get_parent_class();
     // actual time
-    self::$actual_time = new $this->instance('NOW');
+    self::$actual_time = new \DateTime('NOW');
   }
 
   /***
-  * Actual time
-  *
-  * @param Void
-  * @return Void
-  */
+   * Actual time
+   *
+   * @param Void
+   * @return Void
+   */
   public static function getActualTime()
   {
     // return actual time
     return self::$actual_time
-               ->format(CONFIG::get('DATUM', 'FORMAT'));
+               ->format(CONFIG::get('DATE', 'FORMAT'));
   }
-
+  
   /***
-  * Compare two dates (actual and requested)
-  *
-  * @param String - date
-  * @return Integer 0: actual time = date
-  *                 1: actual time < date
-  *                -1: actual time > date
-  */
-  public function difference($date)
+   * Future time
+   * 
+   * @param Array
+   * @return String
+   */
+  public static function getFutureTime($date = array())
   {
-    // Create instance with date
-    $newDatum = new $this->instance($date);
-    // is the same dates
-    if ($newDatum == self::$actual_time)	{
-      return 0;
-    }
-    // is younger date
-    if ($newDatum > self::$actual_time) {
-      return 1;
-    }
-    // is older date
-    if ($newDatum < self::$actual_time) {
-      return -1;
-    }
-  }
+    // time
+    $date = new \DateTime('+'.self::getInSec($date).' seconds');
+    // return future date in format
+    return $date->format(CONFIG::get('DATE', 'FORMAT'));
+  }  
 
   /***
-  * Set time in seconds
-  *
-  * @param Array - date must correspond with multiplier array
-  * @return Integer
-  */
+   * Set time in seconds
+   *
+   * @param Array - date must correspond with multiplier array
+   * @return Integer
+   */
   public static function getInSec($date = array())
   {
     // value in seconds
@@ -115,6 +98,34 @@ class Date extends \DateTime {
     }
     // value in seconds
     return $secs;
+  }
+  /***
+   * Compare two dates (actual and requested)
+   *
+   * @param String - date
+   * @return Integer 0: actual time = date
+   *                 1: actual time < date
+   *                -1: actual time > date
+   */
+  public function difference($date)
+  {
+    // Create instance with date
+    $date = new \DateTime($date);
+    // is the same dates
+    if ($date == self::$actual_time) {
+      // the same
+      return 0;
+    }
+    // is younger date
+    if ($date > self::$actual_time) {
+      // early
+      return 1;
+    }
+    // is older date
+    if ($date < self::$actual_time) {
+      // late
+      return -1;
+    }
   }
 }
 

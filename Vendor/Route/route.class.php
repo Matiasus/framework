@@ -49,6 +49,10 @@ class Route {
    */
   public function __construct() 
   {
+    // explode url
+    $this->explodeUrl();
+    // initialize values
+    $this->initValueUrl();
   }
 
   /***
@@ -182,9 +186,9 @@ class Route {
   public static function get($key = false, $exception = false)
   {
     // check if 1 argument come
-    if (func_num_args() > 1) {
+    if (func_num_args() > 2) {
       // throw to exception with error message
-      throw new \Exception("[".get_called_class()."]:[".__LINE__."]: Just <b>ONE</b> argument accepted!"); 
+      throw new \Exception("[".get_called_class()."]:[".__LINE__."]: Just <b>TWO</b> argument accepted!"); 
     }
     // check if non empty value
     if (empty($key)) {

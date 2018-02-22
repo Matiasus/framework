@@ -16,11 +16,11 @@
     /***
      * Konstruktor
      *
-     * @param \Vendor\Connection\Connection
+     * @param \Vendor\Connection\Iconnection
      * @param String
      * @return Void
      */
-		public function __construct(\Vendor\Connection\Connection $mysql, $select_query) 
+		public function __construct(\Vendor\Connection\Iconnection $mysql, $select_query) 
     {
       $this->mysql = $mysql;
       $this->select_query = $select_query;
@@ -47,7 +47,7 @@
         $this->select_query .= " LIMIT ".$query;
       }
       // vykonanie
-      $this->mysql->executeQuery($this->select_query);
+      $this->mysql->execute($this->select_query);
       // hodnoty
       return $this->mysql->getRows();
 		}
@@ -65,7 +65,7 @@
         throw new \Exception('[CLASS:] '.get_class($this).' [FUN:] '.__FUNCTION__.' [LINE:] '.__LINE__.' Poziadavka musi byt zadana!');
       }
       // vykonanie
-      $this->mysql->executeQuery($this->select_query);
+      $this->mysql->execute($this->select_query);
       // hodnoty
       return $this->mysql->getRows(); 
     }

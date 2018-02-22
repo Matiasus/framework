@@ -15,18 +15,29 @@ class Parser {
   */
   public function __construct($path)
   {
-    // check if $path is non empty string
-    if (strlen($path) > 0) {
-      // set path to INI file
-      $this->path = $path;
+    // check if is non empty String
+    if (!file_exists($path) ||
+        !is_readable($path))
+    {
+      // throw to exception
+      throw new \Exception('\\'.get_class($this).' -> '.ucfirst(__FUNCTION__).' ( ) [Line: '.__LINE__.']: File <b>'.$path.'</b> is not exists or is not readable!');
     }
+    // check if is non empty String
+    if (!is_string($path) ||
+        !(strlen($path) > 0))
+    {
+      // throw to exception
+      throw new \Exception('\\'.get_class($this).' -> '.ucfirst(__FUNCTION__).' ( ) [Line: '.__LINE__.']: Path must be string with <strong>string length ></strong> 0!');
+    }
+    // set path to INI file
+    $this->path = $path;
   }
 
   /***
-  * Load INI file
+  * Load and parse .ini file
   *
-  * @param Void
-  * @return Void
+  * @param  Void
+  * @return Array
   */
   public function load()
   {
