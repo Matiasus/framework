@@ -98,7 +98,7 @@ class Model {
     $records = $this->database
       ->select($select)
       ->from($from) 
-      ->where()
+      ->where($where)
       ->order($order)
       ->query();
     // articles
