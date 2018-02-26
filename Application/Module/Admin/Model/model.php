@@ -70,9 +70,9 @@ class Model {
     // articles
     $select = array(
       $this->tab_articles.'.Id as id',
-			$this->tab_articles.'.Title as title',
-			$this->tab_articles.'.Title_unaccent as title_unaccent',
-			$this->tab_articles.'.Category as category',
+      $this->tab_articles.'.Title as title',
+      $this->tab_articles.'.Title_unaccent as title_unaccent',
+      $this->tab_articles.'.Category as category',
       $this->tab_articles.'.Category_unaccent as category_unaccent',
       $this->tab_articles.'.Type as type',
       'DATE_FORMAT('.$this->tab_articles.'.Registered, \'%d.%b. %Y\') as registered',
