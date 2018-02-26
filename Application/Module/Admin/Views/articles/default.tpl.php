@@ -1,3 +1,4 @@
+<!-- [START] CONTENT -->
 <div class="article">
   <h2>Zoznam článkov</h2>
     <table id="table-home">
@@ -13,14 +14,10 @@
     </tr> <?php foreach ($this->articles as $article){ ?>
     <tr>
       <td>
-        <a href="/<?= $this->privileges, '/', $article->category_unaccent, '/detail/', $article->title_unaccent, '/', $article->id;?>/">
-        <?= $article->title;?>
-        </a>
+        <a href="/<?= $this->privileges, '/', $article->category_unaccent, '/detail/', $article->title_unaccent, '/', $article->id;?>/"><?= $article->title;?></a>
       </td>
       <td>
-        <a href="/<?= $this->privileges, '/', $article->category_unaccent, '/default/'?>">
-        <?= $article->category;?>
-        </a>
+        <a href="/<?= $this->privileges, '/', $article->category_unaccent, '/default/'?>"><?= $article->category;?></a>
       </td>
       <td>
         <?= $article->Username;?>
@@ -39,8 +36,9 @@
     </tr><?php } ?>
   </table>
 </div>
-<!-- [Zaciatok] Bocne menu -->
+<!-- [END] CONTNET -->
+<!-- [START] MENU -->
 <div id="menu">
-<h3>Menu</h3>
+  <h3>Menu</h3>
 </div>
-<!-- [Koniec] Bocne menu -->
+<!-- [END] MENU -->
