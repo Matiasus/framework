@@ -35,10 +35,11 @@ class Database {
   private $connection;
 
   /***
-   * Constructor
+   * @desc    Constructor
    *
-   * @param Object \Vendor\Connection\Iconnection
-   * @return Void
+   * @param   \Vendor\Connection\Iconnection
+   *
+   * @return  Void
    */
   public function __construct(\Vendor\Connection\Iconnection $connection) 
   {
