@@ -75,30 +75,34 @@ class Model {
       $this->tab_articles.'.Category as category',
       $this->tab_articles.'.Category_unaccent as category_unaccent',
       $this->tab_articles.'.Type as type',
-      'DATE_FORMAT('.$this->tab_articles.'.Registered, \'%d.%b. %Y\') as registered',
-			$this->tab_users.'.Username',
+      'DATE_FORMAT('.$this->tab_articles.'.Registered, \'%d.%b. %Y\') as registered', $this->tab_users.'.Username',
       'LOWER('.$this->tab_users.'.Username) as username');
     // from
-    $from = array($this->tab_articles, 
-      array($this->tab_users,
+    $from = array(
+      // table name
+      $this->tab_articles, 
+      // array if join clausula used 
+      array(
+        // join table
+        $this->tab_users,
+        // condition for from join selection
         $this->tab_articles.'.Id_Users'=>$this->tab_users.'.Id'
     ));
     // where
     $where = array(
       array('=',$this->tab_articles.'.Id_Users'=>$user['Id']
     ));
-    // zotriedenie
+    // ordering
     $order = array($this->tab_articles.'.Category', $this->tab_articles.'.Title');
-    // spracovanie poziadavky
-    $record = $this->database
+    // result from query
+    $records = $this->database
       ->select($select)
       ->from($from) 
       ->where()
       ->order($order)
       ->query();
-
     // articles
-    $variables = array('articles'=>$record, 'privileges'=>$user['Privileges']);
+    $variables = array('articles'=>$records, 'privileges'=>$user['Privileges']);
     // return variables
     return $variables;
   }
