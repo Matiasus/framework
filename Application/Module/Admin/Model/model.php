@@ -31,10 +31,10 @@ class Model {
   private $database;
 
   /** @var String - tabulka Uzivatelov */
-  private $tab_users;
+  private $table_users;
 
   /** @var String - tabulka Poznamok */
-  private $tab_articles;
+  private $table_articles;
   
   /***
    * Constructor
@@ -49,9 +49,9 @@ class Model {
     // @var \Vendor\Database\Database
     $this->database = $database;
     // table articles
-    $this->tab_users = Config::get('ICONNECTION', 'MYSQL', 'T_USER');
+    $this->table_users = Config::get('ICONNECTION', 'MYSQL', 'T_USER');
     // table articles
-    $this->tab_articles = Config::get('ICONNECTION', 'MYSQL', 'T_ART');
+    $this->table_articles = Config::get('ICONNECTION', 'MYSQL', 'T_ART');
   }
 
   /***
@@ -69,31 +69,31 @@ class Model {
     }
     // articles
     $select = array(
-      $this->tab_articles.'.Id as id',
-      $this->tab_articles.'.Title as title',
-      $this->tab_articles.'.Title_unaccent as title_unaccent',
-      $this->tab_articles.'.Category as category',
-      $this->tab_articles.'.Category_unaccent as category_unaccent',
-      $this->tab_articles.'.Type as type',
-      'DATE_FORMAT('.$this->tab_articles.'.Registered, \'%d.%b. %Y\') as registered', $this->tab_users.'.Username',
-      'LOWER('.$this->tab_users.'.Username) as username');
+      $this->table_articles.'.Id as id',
+      $this->table_articles.'.Title as title',
+      $this->table_articles.'.Title_unaccent as title_unaccent',
+      $this->table_articles.'.Category as category',
+      $this->table_articles.'.Category_unaccent as category_unaccent',
+      $this->table_articles.'.Type as type',
+      'DATE_FORMAT('.$this->table_articles.'.Registered, \'%d.%b. %Y\') as registered', $this->table_users.'.Username',
+      'LOWER('.$this->table_users.'.Username) as username');
     // from
     $from = array(
       // table name
-      $this->tab_articles, 
+      $this->table_articles, 
       // array if join clausula used 
       array(
         // join table
-        $this->tab_users,
+        $this->table_users,
         // condition for from join selection
-        $this->tab_articles.'.Id_Users'=>$this->tab_users.'.Id'
+        $this->table_articles.'.Id_Users'=>$this->table_users.'.Id'
     ));
     // where
     $where = array(
-      array('=',$this->tab_articles.'.Id_Users'=>$user['Id']
+      array('=',$this->table_articles.'.Id_Users'=>$user['Id']
     ));
     // ordering
-    $order = array($this->tab_articles.'.Category', $this->tab_articles.'.Title');
+    $order = array($this->table_articles.'.Category', $this->table_articles.'.Title');
     // result from query
     $records = $this->database
       ->select($select)
