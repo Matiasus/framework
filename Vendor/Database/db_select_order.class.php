@@ -80,10 +80,10 @@
       if ($this->select_query == '') {
         throw new \Exception('[CLASS:] '.get_class($this).' [FUN:] '.__FUNCTION__.' [LINE:] '.__LINE__.' Poziadavka musi byt zadana!');
       }
-      // vykonanie
+      // execute
       $this->mysql->execute($this->select_query);
-      // hodnoty
-      return $this->mysql->getRows(); 
+      // get records
+      return $this->mysql->getRows();
     }
 	}
 

@@ -116,7 +116,7 @@ class Session {
   * @param  Void
   * @return Void
   */
-  private static function regenerate()
+  public static function regenerate()
   {
     session_regenerate_id(true);
   }

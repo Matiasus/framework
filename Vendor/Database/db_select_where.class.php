@@ -41,8 +41,7 @@
       $where = " WHERE ";
       // overi, ci parameter splna podmienky
       if (!empty($query))
-        if (!is_array($query))
-        {
+        if (!is_array($query)) {
           // zaznam chyby
           throw new \Exception('[CLASS:] '.get_class($this).' [FUN:] '.__FUNCTION__.' [LINE:] '.__LINE__.' Parameter ma byt neprazdne pole!');
         } else {
@@ -82,6 +81,7 @@
        // 
        return new \Vendor\Database\Db_select_order($this->mysql, $this->select_query);
      }
+
 		/***
 		 * 
 		 *
@@ -94,9 +94,10 @@
       if ($this->select_query == '') {
         throw new \Exception('[CLASS:] '.get_class($this).' [FUN:] '.__FUNCTION__.' [LINE:] '.__LINE__.' Poziadavka musi byt zadana!');
       }
-      // vykonanie
+      // execute
       $this->mysql->execute($this->select_query);
-      // hodnoty
+      // get records
+
       return $this->mysql->getRows();
     }
 	}

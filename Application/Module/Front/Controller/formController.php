@@ -20,7 +20,7 @@ class formController extends \Vendor\Controller\Controller {
   }
 
   /***
-   * Render default
+   * Render - default
    *
    * @param Void
    * @return Void
@@ -32,7 +32,7 @@ class formController extends \Vendor\Controller\Controller {
   }
 
   /***
-   * 
+   * Render - logon
    *
    * @param Void
    * @return Void
@@ -64,9 +64,8 @@ class formController extends \Vendor\Controller\Controller {
   */	
   public function renderAktivacia()
   {
-    // Spracovanie registracie
-    $this->model
-         ->activation(); 
+    // process activation
+    $this->model->activation(); 
   }
 
   /***
@@ -102,7 +101,7 @@ class formController extends \Vendor\Controller\Controller {
   */
   private function registraciaProccess($form)
   {
-    // Spracovanie registracie
+    // process registration
     $this->model->registration($form); 
   }
 }

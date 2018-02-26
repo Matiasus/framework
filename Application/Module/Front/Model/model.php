@@ -51,11 +51,14 @@ class Model {
    * @return Void
    */
   public function __construct(
+    \Vendor\Date\Date $date,
     \Vendor\Database\Database $database,
     \Vendor\Generator\Generator $generator,
     \Vendor\Notification\Notification $notificator,
     \Vendor\Authenticate\Authenticate $authenticator)
   {
+    // @var \Vendor\Date\Date
+    $this->date = $date;
     // @var \Vendor\Database\Database
     $this->database = $database;
     // @var \Vendor\Generator\Generator
@@ -84,7 +87,7 @@ class Model {
       return false;
     }
     // select Token correspond to sessionid
-    $select = array('Token');
+    $select = array('*');
     // table Authentication
     $from = array(Config::get('ICONNECTION', 'MYSQL', 'T_AUT'));
     // condition
@@ -110,7 +113,7 @@ class Model {
       return false;
     }
     // check time expiration
-    if (!$this->datum->difference($record[0]->Expires)) {
+    if (!$this->date->difference($record[0]->Expire)) {
       // unsuccess
       return false;
     }
@@ -120,7 +123,7 @@ class Model {
     $from = array(Config::get('ICONNECTION', 'MYSQL', 'T_USER'));
     // condition
     $where = array(
-      array('=', Config::get('ICONNECTION', 'MYSQL', 'T_USER').'.Id'=>$record[0]->Usersid)
+      array('=', Config::get('ICONNECTION', 'MYSQL', 'T_USER').'.Id'=>$record[0]->Id_Users)
     );
     // query
     $query = $this->database
@@ -137,7 +140,7 @@ class Model {
     }
     echo $uri;
     // redirect to last visited uri
-    //$this->route->redirect($uri);
+    $this->route->redirect($uri);
   }
 
   /***

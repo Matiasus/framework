@@ -16,7 +16,7 @@ class Replace {
 	/***
 	 * Constructor
 	 *
-	 * @param \Vendor\Errors\Errors
+	 * @param 
 	 * @return Void
 	 */
 	public function __construct()

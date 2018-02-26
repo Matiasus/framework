@@ -83,6 +83,8 @@ class Authenticate {
       $user = $this->database->query($query);
       // user exists? 
       if (count($user) === 1) {
+        // logoff logged user
+        $this->user->remove();
         // store user
         $this->user->store($user[0]);
         // store session of user
@@ -120,8 +122,8 @@ class Authenticate {
       $user = $this->database->query($query);
       // user exists? 
       if (count($user) > 0) {
-      // user exists
-      return false;
+        // user exists
+        return false;
       }
     }
     // user not exists

@@ -79,8 +79,7 @@ class Template{
     $this->controller = $controller;
     // basic directory address
     $this->directory = 'Application/'.Config::get('TEMPL', 'MODUL');
-
-   // check if module set
+    // check if module set
     if (strlen(Config::get('TEMPL', 'MODUL')) > 0) {
       // join /
       $this->directory .= '/'.ucfirst(Route::get('module')).

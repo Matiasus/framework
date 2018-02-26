@@ -17,9 +17,6 @@ use \Vendor\Config\File as Config;
 
 class Date extends \DateTime {
   
-  /** @var Object \DateTime Instancia triedy DateTime	*/
-  private $instance;
-
   /** @var String Actual time	*/
   private static $actual_time;
 
@@ -113,19 +110,19 @@ class Date extends \DateTime {
   public function difference($date)
   {
     // Create instance with date
-    $newDatum = new $this->instance($date);
+    $date = new \DateTime($date);
     // is the same dates
-    if ($newDatum == self::$actual_time) {
+    if ($date == self::$actual_time) {
       // the same
       return 0;
     }
     // is younger date
-    if ($newDatum > self::$actual_time) {
+    if ($date > self::$actual_time) {
       // early
       return 1;
     }
     // is older date
-    if ($newDatum < self::$actual_time) {
+    if ($date < self::$actual_time) {
       // late
       return -1;
     }

@@ -34,13 +34,6 @@ class User {
   /** @var Objekt \Vendor\Database\Database */
   private $database;
   
-
-  /** @var Array */
-  private $loggeduser = null;
-
-  /** @var Boolean */
-  private $isLoggedIn = false;
-
   /***
    * Constructor
    *
@@ -55,36 +48,6 @@ class User {
   }
 
   /***
-  * Log user
-  *
-  * @param  Void
-  * @return Void
-  */
-  public function logOn()
-  {
-    // user
-    $this->loggeduser = null;
-    // logged on
-    $this->isLoggedIn = false;
-    // user stored in session
-    $user = Session::get(Config::get('USER', 'NAME'));
-    // if user logged on
-    if(false !== $user) {
-      // SESSION User exists?
-      if (is_array($user))	{
-        // user
-        $this->loggeduser = $user;
-        // user login
-        $this->isLoggedIn = true;
-        // success
-        return true;
-      }	
-    }
-    // not logged on
-    return false;
-  }
-
-  /***
    * Login user
    *		 
    * @param  Array
@@ -93,24 +56,35 @@ class User {
   public function store($user)
   {
     // Overenie, ci je vratena hodnota overenia prihlasovacich udajov neprazdne pole 		
-    if(!empty($user))
-    {
+    if(!empty($user)) {
       // store user values
       Session::set(self::USER, array(
         self::SESS_LOGIN        => TRUE,
         self::SESS_ID           => $user->Id,
         self::SESS_EMAIL        => $user->Email,
         self::SESS_NAME         => $user->Username,
-        self::SESS_PRIVILEGES	=> $user->Privileges,
+        self::SESS_PRIVILEGES	  => $user->Privileges,
         self::SESS_REGISTRATION => $user->Registration
       ), True);
-      // log on user
-      $this->LogOn();
       // success
       return true;
     }
     // unsuccess
     return false;
+  }
+
+  /***
+   * Logoff user
+   *		 
+   * @param  Array
+   * @return Boolean
+   */
+  public function remove()
+  {
+    // destroy actual session of logged user
+    Session::destroy(self::USER, false);
+    // Session regenerate
+    Session::regenerate();
   }
 
   /***
@@ -121,7 +95,13 @@ class User {
    */
   public function getLoggedIn()
   {
-    return $this->isLoggedIn;
+    // is user login?
+    if ($this->getLoggedUser()) {
+      // user is login 
+      return true;
+    } 
+    // user is not login
+    return false;
   }
 
   /**
@@ -132,7 +112,15 @@ class User {
    */
   public function getLoggedUser()
   {
-    return $this->loggeduser;
+    // get stored user
+    $user = Session::get("User");
+    // if user exists
+    if (!empty($user)) {
+      // success
+      return $user;
+    }
+    // unsuccess - no stored user
+    return false;
   }
 
 

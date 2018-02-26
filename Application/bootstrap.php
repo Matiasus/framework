@@ -103,5 +103,5 @@
     echo "</html>";
   }
   // Session destroy
-  \Vendor\Session\Session::destroy('', true);
+  //\Vendor\Session\Session::destroy('', true);
 

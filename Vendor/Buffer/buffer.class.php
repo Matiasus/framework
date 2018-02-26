@@ -16,11 +16,14 @@ namespace Vendor\Buffer;
 /** @var Class Buffer */
 class Buffer {
 
+  /** @var \Vendor\Controller\Controller */
+  private $controller;
+
   /** @var String */
   private $path = '';
   
   /** @var String */
-  private $buffer = '';  
+  private $buffer = '';
 
   /***
   * Constructor
@@ -28,8 +31,23 @@ class Buffer {
   * @param String
   * @return Void
   */
-  public function __construct() 
+  public function __construct(\Vendor\Controller\IController $controller) 
   {
+    // @var \Vendor\Controller\Controller
+    $this->controller = $controller;
+
+  }
+
+  /***
+  * Set variable
+  *
+  * @param String
+  * @return Void
+  */
+  public function __get($key) 
+  {
+    // return variable from controller variable storage
+    return $this->controller->getVariable($key);
   }
 
   /***
