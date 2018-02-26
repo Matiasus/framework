@@ -121,7 +121,6 @@ class Model {
     $select = array('*');
     // table Users
     $from = array(Config::get('ICONNECTION', 'MYSQL', 'T_USER'));
-
     // condition
     $where = array(
       array('=', Config::get('ICONNECTION', 'MYSQL', 'T_USER').'.Id'=>$record[0]->Id_Users)

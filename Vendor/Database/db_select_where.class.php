@@ -97,6 +97,7 @@
       // execute
       $this->mysql->execute($this->select_query);
       // get records
+
       return $this->mysql->getRows();
     }
 	}

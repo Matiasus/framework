@@ -211,7 +211,6 @@ class Database {
     // success
     return TRUE;
   }
-
   /**
   * @desc   Check if row exists in table
   *
