@@ -35,6 +35,7 @@ class Model {
 
   /** @var String Articles table */
   private $tab_articles;
+
   
   /***
    * Constructor
@@ -49,9 +50,9 @@ class Model {
     // @var \Vendor\Database\Database
     $this->database = $database;
     // table articles
-    $this->tab_users = Config::get('ICONNECTION', 'MYSQL', 'T_USER');
+    $this->table_users = Config::get('ICONNECTION', 'MYSQL', 'T_USER');
     // table articles
-    $this->tab_articles = Config::get('ICONNECTION', 'MYSQL', 'T_ART');
+    $this->table_articles = Config::get('ICONNECTION', 'MYSQL', 'T_ART');
   }
 
   /***
@@ -226,17 +227,18 @@ class Model {
     );
     // spracovanie poziadavky
     $record = $this->database
+
       ->select($select)
       ->from($from) 
       ->where($where)
       ->order($order)
       ->query();
-
     // articles
     $variables = array(
       'article'=>$record[0], 
       'privileges'=>$user['Privileges']
     );
+
     // return variables
     return $variables;
   }
