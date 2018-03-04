@@ -67,8 +67,8 @@ class Model {
       // redirect to login
       Route::redirect("");
     }
-		// articles
-		$select = array(
+    // articles
+    $select = array(
       $this->tab_articles.'.Id as id',
       $this->tab_articles.'.Title as title',
       $this->tab_articles.'.Title_unaccent as title_unaccent',
