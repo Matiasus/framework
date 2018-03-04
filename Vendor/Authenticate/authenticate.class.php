@@ -38,10 +38,13 @@ class Authenticate {
   private $generator;  
   
   /***
-   * Constructor
+   * @desc    Constructor
    *
-   * @param \Vendor\User\User
-   * @return Void
+   * @param   \Vendor\User\User
+   * @param   \Vendor\Database\Database
+   * @param   \Vendor\Generator\Generator
+   *
+   * @return  Void
    */
   public function __construct(
     \Vendor\User\User $user,

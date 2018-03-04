@@ -4,7 +4,7 @@
 * POZNAMKOVYBLOG Copyright (c) 2015 
 * 
 * Autor:          Mato Hrinko
-* Datum:          07.12.2016 / update
+* Datum:          04.03.2018 / update
 * Adresa:         http://poznamkovyblog.cekuj.net
 * 
 * ------------------------------------------------------------
@@ -111,6 +111,7 @@ class Model {
       'articles'=>$record, 
       'privileges'=>$user['Privileges']
     );
+
     // return variables
     return $variables;
   }
@@ -239,5 +240,5 @@ class Model {
     // return variables
     return $variables;
   }
- }
+}
 

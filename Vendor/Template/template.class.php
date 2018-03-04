@@ -108,7 +108,8 @@ class Template{
     // replace title
     $this->page = $this
       ->replace
-      ->title(Config::get('TEMPL', 'RE_TIT'), 
+      ->title(
+        Config::get('TEMPL', 'RE_TIT'), 
         Config::get('TEMPL', 'TITLE'), 
         $this->page);
     // replace conntent
@@ -132,6 +133,13 @@ class Template{
       ->replace
       ->flash(
         Config::get('TEMPL', 'RE_FLA'),
+        $this->page
+    );
+    // replace conntent
+    $this->page = $this
+      ->replace
+      ->javascript(
+        Config::get('TEMPL', 'RE_JAV'),
         $this->page
     );
 /*

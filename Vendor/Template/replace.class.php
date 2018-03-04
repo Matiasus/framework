@@ -2,7 +2,8 @@
 
 namespace Vendor\Template;
 
-use \Vendor\Session\Session as Session;
+use \Vendor\Route\Route as Route,
+    \Vendor\Session\Session as Session;
 
 /** @class Replace template */
 class Replace {
@@ -14,22 +15,24 @@ class Replace {
 	private $controller;
 
 	/***
-	 * Constructor
+	 * @desc    Constructor
 	 *
-	 * @param 
-	 * @return Void
+	 * @param   Void
+   *
+	 * @return  Void
 	 */
 	public function __construct()
 	{
 	}
 
 	/***
-	 * Load includes
+	 * @desc    Load includes
 	 *
-	 * @param String
-	 * @param String
-	 * @param String
-	 * @return Void
+	 * @param   String
+	 * @param   String
+	 * @param   String
+   *
+	 * @return  Void
 	 */
 	public function includes($searched, $replace, $content)	
 	{
@@ -38,10 +41,11 @@ class Replace {
 	}
 
 	/***
-	 * Load layout
+	 * @desc    Load layout
 	 *
-	 * @param String - path to layout
-	 * @return Void
+	 * @param   String - path to layout
+   *
+	 * @return  Void
 	 */
 	public function layout($path) 
 	{
@@ -60,12 +64,13 @@ class Replace {
 	}
 
 	/***
-	 * Content replacement
+	 * @desc    Content replacement
 	 *
-	 * @param Object \Vendor\Buffer\Buffer
-	 * @param String
-	 * @param String
-	 * @return Void
+	 * @param   \Vendor\Buffer\Buffer
+	 * @param   String
+	 * @param   String
+   *
+	 * @return  Void
 	 */
 	public function content($buffer, $searched, $path, $page)
   {
@@ -83,12 +88,13 @@ class Replace {
 	}
 
 	/***
-	 * Title replacement
+	 * @desc    Title replacement
 	 *
-	 * @param String
-	 * @param String
-	 * @param String
-	 * @return Void
+	 * @param   String
+	 * @param   String
+	 * @param   String
+   *
+	 * @return  Void
 	 */
 	public function title($searched, $replace, $content)
 	{
@@ -97,11 +103,12 @@ class Replace {
 	}
 
 	/***
-	 * Flash - show flash message
+	 * @desc    Flash - show flash message
 	 *
-	 * @param  String
-	 * @param  String
-	 * @return Void
+	 * @param   String
+	 * @param   String
+   *
+	 * @return  Void
 	 */
 	public function flash($searched, $page)
 	{
@@ -133,6 +140,7 @@ class Replace {
    * @param Object - Instance of given controller
 	 * @param String
 	 * @param String
+   *
 	 * @return Void
 	 */
 	public function forms($controller, $searched, $content)
@@ -144,10 +152,10 @@ class Replace {
 	}
 
 	/***
-	 * Form callback - load form
+	 * @desc    Form callback - load form
 	 *
-	 * @param Array
-	 * @return Void
+	 * @param   Array
+	 * @return  Void
 	 */
 	protected function replaceForm($matches)
 	{
@@ -166,6 +174,20 @@ class Replace {
     return $this->controller->$method();
 	}
 
+  /***
+   * @desc    Replace javascript
+   *
+   * @param   Void
+   * @return  Void
+   */
+  public function javascript($searched, $content)
+  {
+    $replace = '<script type="text/javascript">';
+    $replace .= '';
+    $replace .= '</script>';
+    // return replace content of flash message  
+    return $this->includes($searched, $replace, $content);
+  }
 
 	/***
 	 * Editor - vykreslenie editoru
@@ -198,44 +220,6 @@ class Replace {
     $this->javascript = $script;
 	}
 
-	/***
-	 * Javascript
-	 *
-	 * @param Void
-	 * @return Void
-	 */
-	protected function Javascript()
-	{
-    $join_delimiter = "','";
-    $javascript_string = "";
-
-    if (is_object($this->registry->javascript) &&
-        is_array ($functions = $this->registry->javascript->getFunction()))
-    {
-      $javascript_string .= "\n  <script type=\"text/javascript\">\n";
-      // load functions saved in registry
-      foreach ($functions as $function => $parameters) {
-        // start with name of function
-        $javascript_string .= "    " . $function . "('";
-        // check if function has parameters
-        if (is_array($params = $parameters->getParameters())) {
-          // load parameters of function
-          foreach ($params as $parameter) {
-            // connect parameters with function
-            $javascript_string .= $parameter . $join_delimiter;
-          }
-        }
-        // trim last 3 chars $join_delimiter
-        $javascript_string = substr($javascript_string, 0, strlen($javascript_string) - strlen($join_delimiter)) . "');\n";
-      }
-      // replace </body> => <script>...functions(parameters)...</script>
-      $javascript_string .= "  </script>\n</body>";
-    }
-    if ($javascript_string != "") {
-      // Nahradenie znacky javascriptu javascriptom
-      $this->content = str_replace(self::BODY, $javascript_string, $this->content);
-    }
-  }
 }
 
 

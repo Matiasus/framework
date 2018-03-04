@@ -23,13 +23,13 @@ class User {
   const USER  = "User";
   const PREG_AGENT = "/[a-zA-Z0-9.\/]+/";
 
-  const SESS_ID  = "Id";
-  const SESS_NAME  = "Username";
-  const SESS_EMAIL = "Email";
-  const SESS_LOGIN = "isLoggedIn";
-  const SESS_PRIVILEGES  = "Privileges";
-  const SESS_REGISTRATION  = "Registration";
-  const SESS_CODEVALIDATION  = "Codevalidation";
+  const SESS_ID             = "Id";
+  const SESS_NAME           = "Username";
+  const SESS_EMAIL          = "Email";
+  const SESS_LOGIN          = "isLoggedIn";
+  const SESS_PRIVILEGES     = "Privileges";
+  const SESS_REGISTRATION   = "Registration";
+  const SESS_CODEVALIDATION = "Codevalidation";
 
   /** @var Objekt \Vendor\Database\Database */
   private $database;
@@ -55,7 +55,7 @@ class User {
    */
   public function store($user)
   {
-    // Overenie, ci je vratena hodnota overenia prihlasovacich udajov neprazdne pole 		
+    // check if user not empty
     if(!empty($user)) {
       // store user values
       Session::set(self::USER, array(
@@ -74,10 +74,10 @@ class User {
   }
 
   /***
-   * Logoff user
+   * @@desc   Logoff user
    *		 
-   * @param  Array
-   * @return Boolean
+   * @param   Array
+   * @return  Boolean
    */
   public function remove()
   {

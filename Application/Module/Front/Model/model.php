@@ -24,13 +24,15 @@ use \Vendor\Session\Session as Session,
 class Model {
  
    /** @const  */
-  const EMAIL    = 'Email';
+  const EMAIL       = 'Email';
   /** @const  */
-  const USERNAME = 'Username';
+  const USERNAME    = 'Username';
   /** @const  */
-  const PASSNAME = 'Passwordname';
+  const PASSNAME    = 'Passwordname';
   /** @const  */
-  const VALIDATE = 'Validation';  
+  const VALIDATE    = 'Validation';  
+  /** @const Type login */
+  const TYPE_LOGIN  = 'login';
   
   /** @var Object \Vendor\Database\Database */
   private $database;
@@ -81,8 +83,7 @@ class Model {
     $uri = Cookie::get(Config::get('COOKIES', 'LAST_URI'));    
     // token session id
     $sessid = Cookie::get(Config::get('COOKIES', 'SESID'));
-
-    // overi existenciu COOKIES
+    // chcek existence COOKIES
     if (empty($sessid)) {
       // exit
       return false;
@@ -95,7 +96,6 @@ class Model {
     $where = array(
       array('=', Config::get('ICONNECTION', 'MYSQL', 'T_AUT').'.Sessionid'=>$sessid)
     );
-
     // query
     $record = $this->database
       ->select($select)
@@ -107,7 +107,6 @@ class Model {
       // unsuccess
       return false;
     }
-
     // create token
     $token = $this->generator->create();
     // generated token match with stored token?
@@ -124,7 +123,6 @@ class Model {
     $select = array('*');
     // table Users
     $from = array(Config::get('ICONNECTION', 'MYSQL', 'T_USER'));
-
     // condition
     $where = array(
       array('=', Config::get('ICONNECTION', 'MYSQL', 'T_USER').'.Id'=>$record[0]->Id_Users)
@@ -142,11 +140,8 @@ class Model {
       // unsuccess
       return false;
     }
-    // redirect if not logon page called
-    if (strcmp($uri, "/") !== 0) {
-      // redirect to last visited uri
-      Route::redirect($uri);
-    }
+    // redirect to last visited uri
+    Route::redirect($uri);
   }
 
   /***
@@ -217,11 +212,12 @@ class Model {
     }
     // insert data
     $this->database->insert(array(
-      'Datum'      => date("Y-m-d H:i:s"),
+      'Login'      => date("Y-m-d H:i:s"),
       'Id_Users'   => $user->Id,
-      'Sessionid'  => session_id(),              
+      'Sessionid'  => session_id(),
       'Ip_address' => $_SERVER['REMOTE_ADDR'].':'.$_SERVER['REMOTE_PORT'], 
-      'User_agent' => $_SERVER['HTTP_USER_AGENT']), 
+      'User_agent' => $_SERVER['HTTP_USER_AGENT']
+      ), 
       Config::get('ICONNECTION', 'MYSQL', 'T_LOG'), 
       true
     );

@@ -45,5 +45,12 @@
 <!-- [START] Menu -->
 <div id="menu">
 	<h3>Menu</h3>
+  <ul>
+    <li><strong>Konto</strong>
+    <ul>
+      <li><a href="/<?= $this->privileges;?>/user/logoff/">Odhlas</a></li>
+    </ul>
+    </li>
+  </ul>
 </div>
 <!-- [END] Menu -->
