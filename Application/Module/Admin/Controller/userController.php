@@ -2,7 +2,7 @@
 
 namespace Application\Module\Admin\Controller;
 
-class articlesController extends \Vendor\Controller\Controller {
+class userController extends \Vendor\Controller\Controller {
 
   /** @var \Application\Module\Front\Model\Model */
   private $model;
@@ -13,21 +13,22 @@ class articlesController extends \Vendor\Controller\Controller {
    * @param   Object \Application\Module\Front\Model\Model
    * @return  Void
    */
-  public function __construct(\Application\Module\Admin\Model\Model $model)
+  public function __construct(\Application\Model\Model $model)
   {
     // @var \Application\Module\Front\Model\Model
     $this->model = $model;
   }
 
   /***
-   * @desc   Render all articles 
+   * @desc   Logoff user
    *
    * @param  Void
+   *
    * @return Void
    */
-  public function renderDefault()
-  {
-    // show articles
-    $this->variables = $this->model->showAllArticles();
+  public function renderLogoff()
+  { 
+    // logoff user
+    $this->model->logoff();
   }
 }

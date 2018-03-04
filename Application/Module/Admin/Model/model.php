@@ -4,7 +4,7 @@
 * POZNAMKOVYBLOG Copyright (c) 2015 
 * 
 * Autor:          Mato Hrinko
-* Datum:          07.12.2016 / update
+* Datum:          04.03.2018 / update
 * Adresa:         http://poznamkovyblog.cekuj.net
 * 
 * ------------------------------------------------------------
@@ -21,20 +21,21 @@ use \Vendor\Session\Session as Session,
     \Vendor\Route\Route as Route,
     \Vendor\Date\Date as Date;
 
-/** @class formproccess */
+/** @class Model */
 class Model {
 
   /** @var Object \Vendor\User\User */
   private $user;
- 
+
   /** @var Object \Vendor\Database\Database */
   private $database;
 
-  /** @var String - tabulka Uzivatelov */
-  private $table_users;
+  /** @var String User table */
+  private $tab_users;
 
-  /** @var String - tabulka Poznamok */
-  private $table_articles;
+  /** @var String Articles table */
+  private $tab_articles;
+
   
   /***
    * Constructor
@@ -55,12 +56,12 @@ class Model {
   }
 
   /***
-  * 
+  * @desc   Show all articles
   * 
   * @param  Void
   * @return Void
   */
-  public function showArticles()
+  public function showAllArticles()
   {
     // if user is not logged in
     if (!($user = $this->user->getLoggedUser())) {
@@ -69,42 +70,177 @@ class Model {
     }
     // articles
     $select = array(
-      $this->table_articles.'.Id as id',
-      $this->table_articles.'.Title as title',
-      $this->table_articles.'.Title_unaccent as title_unaccent',
-      $this->table_articles.'.Category as category',
-      $this->table_articles.'.Category_unaccent as category_unaccent',
-      $this->table_articles.'.Type as type',
-      'DATE_FORMAT('.$this->table_articles.'.Registered, \'%d.%b. %Y\') as registered', $this->table_users.'.Username',
-      'LOWER('.$this->table_users.'.Username) as username');
+      $this->tab_articles.'.Id as id',
+      $this->tab_articles.'.Title as title',
+      $this->tab_articles.'.Title_unaccent as title_unaccent',
+      $this->tab_articles.'.Category as category',
+      $this->tab_articles.'.Category_unaccent as category_unaccent',
+      $this->tab_articles.'.Type as type',
+      'DATE_FORMAT('.$this->tab_articles.'.Registered, \'%d.%b. %Y\') as registered',
+      $this->tab_users.'.Username',
+      'LOWER('.$this->tab_users.'.Username) as username'
+    );
     // from
     $from = array(
-      // table name
-      $this->table_articles, 
-      // array if join clausula used 
+      $this->tab_articles, 
       array(
-        // join table
-        $this->table_users,
-        // condition for from join selection
-        $this->table_articles.'.Id_Users'=>$this->table_users.'.Id'
-    ));
-    // where
+        $this->tab_users,
+        $this->tab_articles.'.Id_Users'=>$this->tab_users.'.Id'
+      )
+    );
+    // condition
     $where = array(
-      array('=',$this->table_articles.'.Id_Users'=>$user['Id']
-    ));
+      array(
+        '=',
+        $this->tab_articles.'.Id_Users'=>$user['Id']
+      )
+    );
     // ordering
-    $order = array($this->table_articles.'.Category', $this->table_articles.'.Title');
-    // result from query
-    $records = $this->database
+    $order = array(
+      $this->tab_articles.'.Category', 
+      $this->tab_articles.'.Title'
+    );
+    // process query
+    $record = $this->database
       ->select($select)
       ->from($from) 
       ->where($where)
       ->order($order)
       ->query();
     // articles
-    $variables = array('articles'=>$records, 'privileges'=>$user['Privileges']);
+    $variables = array(
+      'articles'=>$record, 
+      'privileges'=>$user['Privileges']
+    );
+
     // return variables
     return $variables;
   }
- }
+
+  /***
+  * @desc   Show category articles
+  * 
+  * @param  Void
+  * @return Void
+  */
+  public function showCategoryArticles()
+  {
+    // if user is not logged in
+    if (!($user = $this->user->getLoggedUser())) {
+      // redirect to login
+      Route::redirect("");
+    }
+    // articles
+    $select = array(
+      $this->tab_articles.'.Id as id',
+      $this->tab_articles.'.Title as title',
+      $this->tab_articles.'.Title_unaccent as title_unaccent',
+      $this->tab_articles.'.Category as category',
+      $this->tab_articles.'.Category_unaccent as category_unaccent',
+      $this->tab_articles.'.Type as type',
+      'DATE_FORMAT('.$this->tab_articles.'.Registered, \'%d.%b. %Y\') as registered',
+      $this->tab_users.'.Username',
+      'LOWER('.$this->tab_users.'.Username) as username'
+    );
+    // from
+    $from = array(
+      $this->tab_articles, 
+      array(
+        $this->tab_users,
+        $this->tab_articles.'.Id_Users'=>$this->tab_users.'.Id'
+      )
+    );
+    // condition
+    $where = array(
+      array(
+        '=',  
+        $this->tab_articles.'.Category_unaccent'=>Route::get('controller')
+      )
+    );
+    // ordering
+    $order = array(
+      $this->tab_articles.'.Category', 
+      $this->tab_articles.'.Title'
+    );
+    // process query
+    $record = $this->database
+      ->select($select)
+      ->from($from) 
+      ->where($where)
+      ->order($order)
+      ->query();
+
+    // articles
+    $variables = array(
+      'articles'=>$record, 
+      'privileges'=>$user['Privileges']
+    );
+    // return variables
+    return $variables;
+  }
+
+  /***
+  * @desc   Datails articles
+  * 
+  * @param  Void
+  * @return Void
+  */
+  public function showDetailArticle()
+  {
+    // if user is not logged in
+    if (!($user = $this->user->getLoggedUser())) {
+      // redirect to login
+      Route::redirect("");
+    }
+    // articles
+    $select = array(
+      $this->tab_articles.'.Id as id',
+      $this->tab_articles.'.Title as title',
+      $this->tab_articles.'.Title_unaccent as title_unaccent',
+      $this->tab_articles.'.Category as category',
+      $this->tab_articles.'.Category_unaccent as category_unaccent',
+      $this->tab_articles.'.Type as type',
+      $this->tab_articles.'.Content as content',
+      'DATE_FORMAT('.$this->tab_articles.'.Registered, \'%d.%b. %Y\') as registered',
+      $this->tab_users.'.Username',
+      'LOWER('.$this->tab_users.'.Username) as username'
+    );
+    // odkial
+    $from = array(
+      $this->tab_articles, 
+      array(
+        $this->tab_users,
+        $this->tab_articles.'.Id_Users'=>$this->tab_users.'.Id'
+      )
+    );
+    // podmienka
+    $where = array(
+      array(
+        '=',
+        $this->tab_articles.'.Id'=>Route::get('params2')
+      )
+    );
+    // zotriedenie
+    $order = array(
+      $this->tab_articles.'.Category', 
+      $this->tab_articles.'.Title'
+    );
+    // spracovanie poziadavky
+    $record = $this->database
+
+      ->select($select)
+      ->from($from) 
+      ->where($where)
+      ->order($order)
+      ->query();
+    // articles
+    $variables = array(
+      'article'=>$record[0], 
+      'privileges'=>$user['Privileges']
+    );
+
+    // return variables
+    return $variables;
+  }
+}
 

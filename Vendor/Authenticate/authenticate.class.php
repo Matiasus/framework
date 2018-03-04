@@ -38,10 +38,13 @@ class Authenticate {
   private $generator;  
   
   /***
-   * Constructor
+   * @desc    Constructor
    *
-   * @param \Vendor\User\User
-   * @return Void
+   * @param   \Vendor\User\User
+   * @param   \Vendor\Database\Database
+   * @param   \Vendor\Generator\Generator
+   *
+   * @return  Void
    */
   public function __construct(
     \Vendor\User\User $user,
@@ -156,7 +159,7 @@ class Authenticate {
       $insert = array(
         "Token"     => $token,
         "Id_Users"  => $user->Id,
-        "Session"   => session_id(),
+        "Sessionid" => session_id(),
         "Current"   => $actual,
         "Expire"    => $expire
       );
@@ -166,11 +169,11 @@ class Authenticate {
     } else {
       // update values
       $update = array(
-        "Token"   => $token,
-        "Session" => session_id(),
-        "Current" => $actual,	    
-        "Expire"  => $expire,
-        "Last"    => $last[0]->Current
+        "Token"     => $token,
+        "Sessionid" => session_id(),
+        "Current"   => $actual,	    
+        "Expire"    => $expire,
+        "Last"      => $last[0]->Current
       );
       // Update udajov do databazy
       $this->database->update(
@@ -179,11 +182,15 @@ class Authenticate {
         $this->tb_session
       ); 
     }
-    // store session id into cookie
-    Cookie::set(Config::get('COOKIES', 'SESID'), 
-      session_id(),
-      Date::getInSec(Config::getArray('DATE')['EXPIR'])
-    );
+  /**
+  !!!! NOT STORED - PHPSESSID is stored already  
+  -----------------------------------------
+  // store session id into cookie
+  Cookie::set(Config::get('COOKIES', 'SESID'), 
+    session_id(),
+    time() + Date::getInSec(Config::getArray('DATE')['EXPIR'])
+  );
+  */
   }
   
   /**

@@ -98,37 +98,50 @@ class Template{
 	protected function replacements()
 	{
 		// path to basic layout
-		$this->layout_path = $this->directory.
-                         '/'.Config::get('TEMPL', 'LA_BAS');
+		$this->layout_path = $this->directory.'/'.Config::get('TEMPL', 'LA_BAS');
     // content for layout
-	  $this->content_path = $this->directory.
-                          '/'.Route::get('controller').
-                          '/'.Route::get('view').'.tpl.php';
+	  $this->content_path = $this->directory.'/'.Route::get('controller').'/'.Route::get('view').'.tpl.php';
     // load basic layout
-    $this->page = $this->replace
-                       ->layout($this->layout_path);
+    $this->page = $this
+      ->replace
+      ->layout($this->layout_path);
     // replace title
-    $this->page = $this->replace
-                       ->title(Config::get('TEMPL', 'RE_TIT'), 
-                               Config::get('TEMPL', 'TITLE'), 
-                               $this->page);
-
+    $this->page = $this
+      ->replace
+      ->title(
+        Config::get('TEMPL', 'RE_TIT'), 
+        Config::get('TEMPL', 'TITLE'), 
+        $this->page);
     // replace conntent
-    $this->page = $this->replace
-                       ->content($this->buffer,
-                                 Config::get('TEMPL', 'RE_CON'),
-                                 $this->content_path,
-                                 $this->page);
+    $this->page = $this
+      ->replace
+      ->content(
+        $this->buffer,
+        Config::get('TEMPL', 'RE_CON'),
+        $this->content_path,
+        $this->page
+    );
     // replace forms
-    $this->page = $this->replace
-                       ->forms($this->controller,
-                               Config::get('TEMPL', 'RE_FOR'),
-                               $this->page);
-
+    $this->page = $this
+      ->replace
+      ->forms($this->controller,
+        Config::get('TEMPL', 'RE_FOR'),
+        $this->page
+    );
     // replace conntent
-    $this->page = $this->replace
-                       ->flash(Config::get('TEMPL', 'RE_FLA'),
-                               $this->page);
+    $this->page = $this
+      ->replace
+      ->flash(
+        Config::get('TEMPL', 'RE_FLA'),
+        $this->page
+    );
+    // replace conntent
+    $this->page = $this
+      ->replace
+      ->javascript(
+        Config::get('TEMPL', 'RE_JAV'),
+        $this->page
+    );
 /*
 												   'Editor',
                            'Javascript',

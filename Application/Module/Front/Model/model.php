@@ -24,13 +24,15 @@ use \Vendor\Session\Session as Session,
 class Model {
  
    /** @const  */
-  const EMAIL    = 'Email';
+  const EMAIL       = 'Email';
   /** @const  */
-  const USERNAME = 'Username';
+  const USERNAME    = 'Username';
   /** @const  */
-  const PASSNAME = 'Passwordname';
+  const PASSNAME    = 'Passwordname';
   /** @const  */
-  const VALIDATE = 'Validation';  
+  const VALIDATE    = 'Validation';  
+  /** @const Type login */
+  const TYPE_LOGIN  = 'login';
   
   /** @var Object \Vendor\Database\Database */
   private $database;
@@ -81,8 +83,8 @@ class Model {
     $uri = Cookie::get(Config::get('COOKIES', 'LAST_URI'));    
     // token session id
     $sessid = Cookie::get(Config::get('COOKIES', 'SESID'));
-    // overi existenciu COOKIES
-    if (!empty($sessid)) {
+    // chcek existence COOKIES
+    if (empty($sessid)) {
       // exit
       return false;
     }
@@ -92,7 +94,7 @@ class Model {
     $from = array(Config::get('ICONNECTION', 'MYSQL', 'T_AUT'));
     // condition
     $where = array(
-      array('=', Config::get('ICONNECTION', 'MYSQL', 'T_AUT').'.Session'=>$sessid)
+      array('=', Config::get('ICONNECTION', 'MYSQL', 'T_AUT').'.Sessionid'=>$sessid)
     );
     // query
     $record = $this->database
@@ -138,9 +140,8 @@ class Model {
       // unsuccess
       return false;
     }
-    echo $uri;
     // redirect to last visited uri
-    $this->route->redirect($uri);
+    Route::redirect($uri);
   }
 
   /***
@@ -211,10 +212,12 @@ class Model {
     }
     // insert data
     $this->database->insert(array(
-      'Datum'      => date("Y-m-d H:i:s"),
-      'Id_Users'   => $user->Id,               
+      'Login'      => date("Y-m-d H:i:s"),
+      'Id_Users'   => $user->Id,
+      'Sessionid'  => session_id(),
       'Ip_address' => $_SERVER['REMOTE_ADDR'].':'.$_SERVER['REMOTE_PORT'], 
-      'User_agent' => $_SERVER['HTTP_USER_AGENT']), 
+      'User_agent' => $_SERVER['HTTP_USER_AGENT']
+      ), 
       Config::get('ICONNECTION', 'MYSQL', 'T_LOG'), 
       true
     );
@@ -337,11 +340,13 @@ class Model {
    */
   public function activation()
   {
-    $parameters = Route::getParameters();
-
-    if (!empty($parameters[0])) {
+    // get parameter
+    $param = Route::get('params1');
+    // check if parameter exists in database
+    if (!empty($param)) {
+      // get user from  db according to parameter
       $user = $this->database->select(array("*"), 
-                                      array("Codevalidation"=>$parameters[0]), 
+                                      array("Codevalidation"=>$param), 
                                       Config::get('MYSQL', 'TB_USE'));
       // Overenie, ci podla validacneho kluca existuje iba jeden zaznam v tabulke Users 
       if (count($user) == 1) {

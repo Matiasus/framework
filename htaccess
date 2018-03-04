@@ -1,0 +1,7 @@
+IndexOptions +Charset=UTF-8
+Options -Indexes
+RewriteEngine on
+# route all requests to index.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php?route=$1 [L,QSA]

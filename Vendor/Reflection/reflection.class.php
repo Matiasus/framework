@@ -19,10 +19,10 @@ class Reflection {
   private $arguments = null;
 
   /** @var */
-  private $_interface = null;
+  public $_interface = null;
  
   /** @var */
-  private $_instances = array();
+  public $_instances = array();
 
   /***
    * Constructor

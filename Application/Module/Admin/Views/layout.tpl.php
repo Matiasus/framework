@@ -10,7 +10,7 @@
     <script type="text/javascript" src="/Public/javascripts/script.js"></script>
   </head> 
   <body>
-    <!-- Horna cast s nadpisom a logom -->
+    <!-- Top with logo -->
     <div id="bar">
       <div id="bar-inside">
         <h1 class="title">{include title}</h1>
@@ -19,11 +19,11 @@
     </div>
     <!-- Wrapper -->
     <div id="wrapper">
-      <!-- Vypis flashovej hlasky -->
+      <!-- Flash message -->
       <div id="flash">
         {include flashmessage}
       </div>
-      <!-- Jadro stranky - obsah -->
+      <!-- Content -->
       <div id="contentwrapper">
         {include content}
       </div>
@@ -38,5 +38,7 @@
     <div id="bar-logo">
         <a href="http://validator.w3.org/check?uri=referer"><img src="http://www.w3.org/Icons/valid-xhtml10" alt="Valid XHTML 1.0 Strict" height="21" width="60" /></a>
     </div>
+    <!-- Javascript -->
+      {include javascript}
   </body>
 </html>
