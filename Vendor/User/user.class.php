@@ -33,7 +33,7 @@ class User {
 
   /** @var Objekt \Vendor\Database\Database */
   private $database;
-  
+
   /***
    * Constructor
    *

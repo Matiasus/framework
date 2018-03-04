@@ -42,8 +42,8 @@
 	<?php } ?>
 	</table>
 </div>
-<!-- [Zaciatok] Bocne menu -->
+<!-- [START] Menu -->
 <div id="menu">
 	<h3>Menu</h3>
 </div>
-<!-- [Koniec] Bocne menu -->
+<!-- [END] Menu -->

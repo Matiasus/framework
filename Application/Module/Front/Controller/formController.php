@@ -8,11 +8,11 @@ class formController extends \Vendor\Controller\Controller {
   public $model;
 
   /***
-  * Constructor
-  *
-  * @param  Object \Application\Module\Front\Model\Model
-  * @return Void
-  */
+   * @desc    Constructor
+   *
+   * @param   \Application\Module\Front\Model\Model
+   * @return  Void
+   */
   public function __construct(\Application\Module\Front\Model\Model $model)
   {
     // @var \Application\Module\Front\Model\Model
@@ -20,10 +20,10 @@ class formController extends \Vendor\Controller\Controller {
   }
 
   /***
-   * Render - default
+   * @desc    Render - default
    *
-   * @param Void
-   * @return Void
+   * @param   Void
+   * @return  Void
    */
   public function renderDefault()
   {
@@ -32,20 +32,20 @@ class formController extends \Vendor\Controller\Controller {
   }
 
   /***
-   * Render - logon
+   * @desc    Render logon
    *
-   * @param Void
-   * @return Void
+   * @param   Void
+   * @return  Void
    */	
   public function renderPrihlasenie()
   {
   }
 
   /***
-   * Form logon
+   * @desc    Form logon
    *
-   * @param Void
-   * @return Void
+   * @param   Void
+   * @return  Void
    */	
   public function formPrihlasenie()
   {
@@ -57,11 +57,11 @@ class formController extends \Vendor\Controller\Controller {
   }
 
   /***
-  * Render - activation
-  *
-  * @param Void
-  * @return Void
-  */	
+   * @desc    Render - activation
+   *
+   * @param   Void
+   * @return  Void
+   */	
   public function renderAktivacia()
   {
     // process activation
@@ -69,21 +69,21 @@ class formController extends \Vendor\Controller\Controller {
   }
 
   /***
-  * Render registration
-  *
-  * @param Void
-  * @return Void
-  */
+   * @desc    Render registration
+   *
+   * @param   Void
+   * @return  Void
+   */
   public function renderRegistracia()
   {
   }
 
   /***
-  * Form - registration
-  *
-  * @param Void
-  * @return Void
-  */
+   * @desc    Form - registration
+   *
+   * @param   Void
+   * @return  Void
+   */
   public function formRegistracia()
   {
     // create form
@@ -94,11 +94,11 @@ class formController extends \Vendor\Controller\Controller {
   }
 
   /***
-  * Form - callback
-  *
-  * @param Array
-  * @return Void
-  */
+   * @desc    Form - callback
+   *
+   * @param   Array
+   * @return  Void
+   */
   private function registraciaProccess($form)
   {
     // process registration

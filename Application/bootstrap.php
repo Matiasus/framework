@@ -57,11 +57,15 @@
       , \Vendor\Config\File::getArray('ICONNECTION')['MYSQL']['PASS']
       , array(PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION)
     );
+    // Mysql
+    // @param - define dsn
     // set arguments before creating interface class
     $reflection->bind('\Vendor\Connection\Iconnection', function () use ($arguments) { 
       return new \Vendor\Connection\Mysql($arguments); 
     });
-    // Create controller
+
+    // Controller
+    // @param defined in given constructor
     $reflection->service(\Vendor\Route\Route::get('controller_namespace'));
 
     // CONTROLLER
@@ -73,6 +77,13 @@
     // render method
     $controller->$method();
 
+    // Statistics
+    // @param \Vendor\Database\Database
+    // @return Instance of \Vendor\Statistics\Statistics
+    $reflection->service('\Vendor\Statistics\Statistics');
+    // store visited page
+    $reflection->get('\Vendor\Statistics\Statistics')->store();
+
     // TEMPLATE
     // -----------------------------------------------------
     // set arguments before creating interface class
@@ -81,6 +92,7 @@
     $reflection->service('\Vendor\Template\Template');
     // Render processed page
     $reflection->get('\Vendor\Template\Template')->render();
+
   }
   // -------------------------------------------------------------------------------------+
   //                                  ERRORS DISPLAY                                      |  

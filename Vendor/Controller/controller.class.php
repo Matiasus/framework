@@ -20,15 +20,18 @@ class Controller implements \Vendor\Controller\Icontroller {
 
   /** @const */
   const RENDER = 'render';
+
+  /** @var Method */
+  private $method = '';
   
   /** @var Variables */
   protected $variables = array();
 
   /***
-   * Constructor
+   * @desc    Constructor
    *
-   * @param  Void
-   * @return Void
+   * @param   Void
+   * @return  Void
    */
   public function __construct()
   {
@@ -67,9 +70,9 @@ class Controller implements \Vendor\Controller\Icontroller {
   }
 
   /***
-   * Call method
+   * @desc   Call method
    *
-   * @param Void
+   * @param  Void
    * @return Void
    */
   public function callMethod()
@@ -77,14 +80,15 @@ class Controller implements \Vendor\Controller\Icontroller {
     // controller namespace
     $controller = Route::get('controller_namespace');
     // render method
-    $method = self::RENDER.ucfirst(Route::get('view'));
+    $this->method = self::RENDER.ucfirst(Route::get('view'));
     // Doplnenie parametrov do renderovacej metody
-    if (!method_exists($controller, $method)) {
+    if (!method_exists($controller, $this->method)) {
       // throw to exception with error message
-      throw new \Exception('['.get_called_class().']:['.__LINE__.']: Method <b>'.$method.'</b> in controller <b>'.$controller.'</b> does not exists!');
+      throw new \Exception('['.get_called_class().']:['.__LINE__.']: Method <b>'.$this->method.'</b> in controller <b>'.$controller.'</b> does not exists!');
     }
     // return render method
-    return $method;
+    return $this->method;
   }
+
 }
 

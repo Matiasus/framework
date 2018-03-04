@@ -8,11 +8,11 @@ class articlesController extends \Vendor\Controller\Controller {
   private $model;
 
   /***
-  * Constructor
-  *
-  * @param  Object \Application\Module\Front\Model\Model
-  * @return Void
-  */
+   * @desc    Constructor
+   *
+   * @param   Object \Application\Module\Front\Model\Model
+   * @return  Void
+   */
   public function __construct(\Application\Module\Admin\Model\Model $model)
   {
     // @var \Application\Module\Front\Model\Model
@@ -20,26 +20,14 @@ class articlesController extends \Vendor\Controller\Controller {
   }
 
   /***
-   * Render - default
+   * @desc   Render all articles 
    *
-   * @param Void
+   * @param  Void
    * @return Void
    */
   public function renderDefault()
   {
     // show articles
-    $this->variables = $this->model->showArticles();
+    $this->variables = $this->model->showAllArticles();
   }
-
-  /***
-   * Render - logon
-   *
-   * @param Void
-   * @return Void
-   */	
-  public function renderPrihlasenie()
-  {
-  }
-
-
 }
