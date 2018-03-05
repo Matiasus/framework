@@ -4,7 +4,6 @@ Simple PHP framework with Dependency Injection pattern. Preview of functional fr
 At the beginning are called five static classes about which is supposed that will be the only one in whole application. These static classes are
 - [Config](#config)
 - [Route](#route)
-- [Date](#date)
 - [Cookie](#cookie)
 - [Session](#session)
 ### Config
@@ -13,7 +12,7 @@ Class is responded for load and parse config ini file. It contains instance of p
 - ```getArray($key)``` - return array stored under called key and throw exception if no exists
 ### Route
 Class is responded for load and parse url request. Route contain following methods
-- `get ($key = false, $exception = false)` - get parameter (*module, controller, view, param1, param2, process, operation*), defined in **config.php.ini**
+- `get ($key = false, $exception = false)` - get parameter (*module, controller, view, param1, param2, process, operation*), names of parameters (module, ...) are defined in **config.php.ini**
 - `getSerNameUri ($http = false)` 
   - *$http=true* - `http://www.link.com/show/ubuntu`, 
   - *$http=false* - `www.link.com/show/ubuntu`
@@ -22,11 +21,11 @@ Class is responded for load and parse url request. Route contain following metho
     - *$http=false* - `www.link.com`
 - `getReqUri ()` - show/ubuntu/?call=script
 ### Cookie
-- ```set($name, $value, $expire, $path = "/", $domain = false)``` -
-- ```get($key = false, $exception = false)``` - 
+- ```set($name, $value, $expire, $path = "/", $domain = false)``` 
+- ```get($key = false, $exception = false)``` 
 ### Session
-- ```set($key = false, $value = false, $regenerate = false)``` -
-- ```get($key = false, $exception = false)``` -
+- ```set($key = false, $value = false, $regenerate = false)```
+- ```get($key = false, $exception = false)```
 ## Objects
 - [Html](#html)
 - [Form](#form)
