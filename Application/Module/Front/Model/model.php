@@ -268,7 +268,6 @@ class Model {
     $form->input()
          ->submit('Registracia', '', 'Registrácia')
          ->create();
-
     // check if created columns exist in database
     if ($form->succeedSend($this->database, Config::get('ICONNECTION', 'MYSQL', 'T_USER'))) {
       // callback logon
@@ -352,23 +351,38 @@ class Model {
    */
   public function activation()
   {
-    // get parameter
-    $param = Route::get('params1');
-    // check if parameter exists in database
-    if (!empty($param)) {
-      // get user from  db according to parameter
-      $user = $this->database->select(array("*"), 
-                                      array("Codevalidation"=>$param), 
-                                      Config::get('MYSQL', 'TB_USE'));
-      // Overenie, ci podla validacneho kluca existuje iba jeden zaznam v tabulke Users 
+    // get code validation
+    $code = Route::get('params1');
+    // check if code validation accepted
+    if (!empty($code)) {
+      // select
+      $select = array('Id');
+      // from 
+      $from = array(Config::get('ICONNECTION', 'MYSQL', 'T_USER'));
+      // condition
+      $where = array(
+        array(
+          '=', 
+          Config::get('ICONNECTION', 'MYSQL', 'T_USER').'.Codevalidation' => $code
+        )
+      );
+      // query
+      $user = $this->database
+        ->select($select)
+        ->from($from) 
+        ->where($where)
+        ->query();        
+      // if user with codevalidation exists 
       if (count($user) == 1) {
-        // Update z invalid na valid
-        $this->database->update(array("Validation"=>"valid"), 
-                                array("Codevalidation"=>$parameters[0]), 
-                                \Application\Config\Settings::$Detail->Mysql->Table_Users);
-        // Vypis flash spravy
+        // update status: invalid => valid
+        $this->database->update(
+          array("Validation" => "valid"), 
+          array("Codevalidation" => $code), 
+          Config::get('ICONNECTION', 'MYSQL', 'T_USER')
+        );
+        // flash message announcement
         Session::set("flash", "Váš účet bol úspešne aktivovaný, pokračujte prosím prihlásením!", false);
-        // Presmerovanie na prihlasovaciu stranku
+        // redirect to home page
         Route::redirect("");
       }
     }
