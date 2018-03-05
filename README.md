@@ -13,8 +13,8 @@ Class is responded for load and parse config ini file. It contains instance of p
 - ```getArray($key)``` - return array stored under called key and throw exception if no exists
 ### Route
 Class is responded for load and parse url request. Route contain following methods
-- `get ($key = false, $exception = false)` - *get parameter (module, controller, view, param1, param2, process, operation), defined in <span style="color:red;">config.php.ini</span>*
-- **getSerNameUri** **(** *$http = false* **)** 
+- `get ($key = false, $exception = false)` - get parameter (*module, controller, view, param1, param2, process, operation*), defined in **config.php.ini**
+- `getSerNameUri ($http = false)` 
   - *$http=true* - `http://www.link.com/show/ubuntu`, 
   - *$http=false* - `www.link.com/show/ubuntu`
 - **getfullUri** **(** *$http = false* **)** 
