@@ -11,7 +11,7 @@ Class is responded for load and parse config ini file. It contains instance of p
 - ```get($key)``` - which return string stored under called key and throw exception if no exists 
 - ```getArray($key)``` - return array stored under called key and throw exception if no exists
 ### Route
-Class is responded for load and parse url request. Route contain following methods
+This static class parses url requests and stores it into variables that can be used for next purpose. There are defined **public** methods:
 - `get ($key = false, $exception = false)` - get parameter (*module, controller, view, param1, param2, process, operation*), names of parameters (module, ...) are defined in **config.php.ini**
 - `getSerNameUri ($http = false)` 
   - *$http=true* - `http://www.link.com/show/ubuntu`, 
