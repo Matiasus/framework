@@ -22,7 +22,7 @@ This static class parses url requests and stores it into variables that can be u
 - `getReqUri ()` - show/ubuntu/?call=script
 ### Cookie
 Simplify static cookie class is responsible for manipulation with COOKIES. It contains two methods needed for store and destory COOKIE
-- ```set($name, $value, $expire, $path = "/", $domain = false)``` - set COOKIE under specific name, throw to exception if no name COOKIE exists
+- ```set($name, $value, $expire, $path = "/", $domain = false)``` - set COOKIE under specific name
 - ```get($key = false, $exception = false)``` - destroy COOKIE with specific name, throw to exception if no name COOKIE exists
 ### Session
 - ```set($key = false, $value = false, $regenerate = false)```
