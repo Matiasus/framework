@@ -4,7 +4,7 @@
 * POZNAMKOVYBLOG Copyright (c) 2015 
 * 
 * Autor:          Mato Hrinko
-* Datum:          07.12.2016 / update
+* Datum:          05.03.2018 / update
 * Adresa:         http://poznamkovyblog.cekuj.net
 * 
 * ------------------------------------------------------------
@@ -17,8 +17,7 @@ namespace Application\Module\Front\Model;
 use \Vendor\Session\Session as Session,
     \Vendor\Cookie\Cookie as Cookie,
     \Vendor\Config\File as Config,
-    \Vendor\Route\Route as Route,
-    \Vendor\Date\Date as Date;
+    \Vendor\Route\Route as Route;
 
 /** @class formproccess */
 class Model {
@@ -33,6 +32,9 @@ class Model {
   const VALIDATE    = 'Validation';  
   /** @const Type login */
   const TYPE_LOGIN  = 'login';
+    
+  /** @var Object \Vendor\Date\Date */
+  private $date;    
   
   /** @var Object \Vendor\Database\Database */
   private $database;
@@ -47,10 +49,15 @@ class Model {
   private $authenticator;    
   
   /***
-   * Constructor
+   * @desc    Constructor
    *
-   * @param  
-   * @return Void
+   * @param   \Vendor\Date\Date   
+   * @param   \Vendor\Database\Database
+   * @param   \Vendor\Generator\Generator
+   * @param   \Vendor\Notification\Notification
+   * @param   \Vendor\Authenticate\Authenticate
+   *
+   * @return  Void
    */
   public function __construct(
     \Vendor\Date\Date $date,
@@ -72,10 +79,11 @@ class Model {
   }
 
   /***
-   * Session login
+   * @desc    Session login
    * 
-   * @param  Void
-   * @return String
+   * @param   Void
+   *
+   * @return  Void
    */
   public function sessionLogin()
   {
@@ -145,10 +153,11 @@ class Model {
   }
 
   /***
-  * 
+  * @desc   Form for logon
   * 
   * @param  \Vendor\Form\Form
-  * @return Void
+  *
+  * @return String
   */
   public function showFormPrihlasenie(\Vendor\Form\Form $form)
   {
@@ -182,10 +191,11 @@ class Model {
   }
 
   /***
-   * Process login
+   * @desc    Process login
    * 
-   * @param \Vendor\Vendor\Form
-   * @return Void
+   * @param   \Vendor\Vendor\Form
+   *
+   * @return  Void
    */
   public function prihlasenieProcess($form)
   {
@@ -193,7 +203,6 @@ class Model {
     $data = $form->getData();
     // table
     $table = Config::get('ICONNECTION', 'MYSQL', 'T_USER');
-
     // username
     $valid[self::USERNAME] = "'".$data[self::USERNAME]."'";
     // passwordname
@@ -226,10 +235,11 @@ class Model {
   }
 
   /***
+   * @desc    Form for registration
    * 
-   * 
-   * @param  \Vendor\Form\Form
-   * @return Void
+   * @param   \Vendor\Form\Form
+   *
+   * @return  String
    */
   public function showFormRegistracia(\Vendor\Form\Form $form)
   {
@@ -258,7 +268,6 @@ class Model {
     $form->input()
          ->submit('Registracia', '', 'Registrácia')
          ->create();
-
     // check if created columns exist in database
     if ($form->succeedSend($this->database, Config::get('ICONNECTION', 'MYSQL', 'T_USER'))) {
       // callback logon
@@ -269,10 +278,11 @@ class Model {
   }
 
   /***
-   * Registration process
+   * @desc    Registration process
    * 
-   * @param  \Vendor\Vendor\Form
-   * @Return Void
+   * @param   \Vendor\Vendor\Form
+   *
+   * @Return  Void
    */
   public function registrationProcess($form)
   {
@@ -333,30 +343,46 @@ class Model {
   }
 
   /***
-   * Activation process
+   * @desc    Activation process
    * 
-   * @param  Void
-   * @return Void
+   * @param   Void
+   *
+   * @return  Void
    */
   public function activation()
   {
-    // get parameter
-    $param = Route::get('params1');
-    // check if parameter exists in database
-    if (!empty($param)) {
-      // get user from  db according to parameter
-      $user = $this->database->select(array("*"), 
-                                      array("Codevalidation"=>$param), 
-                                      Config::get('MYSQL', 'TB_USE'));
-      // Overenie, ci podla validacneho kluca existuje iba jeden zaznam v tabulke Users 
+    // get code validation
+    $code = Route::get('params1');
+    // check if code validation accepted
+    if (!empty($code)) {
+      // select
+      $select = array('Id');
+      // from 
+      $from = array(Config::get('ICONNECTION', 'MYSQL', 'T_USER'));
+      // condition
+      $where = array(
+        array(
+          '=', 
+          Config::get('ICONNECTION', 'MYSQL', 'T_USER').'.Codevalidation' => $code
+        )
+      );
+      // query
+      $user = $this->database
+        ->select($select)
+        ->from($from) 
+        ->where($where)
+        ->query();        
+      // if user with codevalidation exists 
       if (count($user) == 1) {
-        // Update z invalid na valid
-        $this->database->update(array("Validation"=>"valid"), 
-                                array("Codevalidation"=>$parameters[0]), 
-                                \Application\Config\Settings::$Detail->Mysql->Table_Users);
-        // Vypis flash spravy
+        // update status: invalid => valid
+        $this->database->update(
+          array("Validation" => "valid"), 
+          array("Codevalidation" => $code), 
+          Config::get('ICONNECTION', 'MYSQL', 'T_USER')
+        );
+        // flash message announcement
         Session::set("flash", "Váš účet bol úspešne aktivovaný, pokračujte prosím prihlásením!", false);
-        // Presmerovanie na prihlasovaciu stranku
+        // redirect to home page
         Route::redirect("");
       }
     }
