@@ -17,8 +17,7 @@ namespace Application\Module\Front\Model;
 use \Vendor\Session\Session as Session,
     \Vendor\Cookie\Cookie as Cookie,
     \Vendor\Config\File as Config,
-    \Vendor\Route\Route as Route,
-    \Vendor\Date\Date as Date;
+    \Vendor\Route\Route as Route;
 
 /** @class formproccess */
 class Model {
@@ -33,6 +32,9 @@ class Model {
   const VALIDATE    = 'Validation';  
   /** @const Type login */
   const TYPE_LOGIN  = 'login';
+    
+  /** @var Object \Vendor\Date\Date */
+  private $date;    
   
   /** @var Object \Vendor\Database\Database */
   private $database;
@@ -193,7 +195,6 @@ class Model {
     $data = $form->getData();
     // table
     $table = Config::get('ICONNECTION', 'MYSQL', 'T_USER');
-
     // username
     $valid[self::USERNAME] = "'".$data[self::USERNAME]."'";
     // passwordname
