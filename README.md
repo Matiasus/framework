@@ -17,9 +17,9 @@ Class is responded for load and parse url request. Route contain following metho
 - `getSerNameUri ($http = false)` 
   - *$http=true* - `http://www.link.com/show/ubuntu`, 
   - *$http=false* - `www.link.com/show/ubuntu`
-- `etfullUri ($http = false)` 
-    - *$http=true* - ht<span>tp://www.<\span>link.com
-    - *$http=false* - w<span>ww.</span>link.com
+- `getfullUri ($http = false)` 
+    - *$http=true* - <pre>http://www.link.com</pre>
+    - *$http=false* - `www.</span>link.com`
 - `getReqUri ()` - show/ubuntu/?call=script
 ### Cookie
 - ```set($name, $value, $expire, $path = "/", $domain = false)``` -
