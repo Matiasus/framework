@@ -21,8 +21,9 @@ This static class parses url requests and stores it into variables that can be u
     - *$http=false* - `www.link.com`
 - `getReqUri ()` - show/ubuntu/?call=script
 ### Cookie
-- ```set($name, $value, $expire, $path = "/", $domain = false)``` 
-- ```get($key = false, $exception = false)``` 
+Cookie class is responsible for COOKIES. It contains two methods needed for store and destory COOKIE called:
+- ```set($name, $value, $expire, $path = "/", $domain = false)``` - set COOKIE under specific name, throw to exception if no name COOKIE exists
+- ```get($key = false, $exception = false)``` - destroy COOKIE with specific name, throw to exception if no name COOKIE exists
 ### Session
 - ```set($key = false, $value = false, $regenerate = false)```
 - ```get($key = false, $exception = false)```
