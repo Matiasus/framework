@@ -353,17 +353,19 @@ class Model {
   {
     // get code validation
     $code = Route::get('params1');
+    // table Users
+    $table_users = Config::get('ICONNECTION', 'MYSQL', 'T_USER');
     // check if code validation accepted
     if (!empty($code)) {
       // select
       $select = array('Id');
       // from 
-      $from = array(Config::get('ICONNECTION', 'MYSQL', 'T_USER'));
+      $from = array($table_users);
       // condition
       $where = array(
         array(
           '=', 
-          Config::get('ICONNECTION', 'MYSQL', 'T_USER').'.Codevalidation' => $code
+          $table_users.'.Codevalidation' => $code
         )
       );
       // query
@@ -378,7 +380,7 @@ class Model {
         $this->database->update(
           array("Validation" => "valid"), 
           array("Codevalidation" => $code), 
-          Config::get('ICONNECTION', 'MYSQL', 'T_USER')
+          $table_users
         );
         // flash message announcement
         Session::set("flash", "Váš účet bol úspešne aktivovaný, pokračujte prosím prihlásením!", false);
