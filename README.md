@@ -11,6 +11,18 @@ At the beginning are called five static classes about which is supposed that wil
 Class is responded for load and parse config ini file. It contains instance of parse class that decompose config file into array. Config variable can be called by two getter methods 
 - ```get($key)``` - which return string stored under called key and throw exception if no exists 
 - ```getArray($key)``` - return array stored under called key and throw exception if no exists
+### Route
+Class is responded for load and parse url request. Route contain following methods
+- ```get($key = false, $exception = false)``` - 
+- ```getSerNameUri($http = false)``` - Get url address with http = true in form *`(http://www.chat.com/show/ubuntu)`* , and with http = false in form *`www.chat.com/show/ubuntu`* 
+ - ```getfullUri($http = false)``` - Get url address with http = truein form *`(http://www.chat.com/)`*, and with http = false in form *`www.chat.com/`* 
+- ```getReqUri()``` - Get url address in form *`(show/ubuntu/?call=script)`*
+### Cookie
+- ```set($name, $value, $expire, $path = "/", $domain = false)``` -
+- ```get($key = false, $exception = false)``` - 
+### Session
+- ```set($key = false, $value = false, $regenerate = false)``` -
+- ```get($key = false, $exception = false)``` -
 ## Objects
 - [Html](#html)
 - [Form](#form)

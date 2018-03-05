@@ -10,7 +10,7 @@
 
 <!-- [START] Menu -->
 <div id="menu">
-	<h3>Menu</h3>
+  <h3>Menu</h3>
   <ul>
     <li><strong>Konto</strong>
     <ul>
