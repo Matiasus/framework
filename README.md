@@ -19,7 +19,7 @@ Class is responded for load and parse url request. Route contain following metho
   - *$http=false* - `www.link.com/show/ubuntu`
 - `getfullUri ($http = false)` 
     - *$http=true* - `http://www.link.com`
-    - *$http=false* - `www.</span>link.com`
+    - *$http=false* - `www.link.com`
 - `getReqUri ()` - show/ubuntu/?call=script
 ### Cookie
 - ```set($name, $value, $expire, $path = "/", $domain = false)``` -
