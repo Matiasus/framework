@@ -13,14 +13,14 @@ Class is responded for load and parse config ini file. It contains instance of p
 - ```getArray($key)``` - return array stored under called key and throw exception if no exists
 ### Route
 Class is responded for load and parse url request. Route contain following methods
-- **get ($key = false, $exception = false)** - get parametere according to key
-- **getSerNameUri ($http = false)** 
-     - *$http=true* `http://www.link.com/show/ubuntu`, 
-     - *$http=false* `www.link.com/show/ubuntu`
-- **getfullUri($http = false)** 
+- **get** (*$key = false*, *$exception = false*) - get parameter
+- **getSerNameUri** **(** *$http = false* **)** 
+  - *$http=true* `http://www.link.com/show/ubuntu`, 
+  - *$http=false* `www.link.com/show/ubuntu`
+- **getfullUri** **(** *$http = false* **)** 
     - *$http=true* `http://www.link.com/`
     - *$http=false* `www.link.com`
-- **getReqUri()** - `show/ubuntu/?call=script`
+- **getReqUri ()** - `show/ubuntu/?call=script`
 ### Cookie
 - ```set($name, $value, $expire, $path = "/", $domain = false)``` -
 - ```get($key = false, $exception = false)``` - 
