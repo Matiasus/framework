@@ -18,11 +18,11 @@ Class is responded for load and parse url request. Route contain following metho
  - ```getfullUri($http = false)``` - Get url address with http = truein form *`(http://www.chat.com/)`*, and with http = false in form *`www.chat.com/`* 
 - ```getReqUri()``` - Get url address in form *`(show/ubuntu/?call=script)`*
 ### Cookie
-- ```get($key)``` - which return string stored under called key and throw exception if no exists 
-- ```getArray($key)``` - return array stored under called key and throw exception if no exists
+- ```set($name, $value, $expire, $path = "/", $domain = false)``` -
+- ```get($key = false, $exception = false)``` - 
 ### Session
-- ```get($key)``` - which return string stored under called key and throw exception if no exists 
-- ```getArray($key)``` - return array stored under called key and throw exception if no exists
+- ```set($key = false, $value = false, $regenerate = false)``` -
+- ```get($key = false, $exception = false)``` -
 ## Objects
 - [Html](#html)
 - [Form](#form)
