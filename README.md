@@ -14,7 +14,7 @@ Class is responded for load and parse config ini file. It contains instance of p
 ### Route
 Class is responded for load and parse url request. Route contain following methods
 - ```get($key = false, $exception = false)``` - 
-- ```getSerNameUri($http = false)``` - 
+- ```getSerNameUri($http = false)``` - Get url address in form (http://www.chat.com/show/ubuntu) with http = true, www.chat.com/show/ubuntu with http = false
 - ```getfullUri($http = false)``` - 
 - ```getfullUri($http = false)``` - 
 - ```getReqUri()``` - 
