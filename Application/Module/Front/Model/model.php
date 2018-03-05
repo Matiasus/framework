@@ -22,7 +22,7 @@ use \Vendor\Session\Session as Session,
 /** @class formproccess */
 class Model {
  
-   /** @const  */
+  /** @const  */
   const EMAIL       = 'Email';
   /** @const  */
   const USERNAME    = 'Username';
@@ -30,7 +30,7 @@ class Model {
   const PASSNAME    = 'Passwordname';
   /** @const  */
   const VALIDATE    = 'Validation';  
-  /** @const Type login */
+  /** @const  */
   const TYPE_LOGIN  = 'login';
     
   /** @var Object \Vendor\Date\Date */
