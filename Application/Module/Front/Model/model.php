@@ -4,7 +4,7 @@
 * POZNAMKOVYBLOG Copyright (c) 2015 
 * 
 * Autor:          Mato Hrinko
-* Datum:          07.12.2016 / update
+* Datum:          05.03.2018 / update
 * Adresa:         http://poznamkovyblog.cekuj.net
 * 
 * ------------------------------------------------------------
@@ -49,10 +49,15 @@ class Model {
   private $authenticator;    
   
   /***
-   * Constructor
+   * @desc    Constructor
    *
-   * @param  
-   * @return Void
+   * @param   \Vendor\Date\Date   
+   * @param   \Vendor\Database\Database
+   * @param   \Vendor\Generator\Generator
+   * @param   \Vendor\Notification\Notification
+   * @param   \Vendor\Authenticate\Authenticate
+   *
+   * @return  Void
    */
   public function __construct(
     \Vendor\Date\Date $date,
@@ -74,10 +79,11 @@ class Model {
   }
 
   /***
-   * Session login
+   * @desc    Session login
    * 
-   * @param  Void
-   * @return String
+   * @param   Void
+   *
+   * @return  Void
    */
   public function sessionLogin()
   {
@@ -147,10 +153,11 @@ class Model {
   }
 
   /***
-  * 
+  * @desc   Form for logon
   * 
   * @param  \Vendor\Form\Form
-  * @return Void
+  *
+  * @return String
   */
   public function showFormPrihlasenie(\Vendor\Form\Form $form)
   {
@@ -184,10 +191,11 @@ class Model {
   }
 
   /***
-   * Process login
+   * @desc    Process login
    * 
-   * @param \Vendor\Vendor\Form
-   * @return Void
+   * @param   \Vendor\Vendor\Form
+   *
+   * @return  Void
    */
   public function prihlasenieProcess($form)
   {
@@ -227,10 +235,11 @@ class Model {
   }
 
   /***
+   * @desc    Form for registration
    * 
-   * 
-   * @param  \Vendor\Form\Form
-   * @return Void
+   * @param   \Vendor\Form\Form
+   *
+   * @return  String
    */
   public function showFormRegistracia(\Vendor\Form\Form $form)
   {
@@ -270,10 +279,11 @@ class Model {
   }
 
   /***
-   * Registration process
+   * @desc    Registration process
    * 
-   * @param  \Vendor\Vendor\Form
-   * @Return Void
+   * @param   \Vendor\Vendor\Form
+   *
+   * @Return  Void
    */
   public function registrationProcess($form)
   {
@@ -334,10 +344,11 @@ class Model {
   }
 
   /***
-   * Activation process
+   * @desc    Activation process
    * 
-   * @param  Void
-   * @return Void
+   * @param   Void
+   *
+   * @return  Void
    */
   public function activation()
   {
