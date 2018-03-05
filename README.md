@@ -17,10 +17,10 @@ Class is responded for load and parse url request. Route contain following metho
 - `getSerNameUri ($http = false)` 
   - *$http=true* - `http://www.link.com/show/ubuntu`, 
   - *$http=false* - `www.link.com/show/ubuntu`
-- **getfullUri** **(** *$http = false* **)** 
-    - *$http=true* - `http://www.link.com/`
-    - *$http=false* - `www.link.com`
-- **getReqUri ()** - `show/ubuntu/?call=script`
+- `etfullUri ($http = false)` 
+    - *$http=true* - ht<span>tp://www.<\span>link.com
+    - *$http=false* - w<span>ww.</span>link.com
+- `getReqUri ()` - show/ubuntu/?call=script
 ### Cookie
 - ```set($name, $value, $expire, $path = "/", $domain = false)``` -
 - ```get($key = false, $exception = false)``` - 
