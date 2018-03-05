@@ -4,7 +4,6 @@ Simple PHP framework with Dependency Injection pattern. Preview of functional fr
 At the beginning are called five static classes about which is supposed that will be the only one in whole application. These static classes are
 - [Config](#config)
 - [Route](#route)
-- [Date](#date)
 - [Cookie](#cookie)
 - [Session](#session)
 ### Config
@@ -12,17 +11,22 @@ Class is responded for load and parse config ini file. It contains instance of p
 - ```get($key)``` - which return string stored under called key and throw exception if no exists 
 - ```getArray($key)``` - return array stored under called key and throw exception if no exists
 ### Route
-Class is responded for load and parse url request. Route contain following methods
-- ```get($key = false, $exception = false)``` - 
-- ```getSerNameUri($http = false)``` - Get url address with http = true in form *`(http://www.chat.com/show/ubuntu)`* , and with http = false in form *`www.chat.com/show/ubuntu`* 
- - ```getfullUri($http = false)``` - Get url address with http = truein form *`(http://www.chat.com/)`*, and with http = false in form *`www.chat.com/`* 
-- ```getReqUri()``` - Get url address in form *`(show/ubuntu/?call=script)`*
+This static class parses url requests and stores it into variables that can be used for next purpose. There are defined **public** methods:
+- `get ($key = false, $exception = false)` - get parameter (*module, controller, view, param1, param2, process, operation*), names of parameters (module, ...) are defined in **config.php.ini**
+- `getSerNameUri ($http = false)` 
+  - *$http=true* - `http://www.link.com/show/ubuntu`, 
+  - *$http=false* - `www.link.com/show/ubuntu`
+- `getfullUri ($http = false)` 
+    - *$http=true* - `http://www.link.com`
+    - *$http=false* - `www.link.com`
+- `getReqUri ()` - show/ubuntu/?call=script
 ### Cookie
-- ```set($name, $value, $expire, $path = "/", $domain = false)``` -
-- ```get($key = false, $exception = false)``` - 
+Simplify static cookie class is responsible for manipulation with COOKIES. It contains two methods needed for store and destory COOKIE
+- ```set($name, $value, $expire, $path = "/", $domain = false)``` - set COOKIE under specific name
+- ```get($key = false, $exception = false)``` - destroy COOKIE with specific name, throw to exception if no name COOKIE exists
 ### Session
-- ```set($key = false, $value = false, $regenerate = false)``` -
-- ```get($key = false, $exception = false)``` -
+- ```set($key = false, $value = false, $regenerate = false)```
+- ```get($key = false, $exception = false)```
 ## Objects
 - [Html](#html)
 - [Form](#form)
