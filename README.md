@@ -14,10 +14,9 @@ Class is responded for load and parse config ini file. It contains instance of p
 ### Route
 Class is responded for load and parse url request. Route contain following methods
 - ```get($key = false, $exception = false)``` - 
-- ```getSerNameUri($http = false)``` - Get url address in form ```(http://www.chat.com/show/ubuntu)``` with http = true, ```www.chat.com/show/ubuntu``` with http = false
-- ```getfullUri($http = false)``` - 
-- ```getfullUri($http = false)``` - 
-- ```getReqUri()``` - 
+- ```getSerNameUri($http = false)``` - Get url address in form `(http://www.chat.com/show/ubuntu)` with http = true, `www.chat.com/show/ubuntu` with http = false
+- ```getfullUri($http = false)``` - Get url address in form `(http://www.chat.com/)` with http = true, `www.chat.com/` with http = false
+- ```getReqUri()``` - Get url address in form `(show/ubuntu/?call=script)`
 ### Cookie
 - ```get($key)``` - which return string stored under called key and throw exception if no exists 
 - ```getArray($key)``` - return array stored under called key and throw exception if no exists
