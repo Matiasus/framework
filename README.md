@@ -13,18 +13,15 @@ Class is responded for load and parse config ini file. It contains instance of p
 ### Route
 This static class parses url requests and stores it into variables that can be used for next purpose. There are defined **public** methods:
 - `get ($key = false, $exception = false)` - get parameter (*module, controller, view, param1, param2, process, operation*), names of parameters (module, ...) are defined in **config.php.ini**
-- `getSerNameUri ($http = false)` 
-  - *$http=true* - `http://www.link.com/show/ubuntu`, 
-  - *$http=false* - `www.link.com/show/ubuntu`
-- `getfullUri ($http = false)` 
-    - *$http=true* - `http://www.link.com`
-    - *$http=false* - `www.link.com`
-- `getReqUri ()` - show/ubuntu/?call=script
+- `getSerNameUri ($http = false)` - url in form `www.link.com/show/ubuntu`, 
+- `getfullUri ($http = false)` - url in form `www.link.com`
+- `getReqUri ()` - url in form `show/ubuntu/?call=script`
 ### Cookie
 Simplify static cookie class is responsible for manipulation with COOKIES. It contains two methods needed for store and destory COOKIE
 - ```set($name, $value, $expire, $path = "/", $domain = false)``` - set COOKIE under specific name
 - ```get($key = false, $exception = false)``` - destroy COOKIE with specific name, throw to exception if no name COOKIE exists
 ### Session
+Session class is used for manipulation with SESSION variables. It contains two public static methods
 - ```set($key = false, $value = false, $regenerate = false)```
 - ```get($key = false, $exception = false)```
 ## Objects
