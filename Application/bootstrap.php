@@ -63,25 +63,26 @@
     $reflection->bind('\Vendor\Connection\Iconnection', function () use ($arguments) { 
       return new \Vendor\Connection\Mysql($arguments); 
     });
-
-    // Controller
-    // @param defined in given constructor
-    $reflection->service(\Vendor\Route\Route::get('controller_namespace'));
-
+    
     // CONTROLLER
-    // -----------------------------------------------------
+    // -----------------------------------------------------  
+    // Controller - create controller according to parsed url address (module/controller/view)
+    // @params - defined in given constructor
+    $reflection->service(\Vendor\Route\Route::get('controller_namespace'));
     // called controller
     $controller = $reflection->get(Vendor\Route\Route::get('controller_namespace'));
     // called method
     $method = $controller->callMethod();
     // render method
     $controller->$method();
-
-    // Statistics
+    
+    // STATISTICS
+    // ----------------------------------------------------- 
     // @param \Vendor\Database\Database
     // @return Instance of \Vendor\Statistics\Statistics
     $reflection->service('\Vendor\Statistics\Statistics');
     // store visited page
+    // comemnt if no statistics required
     $reflection->get('\Vendor\Statistics\Statistics')->store();
 
     // TEMPLATE
@@ -92,7 +93,6 @@
     $reflection->service('\Vendor\Template\Template');
     // Render processed page
     $reflection->get('\Vendor\Template\Template')->render();
-
   }
   // -------------------------------------------------------------------------------------+
   //                                  ERRORS DISPLAY                                      |  
