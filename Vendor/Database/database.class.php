@@ -171,8 +171,8 @@ class Database {
    */
   public function update($values = array(), $conditions = array(), $table)
   {
-		// value
-		$value = $this->toString($values, ", ");
+    // value
+    $value = $this->toString($values, ", ");
     // condition
     $condition = $this->toString($conditions, " AND ");
     // query string
@@ -200,10 +200,10 @@ class Database {
   }
 
   /**
-  * Check if row exists in table
+  * @desc    Check if row exists in table
   *
-  * @param  String   
-  * @return Bool
+  * @param   String   
+  * @return  Bool
   */
   public function columnExists($column, $table)
   {
