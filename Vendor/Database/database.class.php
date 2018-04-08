@@ -20,12 +20,6 @@ use \Vendor\Session\Session as Session;
 class Database {
 
   /** @const */
-  const NOTEQUAL  = 0;
-
-  /** @const */
-  const WITHEQUAL = 1;
-
-  /** @const */
   const MYSQL_NOW = "NOW()";
 
   /** @var Objekt Mysql - spojenie s databazou registry\mysql */
@@ -187,23 +181,23 @@ class Database {
     $this->connection->execute($query);
   }
 
-	/**
-	 * @desc    Delete items
-	 *
-	 * @param   Array
-	 * @param   String
+  /**
+   * @desc    Delete items
    *
-	 * @return  Void
-	 */
-	public function delete($conditions = array(), $table)
-	{
-		// processed condition
-		$condition = $this->toString($conditions, " AND ");
-		// sql query 
-		$query = "DELETE FROM {$table} WHERE ".$condition.";";
-		// execute query
-		$this->connection->execute($query);
-	}
+   * @param   Array
+   * @param   String
+   *
+   * @return  Void
+   */
+  public function delete($conditions = array(), $table)
+  {
+    // processed condition
+    $condition = $this->toString($conditions, " AND ");
+    // sql query 
+    $query = "DELETE FROM {$table} WHERE ".$condition.";";
+    // execute query
+    $this->connection->execute($query);
+  }
 
   /**
   * Check if row exists in table
@@ -228,12 +222,13 @@ class Database {
     return true;
   }
 
-	/***
-	 * Uprava retazca vhodneho do url adresy
-	 *
-	 * @param String - retazec, ktory ma byt konvertovany
-	 * @return String - konvertovany / upraveny retazec
-	 */
+  /***
+   * @desc    Unaccent url
+   *
+   * @param   String
+   *
+   * @return  String
+   */
   public function unAccentUrl($string, $delimeter = '-')
   {
     // Trim empty characters
@@ -296,13 +291,13 @@ class Database {
     return $clean_url;
   }
 
-	/***
-	 * @desc    Strip tags
-	 *
-	 * @param   String
+  /***
+   * @desc    Strip tags
    *
-	 * @return  String
-	 */
+   * @param   String
+   *
+   * @return  String
+   */
   public function stripHtmlTags($string)
   {
     // strip entities
@@ -313,30 +308,30 @@ class Database {
     return $strip_tag;
   }
 
-	/***
-	 * @desc    Convert array to string with delimeter
-	 *
-	 * @param   Array
+  /***
+   * @desc    Convert array to string with delimeter
    *
-	 * @return  String
-	 */
+   * @param   Array
+   *
+   * @return  String
+   */
 	private function toString($data = array(), $junction = false)
 	{
-		// init value			
-		$string = "";
+    // init value			
+    $string = "";
     // loop
-	  foreach ($data as $key => $value) {
-		  // if function NOW()
-		  if (strrpos($value, self::MYSQL_NOW) === false)	{
-			  // add value to string
-			  $string .= $key."='".addslashes($value)."'".$junction;
-		  }	else {
-			  // add value to string
-			  $string .= $key."=".$value.$junction;
-		  }
-	  }
-		// trim characters
-		$string = substr($string, 0, strlen($string) - strlen($junction));
+    foreach ($data as $key => $value) {
+      // if function NOW()
+      if (strrpos($value, self::MYSQL_NOW) === false)	{
+        // add value to string
+        $string .= $key."='".addslashes($value)."'".$junction;
+      }	else {
+        // add value to string
+        $string .= $key."=".$value.$junction;
+      }
+    }
+    // trim characters
+    $string = substr($string, 0, strlen($string) - strlen($junction));
     // return value
     return $string;
 	}
