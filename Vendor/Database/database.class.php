@@ -315,8 +315,8 @@ class Database {
    *
    * @return  String
    */
-	private function toString($data = array(), $junction = false)
-	{
+  private function toString($data = array(), $junction = false)
+  {
     // init value			
     $string = "";
     // loop
