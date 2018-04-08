@@ -83,7 +83,7 @@
     $reflection->service('\Vendor\Statistics\Statistics');
     // store visited page
     // comemnt if no statistics required
-    $reflection->get('\Vendor\Statistics\Statistics')->store();
+    //$reflection->get('\Vendor\Statistics\Statistics')->store();
 
     // TEMPLATE
     // -----------------------------------------------------

@@ -77,11 +77,12 @@ class Database {
   }
 
   /***
-   * Insert data into database
+   * @desc    Insert data into database
    *
-   * @param  Array  
-   * @param  String  
-   * @return Void
+   * @param   Array  
+   * @param   String
+   *
+   * @return  Void
    */
   public function insert($data = array(), $table = false)
   {
@@ -128,10 +129,11 @@ class Database {
   }
 
   /***
-   * Select from databse
+   * @desc    Select from databse
    *
-   * @param String
-   * @return Bool
+   * @param   String
+   *
+   * @return  Bool
    */
   public function select($query = false)
   {
@@ -165,44 +167,42 @@ class Database {
   }
 
   /**
-   * Update udajov z tabulky podla hodnot a podmienky
+   * @desc    Update value in db
    *
-   * @param Array - hodnoty
-   * @param Array - podmienka
-   * @param String - tabulka
-   * @return Bool
+   * @param   Array
+   * @param   Array
+   * @param   String
+   *
+   * @return  Void
    */
   public function update($values = array(), $conditions = array(), $table)
   {
-    $value = $this->process($values, self::WITHEQUAL);
-    $condition = $this->process($conditions, self::WITHEQUAL, " AND ");
-
-    // Sql prikaz na update udajov do databazy
-    $sqlquery = "UPDATE {$table} SET $value WHERE $condition;";
-
-    $this->connection->execute($sqlquery);
-
-    return TRUE;
+		// value
+		$value = $this->toString($values, ", ");
+    // condition
+    $condition = $this->toString($conditions, " AND ");
+    // query string
+    $query = "UPDATE {$table} SET $value WHERE $condition;";
+    // execute query
+    $this->connection->execute($query);
   }
 
 	/**
-	 * Vymazavanie udajov z databazy
+	 * @desc    Delete items
 	 *
-	 * @param Array - hodnoty
-	 * @param Array - podmienka
-	 * @param String - tabulka
-	 * @return Bool
+	 * @param   Array
+	 * @param   String
+   *
+	 * @return  Void
 	 */
 	public function delete($conditions = array(), $table)
 	{
-		// spracovanie podmienky vymazania zaznamu
-		$condition = $this->process($conditions, self::WITHEQUAL, " AND ");
-		// Sql prikaz na vymazanie udajov z databazy 
-		$sqlquery = "DELETE FROM {$table} WHERE ".$condition.";";
-		// vykonanie dotazu
-		$this->connection->execute($sqlquery);
-
-		return TRUE;
+		// processed condition
+		$condition = $this->toString($conditions, " AND ");
+		// sql query 
+		$query = "DELETE FROM {$table} WHERE ".$condition.";";
+		// execute query
+		$this->connection->execute($query);
 	}
 
   /**
@@ -238,7 +238,15 @@ class Database {
   {
     // Trim empty characters
     $string = trim($string);
-
+    // special chars
+    $search_chars = array(
+      '!', '"', '#', '&', '(', ')', '*', '+', ',', '-', '.',
+      '/', ':', ';', '<', '=', '>', '~', '|', '}', ',', ' ',
+      '?', '@', '[', ']', '^', '_', '`', '{', '$', '%', 
+      '\\', '\'',
+    );
+    // spacial chars replaced
+    $string = str_replace($search_chars, $replaced = " ", $string);
     /***
      * Á: &Aacute;
      * À: &Agrave;
@@ -271,114 +279,66 @@ class Database {
 
     // Convert string to htm entities 
     $string = htmlentities($string, ENT_HTML5 | ENT_QUOTES, 'UTF-8');
-
-    // Find html entites defined by &[a-zA-Z]$utf8_name;
-    // example see above $utf8_name
+    // Find html entites defined by &[a-zA-Z]$utf8_name; example see above $utf8_name
     $pattern = "/&([a-z]{1,2})(?:".$utf8_name.");/i";
-
     // Replace html entities by given char
     // note: array of replacement chars is placed in first item of found array
     $converted = strtolower(preg_replace($pattern, $replacement = '$1', $string));
-
     // Replaced the rest untranslited characters
     $replaced = preg_replace($pattern = "/[^a-z0-9]/", $replacement = $delimeter, $converted);
-
+    // clean url
     $clean_url = $replaced;
-
     // Replaced multiple '-' characters
     if ($delimeter !== '') {
       $clean_url = preg_replace($pattern = "/[".$delimeter."]+/", $replacement = $delimeter, $replaced);
     }
-
+    // return clean url address
     return $clean_url;
   }
 
 	/***
-	 * Odstranenie html tagov
+	 * @desc    Strip tags
 	 *
-	 * @param String - retazec, ktory ma byt konvertovany
-	 * @return String - konvertovany / upraveny retazec
+	 * @param   String
+   *
+	 * @return  String
 	 */
   public function stripHtmlTags($string)
   {
+    // strip entities
     $strip_ent = preg_replace('#&.{1,20};#i', '', $string);
+    // strip tags
     $strip_tag = preg_replace('#<[^>]+>#i', '', $strip_ent);
-
+    // return stripped tags
     return $strip_tag;
   }
 
 	/***
-	 * Spracovanie pola do retazca
+	 * @desc    Convert array to string with delimeter
 	 *
-	 * @param Array - spracovavane pole
-	 * @return String - spracovane pole do ratazca
+	 * @param   Array
+   *
+	 * @return  String
 	 */
-	private function process($data = array(), $by, $join_delimiter = False)
+	private function toString($data = array(), $junction = false)
 	{
-		/**
-		** Inicializacia navratovej hodnoty
-		*/			
-		$hodnota = "";
-		($join_delimiter === False) ? $junction = ", " : $junction = $join_delimiter;
-
-		switch ($by)
-		{	
-			case self::NOTEQUAL:
-
-				if (!empty($data)) {
-					foreach ($data as $key => $value)	{
-						$hodnota .= $value.$junction;
-					}
-				}
-
-				/**
-				 * Orezanie poslednych dvoch znakov - ciakry a prazdnu medzeru 
-				 * retazca do MySql syntaxu
-				 */
-				$hodnota = substr($hodnota, 0, strlen( $hodnota) - strlen($junction));
-
-				return $hodnota;
-
-			case self::WITHEQUAL:
-
-				if (!empty($data)) {
-          // prechod cez jednotlive prvky
-					foreach ($data as $key => $value) {
-						// Osetrenie pripadu ak je ukladany terajsi datum a cas funkciou NOW()
-						if (strrpos($value, self::MYSQL_NOW) === FALSE)	{
-							// Ulozenie hodnot s uvodzovkami
-							$hodnota .= $key."='".addslashes($value)."'".$junction;
-						}	else {
-							// Ulozenie caz funkciu sql bez uvodzoviek
-							$hodnota .= $key."=".$value.$junction;
-						}
-					}
-				}	else {
-					return False;
-				}
-				/**
-				 * Orezanie poslednych dvoch znakov - ciakry a prazdnu medzeru 
-				 * retazca do MySql syntaxu
-				 */
-				$hodnota = substr($hodnota, 0, strlen($hodnota) - strlen($junction));
-
-				return $hodnota;
-
-		}		
+		// init value			
+		$string = "";
+    // loop
+	  foreach ($data as $key => $value) {
+		  // if function NOW()
+		  if (strrpos($value, self::MYSQL_NOW) === false)	{
+			  // add value to string
+			  $string .= $key."='".addslashes($value)."'".$junction;
+		  }	else {
+			  // add value to string
+			  $string .= $key."=".$value.$junction;
+		  }
+	  }
+		// trim characters
+		$string = substr($string, 0, strlen($string) - strlen($junction));
+    // return value
+    return $string;
 	}
-
-	/***
-	 * Spracovanie url adresy do retazca
-	 *
-	 * @param Array - spracovavane pole
-	 * @return String - spracovane pole do ratazca
-	 */
-  public function dateToDatabase($url)
-  {
-    $length = \Application\Config\Settings::$Detail->Framework->Length_date;
-    return substr($url, 0, $length).
-									" ".
-									strtr(substr($url, $length + 1), $to = "-", $from = ":");
-  }
 }
 

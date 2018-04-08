@@ -6,7 +6,7 @@
     <meta name="description" content="Poznamkovy blog, Marián, Hrinko, Matiasus's" /> 
     <meta name="keywords" content="Poznamkovy blog, Marián, Hrinko, Matiasus's" /> 
     <link rel="stylesheet" type="text/css" href="/Public/css/style.css" />
-    <link rel="shortcut icon" href="/Public/images/favicon.ico" />
+    <link rel="shortcut icon" href="/Public/images/icons/favicon.ico" />
     <script type="text/javascript" src="/Public/javascripts/script.js"></script>
   </head> 
   <body>
