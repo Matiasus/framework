@@ -153,12 +153,12 @@ class Model {
   }
 
   /***
-  * @desc   Form for logon
-  * 
-  * @param  \Vendor\Form\Form
-  *
-  * @return String
-  */
+   * @desc   Form for logon
+   * 
+   * @param  \Vendor\Form\Form
+   *
+   * @return String
+   */
   public function showFormPrihlasenie(\Vendor\Form\Form $form)
   {
     // set method
@@ -231,7 +231,7 @@ class Model {
       true
     );
     // redirect
-    Route::redirect($user->Privileges . "/articles/default/");
+    Route::redirect($user->Privileges . "/home/default/");
   }
 
   /***
@@ -390,4 +390,3 @@ class Model {
     }
   }
 }
-

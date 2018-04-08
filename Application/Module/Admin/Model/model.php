@@ -36,6 +36,8 @@ class Model {
   /** @var String Articles table */
   private $tab_articles;
 
+  /** @var String Articles table */
+  private $tab_components;
   
   /***
    * Constructor
@@ -50,9 +52,64 @@ class Model {
     // @var \Vendor\Database\Database
     $this->database = $database;
     // table articles
-    $this->table_users = Config::get('ICONNECTION', 'MYSQL', 'T_USER');
+    $this->tab_users = Config::get('ICONNECTION', 'MYSQL', 'T_USER');
     // table articles
-    $this->table_articles = Config::get('ICONNECTION', 'MYSQL', 'T_ART');
+    $this->tab_articles = Config::get('ICONNECTION', 'MYSQL', 'T_ART');
+    // table components
+    $this->tab_components = Config::get('ICONNECTION', 'MYSQL', 'T_COMP');
+  }
+
+  /***
+  * @desc   Show all articles
+  * 
+  * @param  \Vendor\Html\Html
+  * @return Void
+  */
+  public function showAllComponents(\Vendor\Html\Html $html)
+  {
+    // if user is not logged in
+    if (!($user = $this->user->getLoggedUser())) {
+      // redirect to login
+      Route::redirect("");
+    }
+    // articles
+    $select = array(
+      $this->tab_components.'.Id',
+      $this->tab_components.'.Category',
+      $this->tab_components.'.Category_unaccent',
+      $this->tab_components.'.Description',
+      $this->tab_components.'.Description_unaccent',
+      $this->tab_components.'.Amount',
+      'DATE_FORMAT('.$this->tab_components.'.Registered, \'%d.%b. %Y\') as Registered'
+    );
+    // from
+    $from = array(
+      $this->tab_components, 
+      array()
+    );
+    // condition
+    $where = array(
+    );
+    // ordering
+    $order = array(
+      $this->tab_components.'.Category', 
+      $this->tab_components.'.Description'
+    );
+    // process query
+    $record = $this->database
+      ->select($select)
+      ->from($from) 
+      ->where($where)
+      ->order($order)
+      ->query();
+    // articles
+    $variables = array(
+      'components'=>$record, 
+      'privileges'=>$user['Privileges']
+    );
+
+    // return variables
+    return $variables;
   }
 
   /***
@@ -227,18 +284,17 @@ class Model {
     );
     // spracovanie poziadavky
     $record = $this->database
-
       ->select($select)
       ->from($from) 
       ->where($where)
       ->order($order)
       ->query();
+
     // articles
     $variables = array(
       'article'=>$record[0], 
       'privileges'=>$user['Privileges']
     );
-
     // return variables
     return $variables;
   }

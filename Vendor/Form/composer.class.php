@@ -180,8 +180,8 @@ class Composer {
   private function build($tag = false, $attributes = false, $content = false)
   {
     return $this->html->tag($tag)
-                ->attributes($attributes)
-                ->content($content)  
-                ->create();
+      ->attributes($attributes)
+      ->content($content)  
+      ->create();
   }
 }

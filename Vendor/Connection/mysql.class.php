@@ -13,6 +13,9 @@
  */
 namespace Vendor\Connection;
 
+// use Config
+use \Vendor\Config\File as Config;
+
 class Mysql implements \Vendor\Connection\Iconnection {
 
   /** @var \PDO Object - last connection	*/
@@ -20,6 +23,9 @@ class Mysql implements \Vendor\Connection\Iconnection {
 
   /** @var String - active connection */
   private $active = null;
+
+  /** @var String - charset	*/
+  private $charset = 'utf8';
 
   /** @var Array - Temporarty data storage from queries */
   private $data = array();
@@ -31,16 +37,16 @@ class Mysql implements \Vendor\Connection\Iconnection {
   private $connections = array();
 
   /**
-   * Constructor
+   * @desc   Constructor
    *
-   * @param  String - dsn
-   * @param  String - user
-   * @param  String - password
-   * @param  Array  - options
+   * @param  Array
+   *
    * @return Void
    */
   public function __construct($parameters = array()) 
   {
+    // charset
+    $this->charset = Config::get('ICONNECTION', 'MYSQL', 'CHSET');
     // active dsn connection
     $this->parameters = $parameters;
     // connect to db
@@ -74,6 +80,8 @@ class Mysql implements \Vendor\Connection\Iconnection {
         ,$this->parameters[2]
         ,$this->parameters[3]
       );
+      // set charset to utf8
+      $this->connections[$this->active]->exec("set names ".$this->charset."");
     }
     // Exception occured
     catch(\PDOException $exception) {
