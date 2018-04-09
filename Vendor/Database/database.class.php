@@ -223,7 +223,7 @@ class Database {
   }
 
   /**
-   * @description    Unaccent url
+   * @desc    Unaccent url
    *
    * @param   String
    *
