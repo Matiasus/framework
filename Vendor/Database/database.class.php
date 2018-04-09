@@ -222,8 +222,8 @@ class Database {
     return true;
   }
 
-  /***
-   * @desc    Unaccent url
+  /**
+   * @description    Unaccent url
    *
    * @param   String
    *
