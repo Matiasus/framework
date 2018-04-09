@@ -239,11 +239,6 @@ class Components {
    */
   public function addProcess($form)
   {
-    // if user is not logged in
-    if (!($user = $this->user->getLoggedUser())) {
-      // redirect to login
-      Route::redirect("");
-    }
     // get data
     $data = $form->getData();
     // table
