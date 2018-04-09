@@ -29,10 +29,10 @@ class Database {
   private $select_query = "SELECT ";
 
   /***
-   * Constructor
+   * @desc    Constructor
    *
-   * @param Object \Vendor\Connection\Iconnection
-   * @return Void
+   * @param   Object \Vendor\Connection\Iconnection
+   * @return  Void
    */
   public function __construct(\Vendor\Connection\Iconnection $connection) 
   {
@@ -41,10 +41,10 @@ class Database {
   }
 
   /**
-   * Sql query
+   * @desc    Sql query
    *
-   * @param  String
-   * @return Array Or False	
+   * @param   String
+   * @return  Array
    */
   public function query($query)
   {
@@ -70,7 +70,7 @@ class Database {
     return $content;
   }
 
-  /***
+  /**
    * @desc    Insert data into database
    *
    * @param   Array  
@@ -122,7 +122,7 @@ class Database {
     $this->connection->execute($query, $data);
   }
 
-  /***
+  /**
    * @desc    Select from databse
    *
    * @param   String
