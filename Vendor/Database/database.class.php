@@ -1,16 +1,16 @@
 <?php
 
-/***
-* POZNAMKOVYBLOG Copyright (c) 2015 
-* 
-* Autor:        Mato Hrinko
-* Datum:        08.04.2018 / update
-* Adresa:       http://poznamkovyblog.cekuj.net
-* 
-* ------------------------------------------------------------
-* Inspiration: 		
-*
-***/
+/**
+ * @desc:	POZNAMKOVYBLOG Copyright (c) 2015 
+ * 
+ * @Autor:      Mato Hrinko
+ * @Datum:      08.04.2018 / update
+ * @Adresa:     http://poznamkovyblog.cekuj.net
+ * 
+ * ------------------------------------------------------------
+ * Inspiration: 		
+ *
+ */
 namespace Vendor\Database;
 
 // use session class
@@ -291,7 +291,7 @@ class Database {
     return $clean_url;
   }
 
-  /***
+  /**
    * @desc    Strip tags
    *
    * @param   String
@@ -308,7 +308,7 @@ class Database {
     return $strip_tag;
   }
 
-  /***
+  /**
    * @desc    Convert array to string with delimeter
    *
    * @param   Array
@@ -334,6 +334,6 @@ class Database {
     $string = substr($string, 0, strlen($string) - strlen($junction));
     // return value
     return $string;
-	}
+  }
 }
 
