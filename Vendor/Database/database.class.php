@@ -28,7 +28,7 @@ class Database {
   /** @var String */
   private $select_query = "SELECT ";
 
-  /***
+  /**
    * @desc    Constructor
    *
    * @param   Object \Vendor\Connection\Iconnection
