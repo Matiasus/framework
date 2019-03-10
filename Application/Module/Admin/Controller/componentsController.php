@@ -20,6 +20,18 @@ class componentsController extends \Vendor\Controller\Controller {
   }
 
   /***
+   * @desc   Render all components
+   *
+   * @param  Void
+   * @return Void
+   */
+  public function renderDefault()
+  {
+    // show components
+    $this->variables = $this->components_model->showAllComponents(new \Vendor\Html\Html);
+  }
+
+  /***
    * @desc   Render all articles 
    *
    * @param  Void

@@ -1,4 +1,6 @@
 <div class="content">
+  <div><a href="/<?= $this->privileges, '/', $this->home, '/', $this->page, '/';?>">/</a></div>
+  <h2>Zoznam "<?= $this->component; ?>"</h2>
     <table id="id-components">
     <thead>
     <tr>

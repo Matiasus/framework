@@ -1,40 +1,32 @@
 <div class="content">
-  <h2>Zoznam súčiastok</h2>
+  <div id="navigationTop"><a href="/<?= $this->root;?>">Domov</a></div>
+  <h2>Prehľad</h2>
     <table id="id-components">
     <thead>
     <tr>
-      <th>Popis</th>
-      <th>Hodnota</th>
-      <th>Počet</th>
-      <?php if (strcmp($this->privileges, "admin") === 0 ) {?>
-      <th>Upraviť</th>
-      <?php }?>
+      <th>Rubrika</th>
+      <th></th>
+      <th></th>
+      <th></th>
     </tr>
     </thead>
     <tbody>
-    <?php 
-    foreach ($this->components as $component){ ?>
     <tr>
       <td>
-        <a href="/<?= $this->privileges, '/components/category/', $component->Category_unaccent, '/';?>">
-        <?= $component->Category;?>
-        </a>
+        <a href="/<?= $this->privileges, '/articles/default/';?>">Články</a>
       </td>
-      <td>
-        <a href="/<?= $this->privileges, '/components/detail/', $component->Category_unaccent, '/', $component->Description_unaccent, '/', $component->Id;?>/">
-        <?= $component->Description;?>
-        </a>
-      </td>
-      <td>
-        <?= $component->Amount;?>
-      </td>
-      <?php if (strcmp($this->privileges, "admin") === 0 ) {?>
-      <td>
-        <a href="/<?= $this->privileges, '/components/edit/', $component->Category_unaccent, '/', $component->Description_unaccent, '/', $component->Id;?>/">Upraviť</a>
-      </td>
-      <?php }?>
+      <td></td>
+      <td></td>
+      <td></td>
     </tr>
-    <?php } ?>
+    <tr>
+      <td>
+        <a href="/<?= $this->privileges, '/components/default/';?>">Súčiastky</a>
+      </td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
    </tbody>
   </table>
 </div>
