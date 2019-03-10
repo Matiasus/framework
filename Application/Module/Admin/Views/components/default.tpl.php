@@ -1,4 +1,6 @@
 <div class="content">
+  <div id="navigationTop"><a href="/<?= $this->root;?>">Domov</a> / <a href="/<?= $this->dir;?>">Súčiastky</a></div>
+  <h2>Zoznam súčiastok</h2>
     <table id="id-components">
     <thead>
     <tr>
@@ -15,12 +17,12 @@
     foreach ($this->components as $component){ ?>
     <tr>
       <td>
-        <a href="/<?= $this->privileges, '/components/default/'?>">
+        <a href="/<?= $this->privileges, '/components/category/', $component->Category_unaccent, '/';?>">
         <?= $component->Category;?>
         </a>
       </td>
       <td>
-        <a href="/<?= $this->privileges, '/components/detail/', $component->Description_unaccent, '/', $component->Id;?>/">
+        <a href="/<?= $this->privileges, '/components/detail/', $component->Category_unaccent, '/', $component->Description_unaccent, '/', $component->Id;?>/">
         <?= $component->Description;?>
         </a>
       </td>
@@ -29,7 +31,7 @@
       </td>
       <?php if (strcmp($this->privileges, "admin") === 0 ) {?>
       <td>
-        <a href="/<?= $this->privileges, '/components/edit/', $component->Description_unaccent, '/', $component->Id;?>/">Upraviť</a>
+        <a href="/<?= $this->privileges, '/components/edit/', $component->Category_unaccent, '/', $component->Description_unaccent, '/', $component->Id;?>/">Upraviť</a>
       </td>
       <?php }?>
     </tr>
@@ -44,6 +46,11 @@
     <li><strong>Konto</strong>
     <ul>
       <li><a href="/<?= $this->privileges;?>/user/logoff/">Odhlas</a></li>
+    </ul>
+    </li>
+    <li><strong>Modify</strong>
+    <ul>
+      <li><a href="/<?= $this->privileges;?>/home/add/">Pridaj</a></li>
     </ul>
     </li>
   </ul>

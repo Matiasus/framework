@@ -88,14 +88,13 @@ class Model {
   public function sessionLogin()
   {
     // token session id
-    $uri = Cookie::get(Config::get('COOKIES', 'LAST_URI'));    
-    // token session id
     $sessid = Cookie::get(Config::get('COOKIES', 'SESID'));
     // chcek existence COOKIES
     if (empty($sessid)) {
       // exit
       return false;
     }
+    //-----------------------------------------------
     // select Token correspond to sessionid
     $select = array('*');
     // table Authentication
@@ -145,6 +144,34 @@ class Model {
     $user = $query[0];
     // check if user log on
     if (empty($user)) {
+      // unsuccess
+      return false;
+    }
+    //-----------------------------------------------
+    // select last uri correspond to sessionid
+    $select = array('*');
+    // table visits
+    $from = array(Config::get('ICONNECTION', 'MYSQL', 'T_VISIT'));
+    // condition
+    $where = array(
+      array('=', Config::get('ICONNECTION', 'MYSQL', 'T_VISIT').'.Logins_Session'=>$sessid)
+    );
+    // query
+    $record = $this->database
+      ->select($select)
+      ->from($from) 
+      ->where($where)
+      ->query();
+    // record exists
+    if (empty($record)) {
+      // unsuccess
+      return false;
+    }
+    // last uri
+    $uri = $record[count($record)-1]->Page;
+    //-----------------------------------------------
+    // empty url - return / dengerous infinitive loop /
+    if (empty($uri) || !isset($uri) || $uri === "/") {
       // unsuccess
       return false;
     }

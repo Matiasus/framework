@@ -1,6 +1,6 @@
 <div class="content">
-  <div id="navigationTop"><a href="/<?= $this->root;?>">Domov</a> / <a href="/<?= $this->dir;?>">Články</a></div>
-  <h2>Zoznam článkov</h2>
+<div id="navigationTop"><a href="/<?= $this->root;?>">Domov</a> / <a href="/<?= $this->dir;?>">Články</a> / <a href="/<?= $this->subdir;?>"><?= $this->category ?></a></div>
+  <h2>Zoznam článkov <?= $this->category ?></h2>
     <table id="id-components">
     <tr>
       <th style="width: 400px !important;"><strong>Názov článku</strong></th>
