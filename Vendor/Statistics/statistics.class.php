@@ -19,6 +19,9 @@ use \Vendor\Cookie\Cookie as Cookie,
 
 class Statistics {
 
+  /** @var Object \Vendor\User\User */
+  private $user;
+
   /** @var Object \Vendor\Database\Database */
   private $database;
 
@@ -31,8 +34,10 @@ class Statistics {
    * @param   Void
    * @return  Void
    */
-  public function __construct(\Vendor\Database\Database $database)
+  public function __construct(\Vendor\User\User $user, \Vendor\Database\Database $database)
   {
+    // @var \Vendor\User\User
+    $this->user = $user;
     // @var \Vendor\Database\Database
     $this->database = $database;
     // statistics
@@ -47,21 +52,24 @@ class Statistics {
    */
   public function store()
   {
-    // visited page
-    $page = Route::getReqUri();
-    // insert data
-    $insert = array(
-      "Sessionid" => session_id(),  
-      "Page"      => $page,
-      "Arrival"   => date("Y-m-d H:i:s"),
-    );
-    // insert data
-    $this->database->insert($insert, $this->table_statistics);
-    // store session id into cookie
-    Cookie::set(Config::get('COOKIES', 'LAST_URI'), 
-      $page,
-      time() + Date::getInSec(Config::getArray('DATE')['EXPIR'])
-    );
+    // if user is not logged in
+    if (!empty($user = $this->user->getLoggedUser())) {
+      // visited page
+      $page = Route::getReqUri();
+      // insert data
+      $insert = array(
+        "Sessionid_Logins" => session_id(),  
+        "Page"      => $page,
+        "Arrival"   => date("Y-m-d H:i:s"),
+      );
+      // insert data
+      $this->database->insert($insert, $this->table_statistics);
+      // store session id into cookie
+      Cookie::set(Config::get('COOKIES', 'LAST_URI'), 
+        $page,
+        time() + Date::getInSec(Config::getArray('DATE')['EXPIR'])
+      );
+    }
   }
 
 }

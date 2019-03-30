@@ -182,15 +182,6 @@ class Authenticate {
         $this->tb_session
       ); 
     }
-  /**
-  !!!! NOT STORED - PHPSESSID is stored already  
-  -----------------------------------------
-  // store session id into cookie
-  Cookie::set(Config::get('COOKIES', 'SESID'), 
-    session_id(),
-    time() + Date::getInSec(Config::getArray('DATE')['EXPIR'])
-  );
-  */
   }
   
   /**

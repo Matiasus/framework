@@ -113,7 +113,7 @@ class User {
   public function getLoggedUser()
   {
     // get stored user
-    $user = Session::get("User");
+    $user = Session::get(self::USER);
     // if user exists
     if (!empty($user)) {
       // success

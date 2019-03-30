@@ -14,7 +14,10 @@
 namespace Vendor\Controller;
 
 // use
-use \Vendor\Route\Route as Route;
+use \Vendor\Route\Route as Route,
+    \Vendor\Cookie\Cookie as Cookie,
+    \Vendor\Config\File as Config,
+    \Vendor\Date\Date as Date;
 
 class Controller implements \Vendor\Controller\Icontroller {
 

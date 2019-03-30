@@ -277,27 +277,6 @@ class Form {
         $this->data[$key] = $value;
         // check if column in database exists
         $database->columnExists($key, $table);
-  /*
-        // Overenie existencie nayvu stlpca v MySQL tabulke databazy
-        if ($this->registry->mysql->existenceOfColumn($key) !== TRUE)
-        {
-          // Osetrenie submitu
-          if (!empty($this->submit->name)) {
-            if (strcmp($key, $this->submit->name) === 0) {
-              continue;
-            }
-          }
-          // Osetrenie checkboxu
-          if (!empty($this->checkbox->name)) {
-            if (strcmp($key, $this->checkbox->name) === 0) {
-              continue;
-            }
-          }
-        } else {
-          // Zapis udajov do pola data bez submit hodnoty
-          $this->data[$key] = $value;
-        }
-  */
       }
       // return true
       return true;
