@@ -13,6 +13,14 @@
     <tbody>
     <tr>
       <td>
+        <a href="/<?= $this->privileges, '/sports/default/';?>">Beh</a>
+      </td>
+      <td></td>
+      <td></td>
+      <td></td>
+    </tr>
+    <tr>
+      <td>
         <a href="/<?= $this->privileges, '/articles/default/';?>">Články</a>
       </td>
       <td></td>

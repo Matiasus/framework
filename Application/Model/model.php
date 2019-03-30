@@ -60,16 +60,11 @@ class Model {
    */
   public function logoff()
   {
-    // if user is not logged in
-    if (!($user = $this->user->getLoggedUser())) {
-      // redirect to login
-      Route::redirect("");
-    }
     // update values
     $update = array(
       "Logoff" => date("Y-m-d H:i:s")
     );
-    // Update udajov do databazy
+    // Update data
     $this->database->update(
       $update, 
       array("Sessionid" => session_id()),
