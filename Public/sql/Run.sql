@@ -2,23 +2,22 @@
 ## Copyright (C) 2015 Poznamkovyblog
 ##
 ## @Author:     Matiasus
-## @Date:       2018-02-17
+## @Date:       2019-03-16
 ## @Web:        <http://>
-## @Table:      Articles
+## @Table:      Run
 ## 
 ## Launch:
-##  mysql> source path_to_folder/Articles.sql
+##  mysql> source path_to_folder/Run.sql
 ##
 ****************************************************/
-CREATE TABLE IF NOT EXISTS `Articles` (
+CREATE TABLE IF NOT EXISTS `Run` (
   `Id` int(11) NOT NULL AUTO_INCREMENT PRIMARY KEY,
   `Id_Users` int(11) NOT NULL,
   `Category` varchar(25) DEFAULT NULL,
-  `Category_unaccent` varchar(25) NOT NULL,
+  `Category_unaccent` varchar(25) CHARACTER SET utf32 NOT NULL,
   `Title` varchar(100) DEFAULT NULL,
   `Title_unaccent` varchar(100) NOT NULL,
-  `Content` text,
   `Registered` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `Edited` timestamp NULL DEFAULT NULL,
-  `Type` enum('draft','released') NOT NULL DEFAULT 'draft'
+  FOREIGN KEY(Id_Users) REFERENCES Users(Id)
 ) ENGINE=INNODB;
