@@ -62,59 +62,6 @@ class Model {
   /***
   * @desc   Show all articles
   * 
-  * @param  \Vendor\Html\Html
-  * @return Void
-  */
-  public function showAllComponents(\Vendor\Html\Html $html)
-  {
-    // if user is not logged in
-    if (!($user = $this->user->getLoggedUser())) {
-      // redirect to login
-      Route::redirect("");
-    }
-    // articles
-    $select = array(
-      $this->tab_components.'.Id',
-      $this->tab_components.'.Category',
-      $this->tab_components.'.Category_unaccent',
-      $this->tab_components.'.Description',
-      $this->tab_components.'.Description_unaccent',
-      $this->tab_components.'.Amount',
-      'DATE_FORMAT('.$this->tab_components.'.Registered, \'%d.%b. %Y\') as Registered'
-    );
-    // from
-    $from = array(
-      $this->tab_components, 
-      array()
-    );
-    // condition
-    $where = array(
-    );
-    // ordering
-    $order = array(
-      $this->tab_components.'.Category', 
-      $this->tab_components.'.Description'
-    );
-    // process query
-    $record = $this->database
-      ->select($select)
-      ->from($from) 
-      ->where($where)
-      ->order($order)
-      ->query();
-    // articles
-    $variables = array(
-      'components'=>$record, 
-      'privileges'=>$user['Privileges']
-    );
-
-    // return variables
-    return $variables;
-  }
-
-  /***
-  * @desc   Show all articles
-  * 
   * @param  Void
   * @return Void
   */
@@ -164,8 +111,11 @@ class Model {
       ->where($where)
       ->order($order)
       ->query();
+
     // articles
     $variables = array(
+      'root' => $user['Privileges'].'/home/default',
+      'dir' => $user['Privileges'].'/articles/default',
       'articles'=>$record, 
       'privileges'=>$user['Privileges']
     );
@@ -229,6 +179,10 @@ class Model {
 
     // articles
     $variables = array(
+      'root' => $user['Privileges'].'/home/default',
+      'dir' => $user['Privileges'].'/articles/default',
+      'subdir' => $user['Privileges'].'/'.$record[0]->category_unaccent.'/default/',
+      'category' => $record[0]->category,
       'articles'=>$record, 
       'privileges'=>$user['Privileges']
     );
@@ -292,6 +246,9 @@ class Model {
 
     // articles
     $variables = array(
+      'root' => $user['Privileges'].'/home/default',
+      'dir' => $user['Privileges'].'/articles/default',
+      'subdir' => $user['Privileges'].'/'.Route::get('controller').'/default',
       'article'=>$record[0], 
       'privileges'=>$user['Privileges']
     );

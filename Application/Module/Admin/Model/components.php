@@ -103,6 +103,8 @@ class Components {
       ->query();
     // variables to view
     $variables = array(
+      'root' => $user['Privileges'].'/home/default',
+      'dir' => $user['Privileges'].'/components/default',
       'components'=>$record, 
       'privileges'=>$user['Privileges']
     );
@@ -159,6 +161,9 @@ class Components {
 
     // variables to view
     $variables = array(
+      'root' => $user['Privileges'].'/home/default',
+      'dir' => $user['Privileges'].'/components/default',
+      'component' =>Route::get('params1'),
       'components'=>$record, 
       'privileges'=>$user['Privileges']
     );
