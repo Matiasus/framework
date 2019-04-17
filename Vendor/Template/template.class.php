@@ -128,26 +128,20 @@ class Template{
         Config::get('TEMPL', 'RE_FOR'),
         $this->page
     );
-    // replace conntent
+    // replace content
     $this->page = $this
       ->replace
       ->flash(
         Config::get('TEMPL', 'RE_FLA'),
         $this->page
     );
-    // replace conntent
+    // replace javasript with ckeditor
     $this->page = $this
       ->replace
       ->javascript(
         Config::get('TEMPL', 'RE_JAV'),
         $this->page
     );
-/*
-												   'Editor',
-                           'Javascript',
-
-*/
-	
   }
 
 	/***

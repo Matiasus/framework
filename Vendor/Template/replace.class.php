@@ -182,32 +182,12 @@ class Replace {
    */
   public function javascript($searched, $content)
   {
-    $replace = '<script type="text/javascript">';
-    $replace .= '';
+    $replace  = '<script type="text/javascript">';
+    $replace .= "ckeditorInit('id-editor');";
     $replace .= '</script>';
     // return replace content of flash message  
     return $this->includes($searched, $replace, $content);
   }
-
-	/***
-	 * Editor - vykreslenie editoru
-	 *
-	 * @param Void
-	 * @return Void
-	 */
-	protected function editor()
-	{
-		/* Obsah, ktory sa ma nahradit */
-		$Editor = new \Vendor\Editor\Editor();
-
-		if ((strpos($this->content, self::EDITOR) > 0))
-		{
-			/* Vymazanie znacky v sablone */
-			$this->content = str_replace(self::EDITOR, "", $this->content);
-			/* Nahradenie znacky v hlavnej sablone */
-			$this->content = str_replace(self::BODY, $Editor->ckeditor() . "\n</body>", $this->content);
-		}
-	}
 
 	/***
 	 * Konstruktor vytvorenia spojenia s registrom

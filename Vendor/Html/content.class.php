@@ -1,15 +1,15 @@
 <?php
 /***
-* POZNAMKOVYBLOG Copyright (c) 2015 
-* 
-* Autor:        Mato Hrinko
-* Datum:        30.03.2017
-* Adresa:       http://poznamkovyblog.cekuj.net
-* 
-* ------------------------------------------------------------
-* Description:
-*
-***/
+ * POZNAMKOVYBLOG Copyright (c) 2015 
+ * 
+ * Autor:        Mato Hrinko
+ * Datum:        30.03.2017
+ * Adresa:       http://poznamkovyblog.cekuj.net
+ * 
+ * ------------------------------------------------------------
+ * Description:
+ *
+ ***/
 
 namespace Vendor\Html;
 
