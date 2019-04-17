@@ -1,42 +1,52 @@
 <div class="content">
   <div id="navigationTop"><a href="/<?= $this->root;?>">Domov</a></div>
   <h2>Prehľad</h2>
-    <table id="id-components">
-    <thead>
-    <tr>
-      <th>Rubrika</th>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-      <td>
-        <a href="/<?= $this->privileges, '/sports/default/';?>">Beh</a>
-      </td>
-      <td></td>
-      <td></td>
-      <td></td>
-    </tr>
-    <tr>
-      <td>
-        <a href="/<?= $this->privileges, '/articles/default/';?>">Články</a>
-      </td>
-      <td></td>
-      <td></td>
-      <td></td>
-    </tr>
-    <tr>
-      <td>
-        <a href="/<?= $this->privileges, '/components/default/';?>">Súčiastky</a>
-      </td>
-      <td></td>
-      <td></td>
-      <td></td>
-    </tr>
-   </tbody>
-  </table>
+    <div id="outercontent">
+      <table id="id-tablecontent">
+      <thead>
+      <tr>
+        <th>Rubrika</th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>
+          <a href="/<?= $this->privileges, '/sports/default/';?>">Beh</a>
+        </td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>
+          <a href="/<?= $this->privileges, '/articles/default/';?>">Články</a>
+        </td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>
+          <a href="/<?= $this->privileges, '/components/default/';?>">Súčiastky</a>
+        </td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+     </tbody>
+    </table>
+  </div>
 </div>
 <!-- [Zaciatok] Bocne menu -->
 <div id="menu">

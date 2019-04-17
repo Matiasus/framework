@@ -30,4 +30,31 @@ class articlesController extends \Vendor\Controller\Controller {
     // show articles
     $this->variables = $this->model->showAllArticles();
   }
+
+  /***
+   * @desc   Render add article 
+   *
+   * @param  Void
+   * @return Void
+   */
+  public function renderAdd()
+  {
+    // add article
+    $this->variables = $this->model->addArticle();
+  }
+
+  /***
+   * @desc    Form logon
+   *
+   * @param   Void
+   * @return  Void
+   */	
+  public function formAdd()
+  {
+    // create form
+    $form = $this->model
+                 ->showFormAdd(new \Vendor\Form\Form(new \Vendor\Html\Html));
+    // return html code
+    return $form->getCode();
+  }
 }

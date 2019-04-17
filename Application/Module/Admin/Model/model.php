@@ -24,6 +24,13 @@ use \Vendor\Session\Session as Session,
 /** @class Model */
 class Model {
 
+  /** @const  */
+  const TITLE    = 'Title';
+  /** @const  */
+  const CATEGORY = 'Category';
+  /** @const  */
+  const CONTENT  = 'Content';
+
   /** @var Object \Vendor\User\User */
   private $user;
 
@@ -321,5 +328,108 @@ class Model {
     // return variables
     return $variables;
   }
+
+  /***
+   * @desc   Add article
+   * 
+   * @param  Void
+   * @return Void
+   */
+  public function addArticle()
+  {
+    // if user is not logged in
+    if (!($user = $this->user->getLoggedUser())) {
+      // redirect to login
+      Route::redirect("");
+    }
+    // variables
+    $variables = array(
+      'root' => $user['Privileges'].'/home/default',
+      'dir' => $user['Privileges'].'/articles/default',
+      'privileges'=>$user['Privileges']
+    );
+    // return variables
+    return $variables;
+  }
+
+  /***
+   * @desc   Form for logon
+   * 
+   * @param  \Vendor\Form\Form
+   * @return String
+   */
+  public function showFormAdd(\Vendor\Form\Form $form)
+  {
+    // if user is not logged in
+    if (!($user = $this->user->getLoggedUser())) {
+      // redirect to login
+      Route::redirect("");
+    }
+    // set method
+    $form->setMethod(Config::get('FORM', 'METHOD_POST'));
+    // set action
+    $form->setAction(Route::getfullUri(true));
+    // set form
+    $form->setInline(false);
+    // input text field
+    $form->input()
+         ->text(self::CATEGORY, 'Kategória')
+         ->html5Attrs('required')
+         ->create();
+    // input password field
+    $form->input()
+         ->text(self::TITLE, 'Titul')
+         ->html5Attrs('required')
+         ->create();
+    // input password field
+    $form->input()
+         ->text(self::CONTENT, 'Obsah','', 'id-editor')
+         ->create();
+    // submit
+    $form->input()
+         ->submit('Submit', '', 'Odošli')
+         ->create();
+    // check if created columns exist in database
+    if ($form->succeedSend($this->database, $this->tab_articles)) {
+        // process form
+        $this->addProcess($form, $user);
+    }
+    // return code
+    return $form;
+  }
+
+  /***
+   * @desc    Process login
+   * 
+   * @param   \Vendor\Vendor\Form
+   *
+   * @return  Void
+   */
+  public function addProcess($form, $user)
+  {
+    // get data
+    $data = $form->getData();
+    // table
+    $table = $this->tab_articles;
+
+print_r($data);
+
+    // insert data
+    $this->database->insert(array(
+      'Id_Users' => $user['Id'],
+      'Category' => $data[self::CATEGORY],
+      'Category_unaccent' => $this->database->unAccentUrl($data[self::CATEGORY]),
+      'Title' => $data[self::TITLE],
+      'Title_unaccent' => $this->database->unAccentUrl($data[self::TITLE]),
+      'Content' => $data[self::CONTENT],
+      'Type' => 'draft'
+      ), 
+      $this->tab_articles, 
+      true
+    );
+    // redirect
+    //Route::redirect($user->Privileges . "/home/default/");
+  }
+
 }
 
