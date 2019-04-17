@@ -13,7 +13,8 @@
 ***/
 namespace Vendor\Route;
 
-use \Vendor\Config\File as Config;
+use \Vendor\Config\File as Config,
+    \Vendor\Cookie\Cookie as Cookie;
 
 class Route {
 
@@ -161,19 +162,21 @@ class Route {
     // controller name
     self::$uri['controller_name'] = self::get('controller').self::CONTROLLER;
     // controller full name from parsed url address without Module section
-    self::$uri['controller_namespace'] = '\\'.self::APPLICATION.
-                                         '\\'.self::CONTROLLER.
-                                         '\\'.self::$uri['controller_name'];
+    self::$uri['controller_namespace'] = 
+      '\\'.self::APPLICATION.
+      '\\'.self::CONTROLLER.
+      '\\'.self::$uri['controller_name'];
     // module exists?
     $module_exists = strpos(strtolower(Config::get('ROUTE', 'PATTERN')), strtolower(self::MODULE));
     // controller full name from parsed url address with Module section
     if ($module_exists !== false) {
       //  controller name from parsed url address with Module section
-      self::$uri['controller_namespace'] = '\\'.self::APPLICATION.
-                                           '\\'.self::MODULE.
-                                           '\\'.ucfirst(self::get('module')).
-                                           '\\'.self::CONTROLLER.
-                                           '\\'.self::$uri['controller_name'];
+      self::$uri['controller_namespace'] = 
+        '\\'.self::APPLICATION.
+        '\\'.self::MODULE.
+        '\\'.ucfirst(self::get('module')).
+        '\\'.self::CONTROLLER.
+        '\\'.self::$uri['controller_name'];
     }
   }
 
@@ -215,15 +218,15 @@ class Route {
     return self::$uri[$key];
   }
 
-  /***
-  * Redirect to uri
-  * http://localhost/admin/home/default
-  *
-  * @params String - address routing
-  * @params Bool  true  - absulute address http://localhost/admin/home/default
-  *	 						 false  - relative address admin/home/default
-  * @return void
-  */
+  /**
+   * Redirect to uri
+   * http://localhost/admin/home/default
+   *
+   * @params String - address routing
+   * @params Bool  true  - absulute address http://localhost/admin/home/default
+   *	 						 false  - relative address admin/home/default
+   * @return void
+   */
   public static function redirect($addr = false, $params = array())
   {
     // redirect address
@@ -244,7 +247,7 @@ class Route {
     }
     // redirect url address
     $redirect .= $addr;
-    //
+    // check params
     if (!empty($params)) {
       // append qeustion mark
       $redirect .= '?';

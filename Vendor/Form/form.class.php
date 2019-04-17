@@ -26,11 +26,11 @@ class Form {
   private $code = '';
 
   /***
-  * Constructor
-  *
-  * @param 
-  * @return Void
-  */
+   * @desc   Constructor
+   *
+   * @param  \Vendor\Html\Html
+   * @return Void
+   */
   public function __construct(\Vendor\Html\Html $html)
   {
     // @var \Vendor\Html\Html
@@ -40,7 +40,7 @@ class Form {
   }
   
  /***
-  * Get \Vendor\Form\Input
+  * @desc   Get \Vendor\Form\Input
   *
   * @param  Void
   * @return \Vendor\Form\Input
@@ -54,11 +54,12 @@ class Form {
   }
 
   /***
-  * Set action type 
-  *
-  * @param String
-  * @return void
-  */
+   * @desc   Set action type 
+   *
+   * @param  String
+   * @param  
+   * @return void
+   */
   public function setAction($action, $processing = false) 
   {
     // check if processing required
@@ -72,11 +73,11 @@ class Form {
   }
 
   /***
-  * Get action
-  *
-  * @param Void
-  * @return String
-  */
+   * @desc    Get action
+   *
+   * @param   Void
+   * @return  String
+   */
   public function getAction()
   { 
     // check if set action
@@ -89,11 +90,11 @@ class Form {
   }
 
   /***
-  * Set type of method
-  *
-  * @param String GET || POST (default)
-  * @return Void
-  */
+   * @desc   Set type of method
+   *
+   * @param  String GET || POST (default)
+   * @return Void
+   */
   public function setMethod($method)
   {
     // check if method exists
@@ -108,11 +109,11 @@ class Form {
   }
 
   /***
-  * Get type of method
-  *
-  * @param  Void
-  * @return String GET || POST (default)
-  */
+   * @desc   Get type of method
+   *
+   * @param  Void
+   * @return String GET || POST (default)
+   */
   public function getMethod()
   { 
     // check if set method
@@ -125,11 +126,11 @@ class Form {
   }
 
   /***
-  * Set inline form
-  *
-  * @param Bool 
-  * @return Void
-  */
+   * @desc   Set inline form
+   *
+   * @param  Bool 
+   * @return Void
+   */
   public function setInline($inline)
   {
     // check if method exists
@@ -142,11 +143,11 @@ class Form {
   }
 
   /***
-  * Get type of inline method
-  *
-  * @param Void
-  * @return Bool
-  */
+   * @desc   Get type of inline method
+   *
+   * @param  Void
+   * @return Bool
+   */
   public function getInline()
   { 
     // check if set inline method
@@ -159,11 +160,11 @@ class Form {
   }
 
   /***
-  * Set inline form
-  *
-  * @param Bool 
-  * @return Void
-  */
+   * @desc   Set inline form
+   *
+   * @param  Bool 
+   * @return Void
+   */
   public function setId($id)
   {
     // check if method exists
@@ -181,11 +182,11 @@ class Form {
   }
 
   /***
-  * Get type of inline method
-  *
-  * @param Void
-  * @return Bool
-  */
+   * @desc   Get type of inline method
+   *
+   * @param  Void
+   * @return Bool
+   */
   public function getId()
   { 
     // check if set inline method
@@ -198,11 +199,11 @@ class Form {
   }
 
   /***
-  * Store html codes
-  *
-  * @param  Array
-  * @return Void
-  */
+   * @desc   Store html codes
+   *
+   * @param  Array
+   * @return Void
+   */
   public function storeCode($code = array())
   {
     // check if non empty
@@ -220,11 +221,11 @@ class Form {
   }
 
   /***
-  * Get html code
-  *
-  * @param Void
-  * @return Void
-  */
+   * @desc   Get html code
+   *
+   * @param  Void
+   * @return String
+   */
   public function getCode()
   {
     // row elements
@@ -250,22 +251,22 @@ class Form {
   }
 
   /***
-  * Html creator
-  *
-  * @param Void
-  * @return Void
-  */
+   * @desc
+   *
+   * @param  Void
+   * @return String
+   */
   public function getData()
   {
     return $this->data;
   }
 
   /***
-  *
-  *
-  * @param void
-  * @return Bool
-  */		
+   * @desc   Check if name of form element corresponds with column in table of DB 
+   *
+   * @param  Void
+   * @return Bool
+   */		
   public function succeedSend(\Vendor\Database\Database $database, $table)
   {
     if (isset($_POST) && 
@@ -277,27 +278,6 @@ class Form {
         $this->data[$key] = $value;
         // check if column in database exists
         $database->columnExists($key, $table);
-  /*
-        // Overenie existencie nayvu stlpca v MySQL tabulke databazy
-        if ($this->registry->mysql->existenceOfColumn($key) !== TRUE)
-        {
-          // Osetrenie submitu
-          if (!empty($this->submit->name)) {
-            if (strcmp($key, $this->submit->name) === 0) {
-              continue;
-            }
-          }
-          // Osetrenie checkboxu
-          if (!empty($this->checkbox->name)) {
-            if (strcmp($key, $this->checkbox->name) === 0) {
-              continue;
-            }
-          }
-        } else {
-          // Zapis udajov do pola data bez submit hodnoty
-          $this->data[$key] = $value;
-        }
-  */
       }
       // return true
       return true;

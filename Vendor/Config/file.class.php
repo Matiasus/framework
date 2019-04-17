@@ -14,11 +14,11 @@ class File {
   private static $config = array();
   
   /***
-  * Constructor
-  *
-  * @param  \Vendor\Config\Parser
-  * @return Void
-  */
+   * Constructor
+   *
+   * @param  \Vendor\Config\Parser
+   * @return Void
+   */
   public function __construct($parser)
   {
     // check if parser is loaded
@@ -33,11 +33,11 @@ class File {
   }
 
   /***
-  * Getter of array
-  *
-  * @param key
-  * @return Void
-  */
+   * Getter of array
+   *
+   * @param key
+   * @return Void
+   */
   public static function getArray($key)
   {
     // check if 1 argument come
@@ -65,11 +65,11 @@ class File {
   }
   
   /***
-  * Getter
-  *
-  * @param Void
-  * @return Void
-  */
+   * Getter
+   *
+   * @param Void
+   * @return Void
+   */
   public static function get()
   {
     // copy config array
@@ -83,11 +83,11 @@ class File {
   }
 
   /***
-  * Getter
-  *
-  * @param Void
-  * @return Void
-  */
+   * Getter
+   *
+   * @param Void
+   * @return Void
+   */
   private static function recursion()
   {
     // get function arguments

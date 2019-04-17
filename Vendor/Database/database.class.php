@@ -1,16 +1,16 @@
 <?php
 
-/**
- * @desc:	POZNAMKOVYBLOG Copyright (c) 2015 
- * 
- * @Autor:      Mato Hrinko
- * @Datum:      08.04.2018 / update
- * @Adresa:     http://poznamkovyblog.cekuj.net
- * 
- * ------------------------------------------------------------
- * Inspiration: 		
- *
- */
+/***
+* POZNAMKOVYBLOG Copyright (c) 2015 
+* 
+* Autor:        Mato Hrinko
+* Datum:        08.04.2018 / update
+* Adresa:       http://poznamkovyblog.cekuj.net
+* 
+* ------------------------------------------------------------
+* Inspiration: 		
+*
+***/
 namespace Vendor\Database;
 
 // use session class
@@ -28,11 +28,11 @@ class Database {
   /** @var String */
   private $select_query = "SELECT ";
 
-  /**
-   * @desc    Constructor
+  /***
+   * Constructor
    *
-   * @param   Object \Vendor\Connection\Iconnection
-   * @return  Void
+   * @param Object \Vendor\Connection\Iconnection
+   * @return Void
    */
   public function __construct(\Vendor\Connection\Iconnection $connection) 
   {
@@ -41,15 +41,15 @@ class Database {
   }
 
   /**
-   * @desc    Sql query
+   * Sql query
    *
-   * @param   String
-   * @return  Array
+   * @param  String
+   * @return Array Or False	
    */
   public function query($query)
   {
     // check if non empty value
-    if (empty($query)) {
+    if (empty(trim($query))) {
       // throw to exception with error message
       Session::set("flash", "[".get_called_class()."]:[".__LINE__."]: Query must be <b>NON</b> empty value!");
       // unsuccess return
@@ -70,7 +70,7 @@ class Database {
     return $content;
   }
 
-  /**
+  /***
    * @desc    Insert data into database
    *
    * @param   Array  
@@ -122,7 +122,7 @@ class Database {
     $this->connection->execute($query, $data);
   }
 
-  /**
+  /***
    * @desc    Select from databse
    *
    * @param   String
@@ -222,7 +222,7 @@ class Database {
     return true;
   }
 
-  /**
+  /***
    * @desc    Unaccent url
    *
    * @param   String
@@ -291,7 +291,7 @@ class Database {
     return $clean_url;
   }
 
-  /**
+  /***
    * @desc    Strip tags
    *
    * @param   String
@@ -308,7 +308,7 @@ class Database {
     return $strip_tag;
   }
 
-  /**
+  /***
    * @desc    Convert array to string with delimeter
    *
    * @param   Array
@@ -334,6 +334,6 @@ class Database {
     $string = substr($string, 0, strlen($string) - strlen($junction));
     // return value
     return $string;
-  }
+	}
 }
 
