@@ -36,8 +36,11 @@ class Components {
   /** @var String Articles table */
   private $tab_articles;
 
-  /** @var String Articles table */
+  /** @var String Components table */
   private $tab_components;
+
+  /** @var String Receivers table */
+  private $tab_receivers;
   
   /***
    * Constructor
@@ -57,6 +60,8 @@ class Components {
     $this->tab_articles = Config::get('ICONNECTION', 'MYSQL', 'T_ART');
     // table components
     $this->tab_components = Config::get('ICONNECTION', 'MYSQL', 'T_COMP');
+    // table receivers
+    $this->tab_receivers = Config::get('ICONNECTION', 'MYSQL', 'T_RECE');
   }
   /***
    * @desc   Show all articles
@@ -71,41 +76,39 @@ class Components {
       // redirect to login
       Route::redirect("");
     }
-    // components
-    $select = array(
-      $this->tab_components.'.Id',
-      $this->tab_components.'.Category',
-      $this->tab_components.'.Category_unaccent',
-      $this->tab_components.'.Description',
-      $this->tab_components.'.Description_unaccent',
-      $this->tab_components.'.Amount',
-      'DATE_FORMAT('.$this->tab_components.'.Registered, \'%d.%b. %Y\') as Registered'
-    );
-    // from
-    $from = array(
-      $this->tab_components, 
-      array()
-    );
-    // condition
-    $where = array(
-    );
-    // ordering
-    $order = array(
-      $this->tab_components.'.Category', 
-      $this->tab_components.'.Description'
-    );
-    // process query
-    $record = $this->database
-      ->select($select)
-      ->from($from) 
-      ->where($where)
-      ->order($order)
-      ->query();
+
+    // records 
+    $records = $this->database->query("
+      SELECT 
+        $this->tab_receivers.Mark as mark,
+        $this->tab_receivers.Mark_unaccent as mark_unaccent,
+        $this->tab_receivers.Type as type,
+        $this->tab_receivers.Type_unaccent as type_unaccent,
+        $this->tab_components.Id as id,
+        $this->tab_components.Category as category,
+        $this->tab_components.Category_unaccent as category_unaccent,
+        $this->tab_components.Description as description,
+        $this->tab_components.Description_unaccent as description_unaccent,
+        $this->tab_components.Label as label,
+        $this->tab_components.Amount as amount
+      FROM $this->tab_components
+      INNER JOIN $this->tab_receivers
+        ON $this->tab_components.Id_Receivers = $this->tab_receivers.Id
+      ORDER BY 
+        $this->tab_receivers.Mark, $this->tab_receivers.Type, $this->tab_components.Description
+    ");
+
+    // check if records were found
+    if (empty($records)) {
+      // unsuccess
+      return false;
+    }
+
     // variables to view
     $variables = array(
       'root' => $user['Privileges'].'/home/default',
       'dir' => $user['Privileges'].'/components/default',
-      'components'=>$record, 
+      'components'=>$records, 
       'privileges'=>$user['Privileges']
     );
 
@@ -125,46 +128,39 @@ class Components {
       // redirect to login
       Route::redirect("");
     }
-    // components
-    $select = array(
-      $this->tab_components.'.Id',
-      $this->tab_components.'.Category',
-      $this->tab_components.'.Category_unaccent',
-      $this->tab_components.'.Description',
-      $this->tab_components.'.Description_unaccent',
-      $this->tab_components.'.Amount'
-    );
-    // from
-    $from = array(
-      $this->tab_components, 
-      array()
-    );
-    // condition
-    $where = array(
-      array(
-        '=',  
-        $this->tab_components.'.Category_unaccent'=>Route::get('params1')
-      )
-    );
-    // ordering
-    $order = array(
-      $this->tab_components.'.Category', 
-      $this->tab_components.'.Description'
-    );
-    // process query
-    $record = $this->database
-      ->select($select)
-      ->from($from) 
-      ->where($where)
-      ->order($order)
-      ->query();
+    // records 
+    $records = $this->database->query("
+      SELECT 
+        $this->tab_receivers.Mark as mark,
+        $this->tab_receivers.Mark_unaccent as mark_unaccent,
+        $this->tab_receivers.Type as type,
+        $this->tab_receivers.Type_unaccent as type_unaccent,
+        $this->tab_components.Id as id,
+        $this->tab_components.Category as category,
+        $this->tab_components.Category_unaccent as category_unaccent,
+        $this->tab_components.Description as description,
+        $this->tab_components.Description_unaccent as description_unaccent,
+        $this->tab_components.Label as label,
+        $this->tab_components.Amount as amount
+      FROM $this->tab_components
+      INNER JOIN $this->tab_receivers
+        ON $this->tab_components.Id_Receivers = $this->tab_receivers.Id
+      WHERE
+        $this->tab_receivers.".ucfirst(Route::get('params1'))."_unaccent='".Route::get('params2')."'
+    ");
+
+    // check if records were found
+    if (empty($records)) {
+      // unsuccess
+      return false;
+    }
 
     // variables to view
     $variables = array(
       'root' => $user['Privileges'].'/home/default',
       'dir' => $user['Privileges'].'/components/default',
-      'component' =>Route::get('params1'),
-      'components'=>$record, 
+      'component' =>Route::get('params2'),
+      'components'=>$records, 
       'privileges'=>$user['Privileges']
     );
     // return variables
@@ -244,6 +240,11 @@ class Components {
    */
   public function addProcess($form)
   {
+    // if user is not logged in
+    if (!($user = $this->user->getLoggedUser())) {
+      // redirect to login
+      Route::redirect("");
+    }
     // get data
     $data = $form->getData();
     // table
@@ -260,8 +261,9 @@ class Components {
       $table, 
       true
     );
+
     // redirect
-    Route::redirect($user['Privileges']."/home/default/");
+    //Route::redirect($user['Privileges']."/home/default/");
   }
 
 }

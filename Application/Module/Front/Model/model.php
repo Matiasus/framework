@@ -154,7 +154,7 @@ class Model {
     $from = array(Config::get('ICONNECTION', 'MYSQL', 'T_VISIT'));
     // condition
     $where = array(
-      array('=', Config::get('ICONNECTION', 'MYSQL', 'T_VISIT').'.Logins_Session'=>$sessid)
+      array('=', Config::get('ICONNECTION', 'MYSQL', 'T_VISIT').'.Sessionid_Logins'=>$sessid)
     );
     // query
     $record = $this->database

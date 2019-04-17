@@ -8,6 +8,7 @@
     <link rel="stylesheet" type="text/css" href="/Public/css/style.css" />
     <link rel="shortcut icon" href="/Public/images/icons/favicon.ico" />
     <script type="text/javascript" src="/Public/javascripts/script.js"></script>
+	  <script type="text/javascript" src="/Library/ckeditor/ckeditor.js"></script>
   </head> 
   <body>
     <!-- Top with logo -->
@@ -19,13 +20,13 @@
     </div>
     <!-- Wrapper -->
     <div id="wrapper">
-      <!-- Flash message -->
-      <div id="flash">
-        {include flashmessage}
-      </div>
       <!-- Content -->
       <div id="contentwrapper">
         {include content}
+      </div>
+      <!-- Flash message -->
+      <div id="flash">
+        {include flashmessage}
       </div>
     </div>
     <!-- Paticka stranky -->
