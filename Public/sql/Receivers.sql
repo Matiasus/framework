@@ -11,7 +11,7 @@
 ##
 ****************************************************/
 CREATE TABLE IF NOT EXISTS `Receivers` (
-  `Id` int(11) NOT NULL,
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
   `Mark` varchar(100) DEFAULT NULL,
   `Mark_unaccent` varchar(100) DEFAULT NULL,
   `Type` varchar(100) DEFAULT NULL,
@@ -20,5 +20,5 @@ CREATE TABLE IF NOT EXISTS `Receivers` (
   `Power` varchar(100) NOT NULL,
   `Registered` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   `Edited` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY(Id),
+  PRIMARY KEY(Id)
 ) ENGINE=INNODB;

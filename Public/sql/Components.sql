@@ -11,7 +11,7 @@
 ##
 ****************************************************/
 CREATE TABLE IF NOT EXISTS `Components` (
-  `Id` int(11) NOT NULL,
+  `Id` int(11) NOT NULL AUTO_INCREMENT,
   `Id_Receivers` int(11),
   `Category` varchar(25) DEFAULT NULL,
   `Category_unaccent` varchar(25) NOT NULL,
