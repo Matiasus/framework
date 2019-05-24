@@ -113,15 +113,15 @@ label
 *****************************************/
 #bar
 {
-	background: #fff;
-	position: relative;
-	width: 100% !important;
-	max-width: 1200px;
-	margin: 0px auto;
-	padding: 0px;
-	border-width: 0px;
-	border-color: #000;
-	border-style: dotted;
+  background: #fff;
+  position: relative;
+  width: 100% !important;
+  max-width: 1200px;
+  margin: 0px auto;
+  padding: 0px;
+  border-width: 0px;
+  border-color: #000;
+  border-style: dotted;
 }
 #bar-inside
 {
@@ -191,7 +191,7 @@ label
   overflow: -moz-scrollbars-none;
 }
 #id-tablecontent tbody::-webkit-scrollbar { 
-    display: none; 
+  display: none; 
 }
 #id-tablecontent th, #id-tablecontent td
 {
@@ -246,8 +246,8 @@ label
 *****************************************/
 #navigationTop
 {
-	font-family: Arial, Helvetica;
-	font-size: 12px;
+  font-family: Arial, Helvetica;
+  font-size: 12px;
   color: #999;
   margin: 0px;
   padding: 0px;
@@ -272,53 +272,53 @@ label
 .article,
 .components 
 {
-	color: #262626;
-	margin-left: 10px;
-	padding: 0px;
-	width: 80% !important;
-	border-width: 0px;
-	border-color: #eee;
-	border-style: solid;
+  color: #262626;
+  margin-left: 10px;
+  padding: 0px;
+  width: 80% !important;
+  border-width: 0px;
+  border-color: #eee;
+  border-style: solid;
 }
 .content{
-	width: 80%;
-	margin: 5px;
-	padding: 5px;
-	padding-left: 10px;
-	padding-top: 10px;
-	border-width: 0px;
-	border-color: #ccc;
-	border-style: solid;
+  width: 80%;
+  margin: 5px;
+  padding: 5px;
+  padding-left: 10px;
+  padding-top: 10px;
+  border-width: 0px;
+  border-color: #ccc;
+  border-style: solid;
 }
 span.cite
 { 
-	width: 70%;
-	font-weight: bold;
-	font-family: "Comic Sans MS", cursive, sans-serif;
-	color: #ddd;
-	font-size: 25.5px; 
-	text-align: left;
-	margin: 0px; 
-	padding: 10px 10px 10px 21px;
+  width: 70%;
+  font-weight: bold;
+  font-family: "Comic Sans MS", cursive, sans-serif;
+  color: #ddd;
+  font-size: 25.5px; 
+  text-align: left;
+  margin: 0px; 
+  padding: 10px 10px 10px 21px;
 }
 .date 
 { 
-	position: relative;
-	top: -5px;
-	width: 40%;
-	padding: 5px;
-	margin: 0px;
-	color: #777;
-	background-color: transparent;
-	color: 					#a5a5a5;
-	font-family: 		"Droid Serif", "Times New Roman", serif;
+  position: relative;
+  top: -5px;
+  width: 40%;
+  padding: 5px;
+  margin: 0px;
+  color: #777;
+  background-color: transparent;
+  color: 					#a5a5a5;
+  font-family: 		"Droid Serif", "Times New Roman", serif;
 	font-size:			13px;
 }
 .operation
 {
-	color: #89a; 
-	margin-left: 20px;
-	font-size: 14px;
+  color: #89a; 
+  margin-left: 20px;
+  font-size: 14px;
 }
 
 /****************************************
@@ -326,12 +326,12 @@ span.cite
 *****************************************/
 #horizontal_menu
 {
-	width: 80%;
-	margin: 0px;
-	padding:  5px;
-	border-width: 0px;
-	border-style: solid;
-	border-color:	#000;
+  width: 80%;
+  margin: 0px;
+  padding:  5px;
+  border-width: 0px;
+  border-style: solid;
+  border-color:	#000;
   position: absolute;
   top: -70px;
 }
@@ -344,19 +344,16 @@ span.cite
 *****************************************/
 #menu
 {
-	position: absolute;
-	top: -100px;
-	left: 85%;
-	white-space:nowrap;
-
-	margin: 0px; 
-	padding: 10px 10px 10px 20px; 
-
+  position: absolute;
+  top: -100px;
+  left: 85%;
+  white-space:nowrap;
+  margin: 0px; 
+  padding: 10px 10px 10px 20px;
   min-width: 200px;
-	border-width: 1px;
-	border-color: #ccc;
-	border-style: solid;
-
+  border-width: 1px;
+  border-color: #ccc;
+  border-style: solid;
   -webkit-box-shadow: 1px 1px 5px 0px #888;  /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
   -moz-box-shadow: 1px 1px 5px 0px #888;  /* Firefox 3.5 - 3.6 */
   box-shadow: 1px 1px 5px 0px #888; 
@@ -364,19 +361,17 @@ span.cite
 
 #menu ul
 {
-	margin: 5px;
-	margin-left:15px;
-	padding: 5px;
-	font-family:"trebuchet ms", "monaco", "arial", "verdana", sans-serif; 
-	font-size: 12px;
+  margin: 5px;
+  margin-left:15px;
+  padding: 5px;
+  font-family:"trebuchet ms", "monaco", "arial", "verdana", sans-serif; 
+  font-size: 12px;
 }
 #menu ul li
 {
-	margin: 0px; padding: 3px; background: url('../images/icons/valid.jpg') no-repeat top left; 
+  margin: 0px; padding: 3px; background: url('../images/icons/valid.jpg') no-repeat top left; 
 }
-#menuul li:hover
-{
-}
+
 #menu ul li ul
 {
 	margin: 10px; padding: 0px; display: block;
@@ -388,11 +383,11 @@ span.cite
 #menu-konto ul li ul li:hover,
 #menu-articles ul li ul li:hover
 {	
-	list-style:	disc;
+  list-style:	disc;
 }
 
 #picture{
-	border: 1px solid #ccc;
+  border: 1px solid #ccc;
   -webkit-box-shadow: 5px 5px 3px 0px #888;  /* Safari 3-4, iOS 4.0.2 - 4.2, Android 2.3+ */
   -moz-box-shadow: 5px 5px 3px 0px #888;  /* Firefox 3.5 - 3.6 */
   box-shadow: 5px 5px 3px 0px #888; 
@@ -400,99 +395,99 @@ span.cite
 /****************************************
 ** Paticka
 *****************************************/
-#bar-foot{
-
-	background: #fff;
-	width: 100% !important;
-	margin: 0px;
-	padding: 10px;
+#bar-foot
+{
+  background: #fff;
+  width: 100% !important;
+  margin: 0px;
+  padding: 10px;
 
 }
 
 #bar-foot-inside
 {
-	width: 75%;
-	margin: 0px auto;
-	padding: 0px;
-	border: 0px #fff solid;
-	text-align: center;
-	color: #33c;
-	font-family: 'Noto Sans', sans-serif;
-	font-size: 15px;
-	line-height: 1.5;
+  width: 75%;
+  margin: 0px auto;
+  padding: 0px;
+  border: 0px #fff solid;
+  text-align: center;
+  color: #33c;
+  font-family: 'Noto Sans', sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
 }
 
 #bar-logo
 {
-	text-align: center;
-	background: #fff;
-	width: 100% !important;
-	margin: 0px;
-	padding: 0px;
+  text-align: center;
+  background: #fff;
+  width: 100% !important;
+  margin: 0px;
+  padding: 0px;
 }
 /****************************************
 ** Chybova sprava
 *****************************************/
 #error
 {
-	margin: 10px;
-	padding: 10px;
-	width: 80%;
-	color: #000;
-	font-family: 'Noto Sans', sans-serif;
-	font-size: 15px;
-	line-height: 1.5;
-	border-width: 2px;
-	border-color: transparent;
-	border-style: solid;
+  margin: 10px;
+  padding: 10px;
+  width: 80%;
+  color: #000;
+  font-family: 'Noto Sans', sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+  border-width: 2px;
+  border-color: transparent;
+  border-style: solid;
 }
 /****************************************
 ** FLash sprava
 *****************************************/
 #flash
 {
-	margin: 0px;
-	padding: 10px;
-	color: #000;
-	background-color: #fff;
-	font-family: 'Noto Sans', sans-serif;
-	font-size: 15px;
-	line-height: 1.5;
-	border-width: 1px;
-	border-color: #fff;
-	border-style: solid;
+  margin: 0px;
+  padding: 10px;
+  color: #000;
+  background-color: #fff;
+  font-family: 'Noto Sans', sans-serif;
+  font-size: 15px;
+  line-height: 1.5;
+  border-width: 1px;
+  border-color: #fff;
+  border-style: solid;
 }
 
 #tablecontent
 {
-	width: 600px;
-	margin: 0px; 
-	padding: 0px;
-	border: 0px #aaa solid; 
-	background-color: transparent; 
-	color: #333; 
+  width: 600px;
+  margin: 0px; 
+  padding: 0px;
+  border: 0px #aaa solid; 
+  background-color: transparent; 
+  color: #333; 
 }
 #tablecontent td
 {
-	padding: 5px;
-	border: 0px #aaa solid; 
-	background-color: transparent; 
-	color: #333; 
+  padding: 5px;
+  border: 0px #aaa solid; 
+  background-color: transparent; 
+  color: #333; 
 }
 
 div#clock
 {
-	position: relative;
-	top: 105px;
-	left: -15px;
-	white-space:nowrap;
-	margin: 0px; 
-	padding: 0px; 
-	width: 300px;
-	float: right;
-	font-family: "trebuchet ms", "monaco", "arial", "verdana", sans-serif; 
-	font-size: 12px;
-	border: 0px #aaa solid;
+  position: relative;
+  top: 105px;
+  left: -15px;
+  white-space:nowrap;
+  margin: 0px; 
+  padding: 0px; 
+  width: 300px;
+  float: right;
+  font-family: "trebuchet ms", "monaco", "arial", "verdana", sans-serif; 
+  font-size: 12px;
+  border: 0px #aaa solid;
 }
 /* Formular */
 td { border: 0px #000 solid; margin: 2px; padding: 2px; }
@@ -502,31 +497,31 @@ id-submit{ text-align: right; margin: 10px; padding-top: 10px; }
 
 input:required:invalid
 {
-	background-image: url('../images/icons/invalid.png');
-	background-position: right top;
-	background-repeat: no-repeat;
+  background-image: url('../images/icons/invalid.png');
+  background-position: right top;
+  background-repeat: no-repeat;
 }
 
 input:required:valid
 {
-	background-image: url('../images/icons/valid.png');
-	background-position: right top;
-	background-repeat: no-repeat;
+  background-image: url('../images/icons/valid.png');
+  background-position: right top;
+  background-repeat: no-repeat;
 
 }
 #id-submit
 { 
-	font-family: "trebuchet ms", "monaco", "arial", "verdana", sans-serif;  
-	border: 1px #999 solid; 
-	background-color: #ddd; 
-	color: #333; 
-	margin-top: 0px;
+  font-family: "trebuchet ms", "monaco", "arial", "verdana", sans-serif;  
+  border: 1px #999 solid; 
+  background-color: #ddd; 
+  color: #333; 
+  margin-top: 0px;
 }
 
 #id-submit:hover
 { 
-	cursor: pointer; 
-	background-color: #bbb;
+  cursor: pointer; 
+  background-color: #bbb;
 }
 
 #id-name,
@@ -558,50 +553,47 @@ input:required:valid
 /* Style the CKEditor element to look like a textfield */
 .cke_textarea_inline 
 {
-	margin-top: 5px;
-	margin-left: 2px;
-	padding: 10px;
-	height: 400px;
-	width: 928px;
-	overflow: auto;
-	border: 1px #888 solid;
+  margin-top: 5px;
+  margin-left: 2px;
+  padding: 10px;
+  height: 400px;
+  width: 928px;
+  overflow: auto;
+  border: 1px #888 solid;
 
 }
 
 blockquote 
 {
-	font-style: italic;
-	font-family: Georgia, Times, "Times New Roman", serif;
-	padding: 2px 0;
-	border-style: solid;
-	border-color: #ccc;
-	border-width: 0px;
-
+  font-style: italic;
+  font-family: Georgia, Times, "Times New Roman", serif;
+  padding: 2px 0;
+  border-style: solid;
+  border-color: #ccc;
+  border-width: 0px;
 }
 
 .cke_contents_ltr blockquote 
 {
-	padding-left: 20px;
-	padding-right: 8px;
-	border-left-width: 5px;
-
+  padding-left: 20px;
+  padding-right: 8px;
+  border-left-width: 5px;
 }
 
 .cke_contents_rtl blockquote 
 {
-	padding-left: 8px;
-	padding-right: 20px;
-	border-right-width: 5px;
-
+  padding-left: 8px;
+  padding-right: 20px;
+  border-right-width: 5px;
 }
 
 .cke_panel_frame 
 {
-	background: white;
+  background: white;
 }
 
 .marker 
 {
-	background-color: Yellow;
+  background-color: Yellow;
 }
 
