@@ -7,6 +7,9 @@ use \Vendor\Config\File as Config;
 
 class Composer {
   
+  /** @var String */
+  private $tag;
+  
   /** @var \Vendor\Html\Html */
   private $html;
 
@@ -23,11 +26,11 @@ class Composer {
   private $parameters = array();
 
   /***
-  * Constructor
-  *
-  * @param 
-  * @return Void
-  */
+   * Constructor
+   *
+   * @param 
+   * @return Void
+   */
   public function __construct(\Vendor\Html\Html $html)
   {
     // @var \Vendor\Html\Html
@@ -35,13 +38,25 @@ class Composer {
     // parameters of form
     $this->parameters;
   }
+  
+  /***
+   * 
+   *
+   * @param 
+   * @return 
+   */
+  public function setTag($tag = false)
+  {
+    // set parameters
+    $this->tag = $tag;
+  }
 
   /***
-  * 
-  *
-  * @param 
-  * @return 
-  */
+   * 
+   *
+   * @param 
+   * @return 
+   */
   public function setParameters($parameters = array())
   {
     // set parameters
@@ -49,11 +64,11 @@ class Composer {
   }
 
   /***
-  * 
-  *
-  * @param 
-  * @return 
-  */
+   * 
+   *
+   * @param 
+   * @return 
+   */
   public function setContent($content)
   {
     // set content
@@ -61,11 +76,11 @@ class Composer {
   }
 
   /***
-  * 
-  *
-  * @param 
-  * @return 
-  */
+   * 
+   *
+   * @param 
+   * @return 
+   */
   public function setAttributes($attributes = array())
   {
     // set attributes
@@ -73,11 +88,11 @@ class Composer {
   }
 
   /***
-  * 
-  *
-  * @param 
-  * @return 
-  */
+   * 
+   *
+   * @param 
+   * @return 
+   */
   public function getAttribute($attribute)
   {
     // not empty?
@@ -93,14 +108,14 @@ class Composer {
   }
 
   /***
-  * 
-  *
-  * @param 
-  * @return 
-  */
+   * 
+   *
+   * @param 
+   * @return 
+   */
   public function getParameter($parameter)
   {
-    // not empty?
+    // if empty
     if (!empty($parameter)) {
       // if exists
       if (array_key_exists($parameter, $this->parameters)) {
@@ -112,11 +127,11 @@ class Composer {
   }
 
   /***
-  * 
-  *
-  * @param 
-  * @return 
-  */
+   * 
+   *
+   * @param 
+   * @return 
+   */
   public function getCode()
   {
     // get html code
@@ -124,11 +139,11 @@ class Composer {
   }
 
   /***
-  * Html code
-  * 
-  * @param Void
-  * @return String
-  */
+   * 
+   *
+   * @param 
+   * @return 
+   */
   public function create()
   {
     // name
@@ -142,28 +157,28 @@ class Composer {
     }
     // key
     $key = strtolower($name);
-    // check if id is set
-    if($this->getAttribute('id') === false) {
-      // create id
-      $this->attributes['id'] = 'id-'.$key;
-    }
     // td element
     $td = $this->build('td', false, $content);
+    // remove label from input
+    if (array_key_exists(Config::get('FORM', 'LABEL'), $this->attributes)) {
+      // remove label
+      unset($this->attributes[Config::get('FORM', 'LABEL')]);
+    }
     // input element
-    $input = $this->build('input', $this->attributes);
+    $input = $this->build($this->tag, $this->attributes);   
     // inline form
     if ($this->getParameter(Config::get('FORM', 'INLINE')) !== true) {
       // tr element
       $tr  = $this->build('tr', false, $td);
       // td element
-      $td  = $this->build('td', array("align"=>"right"), $input);
+      $td  = $this->build('td', false, $input);
       // tr element
       $tr .= $this->build('tr', false, $td);       
     } else {
       // td element
       $tr  = $this->build('td', false, $content);
       // td element
-      $td .= $this->build('td', array("align"=>"right"), $input);
+      $td .= $this->build('td', false, $input);
       // tr element
       $tr  = $this->build('tr', false, $td);
     }
@@ -172,13 +187,14 @@ class Composer {
   }
 
   /***
-  * Html builder
-  * 
-  * @param Void
-  * @return String
-  */
+   * 
+   *
+   * @param 
+   * @return 
+   */
   private function build($tag = false, $attributes = false, $content = false)
   {
+    // build html tag
     return $this->html->tag($tag)
       ->attributes($attributes)
       ->content($content)  

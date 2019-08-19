@@ -13,8 +13,38 @@ class Input {
   /** @var \Vendor\Form\Input\Items */
   private $items;
 
+  /** @var type */
+  private $type;
+
   /** @var parameters */
   private $parameters;
+
+  /** allowable types */
+  public $allowable = array(
+    /** input types */
+    'button',
+    'chceckbox',
+    'color',
+    'date',
+    'datetime-local',
+    'email',
+    'file',
+    'hidden',
+    'image',
+    'month',
+    'number',
+    'password',
+    'radio',
+    'range',
+    'reset',
+    'search',
+    'submit',
+    'tel',
+    'text',
+    'time',
+    'url',
+    'week'
+  );
 
   /** allowable attributes */
   private $input_type_attr = array(
@@ -23,19 +53,20 @@ class Input {
     'label',
     'value',
     'id',
-    'maxlength'
+    'maxlength',
+    'min',
+    'max',
+    'step',
+    'onclick',
+    'onload'
   );
 
-  /** @var Array */
-  private $params = array();
-
-
   /***
-  * Constructor
-  *
-  * @param 
-  * @return Void
-  */
+   * Constructor
+   *
+   * @param 
+   * @return Void
+   */
   public function __construct(\Vendor\Html\Html $html)
   {
     // @var \Vendor\Html\Html
@@ -43,13 +74,37 @@ class Input {
     // @var \Vendor\Form\Input\Items
     $this->items = new \Vendor\Form\Input\Items($this->html);
   }
+  
+  /***
+   * 
+   *
+   * @param 
+   * @return 
+   */
+  public function setTag($tag = false)
+  {
+    // set parameters
+    $this->tag = $tag;
+  }
 
   /***
-  * 
-  *
-  * @param 
-  * @return 
-  */
+   * 
+   *
+   * @param 
+   * @return 
+   */
+  public function setType($type = false)
+  {
+    // set parameters
+    $this->type = $type;
+  }
+
+  /***
+   * 
+   *
+   * @param 
+   * @return 
+   */
   public function setParameters($parameters = array())
   {
     // set parameters
@@ -57,11 +112,77 @@ class Input {
   }
 
   /***
-  * 
-  *
-  * @param 
-  * @return 
-  */
+   * 
+   *
+   * @param 
+   * @return 
+   */
+  public function attr()
+  {
+    // check number of arguments
+    if (func_num_args() > count($this->input_type_attr)) {
+      // throw to exception with error message
+      throw new \Exception('['.get_called_class().']:['.__LINE__.']: Maximum arguments is <b>'.count($this->input_type_attr).'</b>!');
+    }
+    // if array, take first element
+    if ((func_num_args() === 0) || !is_array(func_get_arg(0))) {
+      // throw to exception with error message
+      throw new \Exception('['.get_called_class().']:['.__LINE__.']: Arguments must be array!');
+    }
+    // process routine for every type
+    return $this->routine(func_get_args()[0]);
+  }
+
+  /***
+   * 
+   *
+   * @param
+   * 
+   * @return 
+   */
+  public function routine($arguments = array())
+  {
+    $attributes = array();
+    // check number of arguments
+    if (func_num_args() > 2) {
+      // throw to exception with error message
+      throw new \Exception('['.get_called_class().']:['.__LINE__.']: Maximum arguments is <b>2</b>!');
+    }
+    // only typed inputs
+    if ($this->type !== false) {
+      // attributes
+      $attributes = array(
+        'type' => $this->type
+      );
+    }
+    // assign values
+    foreach ($arguments as $key => $value) {
+    //while (list($key, $value) = each($arguments)) {
+      // check if attribute exists
+      if (!in_array($key, $this->input_type_attr)) {
+        // throw to exception with error message
+        throw new \Exception('['.get_called_class().']:['.__LINE__.']: Try to assign value which are not defined in \$input_type_attr!');
+      }
+      // assign values
+      $attributes[$key] = $value;
+    }
+    // send tag
+    $this->items->setTag($this->tag);
+    // send attributes
+    $this->items->setParameters($this->parameters);
+    // send attributes
+    $this->items->setAttributes($attributes);
+    // @var \Vendor\Form\Input\Items
+    return $this->items;
+  }
+
+  /***
+   * 
+   *
+   * @param
+   * 
+   * @return 
+   */
   public function getCode()
   {
     $code = '';
@@ -82,137 +203,6 @@ class Input {
     }
     // unsuccess
     return false;
-  }
-
-  /***
-   * 
-   *
-   * @param 
-   * @return 
-   */
-  public function text()
-  {
-    // check number of arguments
-    if (func_num_args() > 5) {
-      // throw to exception with error message
-      throw new \Exception('['.get_called_class().']:['.__LINE__.']: Maximum arguments is <b>5</b>!');
-    }
-    // arguments
-    $arguments = func_get_args();
-    // process routine for every type
-    return $this->routine(func_get_args(), __FUNCTION__);
-  }
-
-  /***
-   * 
-   *
-   * @param 
-   * @return 
-   */
-  public function email()
-  {
-    // check number of arguments
-    if (func_num_args() > 5) {
-      // throw to exception with error message
-      throw new \Exception('['.get_called_class().']:['.__LINE__.']: Maximum arguments is <b>5</b>!');
-    }
-    // arguments
-    $arguments = func_get_args();
-    // process routine for every type
-    return $this->routine(func_get_args(), __FUNCTION__);
-  }
-
-  /***
-   * 
-   *
-   * @param 
-   * @return 
-   */
-  public function password()
-  {
-    // check number of arguments
-    if (func_num_args() > 5) {
-      // throw to exception with error message
-      throw new \Exception('['.get_called_class().']:['.__LINE__.']: Maximum arguments is <b>5</b>!');
-    }
-    // arguments
-    $arguments = func_get_args();
-    // process routine for every type
-    return $this->routine(func_get_args(), __FUNCTION__);
-  }
-
-  /***
-   * 
-   *
-   * @param 
-   * @return 
-   */
-  public function checkbox()
-  {
-    // check number of arguments
-    if (func_num_args() > 3) {
-      // throw to exception with error message
-      throw new \Exception('['.get_called_class().']:['.__LINE__.']: Maximum arguments is <b>5</b>!');
-    }
-    // arguments
-    $arguments = func_get_args();
-    // process routine for every type
-    return $this->routine(func_get_args(), __FUNCTION__);
-  }
-
-  /***
-   * 
-   *
-   * @param 
-   * @return 
-   */
-  public function submit()
-  {
-    // check number of arguments
-    if (func_num_args() > 3) {
-      // throw to exception with error message
-      throw new \Exception('['.get_called_class().']:['.__LINE__.']: Maximum arguments is <b>3</b>!');
-    }
-    // arguments
-    $arguments = func_get_args();
-    // process routine for every type
-    return $this->routine(func_get_args(), __FUNCTION__);
-  }
-
-  /***
-   * 
-   *
-   * @param 
-   * @return 
-   */
-  public function routine($arguments = array(), $type)
-  {
-    $attributes = array();
-    // check number of arguments
-    if (func_num_args() > 2) {
-      // throw to exception with error message
-      throw new \Exception('['.get_called_class().']:['.__LINE__.']: Maximum arguments is <b>2</b>!');
-    }
-    // attributes
-    $attributes = array(
-      'type' => $type
-    );
-    // assign values
-    while (list($key, $value) = each($arguments)) {
-      // check if attribute exists
-      if (!array_key_exists($key, $this->input_type_attr)) {
-        // throw to exception with error message
-        throw new \Exception('['.get_called_class().']:['.__LINE__.']: Try to assign value which are not defined in \$input_type_attr!');
-      }
-      // assign values
-      $attributes[$this->input_type_attr[$key]] = $value;
-    }
-    // send attributes
-    $this->items->setParameters($this->parameters);
-    // send attributes
-    $this->items->setAttributes($attributes);
-    // @var \Vendor\Form\Input\Items
-    return $this->items;
   }
 
   /***

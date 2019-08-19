@@ -19,10 +19,12 @@ class Html {
     /** input types */
     'text',
     'file',
+    'time',    
     'image',
     'radio',
     'reset',
     'submit',
+    'number',
     'button',
     'hidden',
     'checkbox',
