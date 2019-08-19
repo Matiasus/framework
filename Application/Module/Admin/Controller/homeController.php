@@ -28,7 +28,7 @@ class homeController extends \Vendor\Controller\Controller {
   public function renderDefault()
   {
     // show components
-    $this->variables = $this->model->showAllComponents(new \Vendor\Html\Html);
+    $this->variables = $this->model->showHomeDefault(new \Vendor\Html\Html);
   }
 
   /***

@@ -2,7 +2,7 @@
   <div id="navigationTop"><a href="/<?= $this->root;?>">Domov</a> / <a href="/<?= $this->dir;?>">Články</a></div>
   <h2>Zoznam článkov</h2>
     <div id="outercontent">
-      <table id="id-tablecontent">
+      <table class="tablecontent articles">
       <thead>
       <tr>
         <th><strong>Názov článku</strong></th>
@@ -53,14 +53,14 @@
 <div id="menu">
   <h3>Menu</h3>
   <ul>
-    <li><strong>Proces</strong>
-    <ul>
-      <li><a href="/<?= $this->privileges;?>/articles/add/">Pridaj</a></li>
-    </ul>
-    </li>
     <li><strong>Konto</strong>
     <ul>
       <li><a href="/<?= $this->privileges;?>/user/logoff/">Odhlas</a></li>
+    </ul>
+    </li>
+    <li><strong>Modify</strong>
+    <ul>
+      <li><a href="/<?= $this->privileges;?>/articles/add/">Pridaj článok</a></li>
     </ul>
     </li>
   </ul>

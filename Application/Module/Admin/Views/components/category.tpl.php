@@ -2,7 +2,7 @@
   <div id="navigationTop"><a href="/<?= $this->root;?>">Domov</a> / <a href="/<?= $this->dir;?>">Súčiastky</a></div>
   <h2>Zoznam kondenzátorov "<?= $this->component; ?>"</h2>
     <div id="outercontent">
-      <table id="id-tablecontent">
+      <table class="tablecontent components">
       <thead>
       <tr>
         <th>Zosilňovač</th>
@@ -10,9 +10,6 @@
         <th>Hodnota</th>
         <th>Označenie</th>
         <th>Počet</th>
-        <?php if (strcmp($this->privileges, "admin") === 0 ) {?>
-        <th>Upraviť</th>
-        <?php }?>
       </tr>
       </thead>
       <tbody>
@@ -40,11 +37,6 @@
         <td>
           <?= $component->amount;?>      
         </td>
-        <?php if (strcmp($this->privileges, "admin") === 0 ) {?>
-        <td>
-          <a href="/<?= $this->privileges, '/components/edit/', $component->Category_unaccent, '/', $component->Description_unaccent, '/', $component->Id;?>/">Upraviť</a>
-        </td>
-        <?php }?>
       </tr>
       <?php } ?>
      </tbody>
