@@ -48,9 +48,9 @@ Another example creates self closing html tag:
 $html = new \Vendor\Html\Html();
 // input element
 $html->tag('input')
-     ->attributes(array(
-          'type'=>'text'))
-     ->create();
+  ->attributes(array(
+    'type'=>'text'))
+  ->create();
 ```
 ```html
 <input type='text' \>
