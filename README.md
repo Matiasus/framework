@@ -49,7 +49,7 @@ $html = new \Vendor\Html\Html();
 // input element
 $html->tag('input')
      ->attributes(array(
-      'type'=>'text'))
+       'type'=>'text'))
      ->create();
 ```
 ```html
