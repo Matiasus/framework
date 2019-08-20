@@ -36,19 +36,61 @@ class Form {
     // @var \Vendor\Html\Html
     $this->html = $html;
     // @var \Vendor\Form\Input
-    $this->input = new \Vendor\Form\Input($this->html);
+    $this->input = new \Vendor\Form\Input($this->html);  
   }
   
  /***
   * @desc   Get \Vendor\Form\Input
   *
   * @param  Void
+  *
   * @return \Vendor\Form\Input
   */
   public function input()
   {
+
+    if (func_num_args() != 1) {
+      // throw to exception with error message
+      throw new \Exception('['.get_called_class().']:['.__LINE__.']: Must defined argument!');
+    }
+    if (is_array(func_get_arg(0))) {
+      // throw to exception with error message
+      throw new \Exception('['.get_called_class().']:['.__LINE__.']: Argument must be scalar!');
+    }
+    if(!in_array(func_get_arg(0), $this->input->allowable)) {
+      // throw to exception with error message
+      throw new \Exception('['.get_called_class().']:['.__LINE__.']: Not allowable input <b>'.func_get_arg(0).'</b>!');
+    }
+    // set tag
+    $this->input->setTag(__FUNCTION__);
+    // send type
+    $this->input->setType(func_get_arg(0));
     // send parameters
     $this->input->setParameters($this->params);
+    // return \Vendor\Form\Input
+    return $this->input;
+  }
+  
+  /***
+   * @desc   Get \Vendor\Form\Input
+   *
+   * @param  Void
+   *
+   * @return \Vendor\Form\Input
+   */
+  public function textarea()
+  {
+    // no arguments passed
+    if (func_num_args() != 0) {
+      // throw to exception with error message
+      throw new \Exception('['.get_called_class().']:['.__LINE__.']: No arguments allowed!');
+    }
+    // set tag
+    $this->input->setTag(__FUNCTION__);
+    // send type
+    $this->input->setType(false);    
+    // send parameters
+    $this->input->setParameters($this->params);  
     // return \Vendor\Form\Input
     return $this->input;
   }
@@ -57,7 +99,8 @@ class Form {
    * @desc   Set action type 
    *
    * @param  String
-   * @param  
+   * @param  Boolean
+   *
    * @return void
    */
   public function setAction($action, $processing = false) 

@@ -60,7 +60,8 @@ class Attributes {
       $this->attributes = false;
     } else {
       // check all elements of array
-      while (list($key, $value) = each($attributes)) {
+      foreach ($attributes as $key => $value) {
+      //while (list($key, $value) = each($attributes)) {
         // check if value is not array
         if (!is_string($value) && 
             !is_bool($value) &&
