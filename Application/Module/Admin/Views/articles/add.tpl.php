@@ -9,14 +9,14 @@
 <div id="menu">
   <h3>Menu</h3>
   <ul>
-    <li><strong>Proces</strong>
-    <ul>
-      <li><a href="/<?= $this->privileges;?>/articles/add/">Pridaj</a></li>
-    </ul>
-    </li>
     <li><strong>Konto</strong>
     <ul>
       <li><a href="/<?= $this->privileges;?>/user/logoff/">Odhlas</a></li>
+    </ul>
+    </li>
+    <li><strong>Modify</strong>
+    <ul>
+      <li><a href="/<?= $this->privileges;?>/articles/add/">Pridaj článok</a></li>
     </ul>
     </li>
   </ul>

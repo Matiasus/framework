@@ -63,6 +63,30 @@ class Components {
     // table receivers
     $this->tab_receivers = Config::get('ICONNECTION', 'MYSQL', 'T_RECE');
   }
+
+  /***
+   * @desc   Show home default
+   * 
+   * @param  \Vendor\Html\Html
+   * @return Void
+   */
+  public function showHomeDefault(\Vendor\Html\Html $html)
+  {
+    // if user is not logged in
+    if (!($user = $this->user->getLoggedUser())) {
+      // redirect to login
+      Route::redirect("");
+    }
+    // variables
+    $variables = array(
+      'root' => $user['Privileges'].'/home/default',
+      'dir' => $user['Privileges'].'/sports/default',
+      'privileges'=>$user['Privileges']
+    );
+    // return variables
+    return $variables;
+  }
+
   /***
    * @desc   Show all articles
    * 
@@ -99,22 +123,26 @@ class Components {
     ");
 
     // check if records were found
-    if (empty($records)) {
-      // unsuccess
-      return false;
+    if (!empty($records)) {
+      // variables
+      $variables = array(
+        'root' => $user['Privileges'].'/home/default',
+        'dir' => $user['Privileges'].'/components/default',
+        'components' => $records, 
+        'privileges' => $user['Privileges']
+      );
+    } else {
+      // variables
+      $variables = array(
+        'root' => $user['Privileges'].'/home/default',
+        'dir' => $user['Privileges'].'/sports/default',
+        'privileges'=>$user['Privileges']
+      );
     }
-
-    // variables to view
-    $variables = array(
-      'root' => $user['Privileges'].'/home/default',
-      'dir' => $user['Privileges'].'/components/default',
-      'components'=>$records, 
-      'privileges'=>$user['Privileges']
-    );
-
     // return variables
     return $variables;
   }
+
   /***
    * @desc   Show category components
    * 

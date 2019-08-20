@@ -57,4 +57,31 @@ class articlesController extends \Vendor\Controller\Controller {
     // return html code
     return $form->getCode();
   }
+  
+  /***
+   * @desc   Render edit article 
+   *
+   * @param  Void
+   * @return Void
+   */
+  public function renderEdit()
+  {
+    // edit article
+    $this->variables = $this->model->editArticle();
+  }
+
+  /***
+   * @desc    Form logon
+   *
+   * @param   Void
+   * @return  Void
+   */	
+  public function formEdit()
+  {
+    // create form
+    $form = $this->model
+                 ->showFormEdit(new \Vendor\Form\Form(new \Vendor\Html\Html));
+    // return html code
+    return $form->getCode();
+  }
 }
