@@ -44,6 +44,34 @@ class articlesController extends \Vendor\Controller\Controller {
   }
 
   /***
+   * @desc   Render remove article 
+   *
+   * @param  Void
+   * @return Void
+   */
+  public function renderRemove()
+  {
+    // remove article
+    $this->variables = $this->model->removeArticle();
+  }
+
+  /***
+   * @desc    Form remove
+   *
+   * @param   Void
+   * @return  Void
+   */	
+  public function formRemove()
+  {
+    // create form
+    $form = $this
+      ->model
+      ->showFormRemove(new \Vendor\Form\Form(new \Vendor\Html\Html));
+    // return html code
+    return $form->getCode();
+  }
+
+  /***
    * @desc    Form logon
    *
    * @param   Void
@@ -52,8 +80,9 @@ class articlesController extends \Vendor\Controller\Controller {
   public function formAdd()
   {
     // create form
-    $form = $this->model
-                 ->showFormAdd(new \Vendor\Form\Form(new \Vendor\Html\Html));
+    $form = $this
+      ->model
+      ->showFormAdd(new \Vendor\Form\Form(new \Vendor\Html\Html));
     // return html code
     return $form->getCode();
   }

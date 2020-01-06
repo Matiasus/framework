@@ -220,56 +220,438 @@ class Model {
       // redirect to login
       Route::redirect("");
     }
-    // articles
-    $select = array(
-      $this->tab_articles.'.Id as id',
-      $this->tab_articles.'.Title as title',
-      $this->tab_articles.'.Title_unaccent as title_unaccent',
-      $this->tab_articles.'.Category as category',
-      $this->tab_articles.'.Category_unaccent as category_unaccent',
-      $this->tab_articles.'.Type as type',
-      $this->tab_articles.'.Content as content',
-      'DATE_FORMAT('.$this->tab_articles.'.Registered, \'%d.%b. %Y\') as registered',
-      'LOWER('.$this->tab_users.'.Username) as username'
+    // article id
+    $article = Route::get('params2');
+    // records
+    $record = $this->database->query("
+      SELECT
+        $this->tab_articles.Id,
+        $this->tab_articles.Category,
+        $this->tab_articles.Category_unaccent,
+        $this->tab_articles.Title,
+        $this->tab_articles.Title_unaccent,
+        $this->tab_articles.Content,
+        DATE_FORMAT(".$this->tab_articles.".Registered, '%d.%b. %Y') as Registered
+      FROM $this->tab_articles
+      WHERE
+        $this->tab_articles.Id=".intval($article)."
+    "); 
+    // get article
+    if (!empty($record)) {
+      if (is_array($record)) {
+        $record = $record[0];
+      }
+    }
+    // variables
+    $variables = array(
+      'link' => $user['Privileges'].'/'.$record->Category_unaccent.'/detail/'.$record->Title_unaccent.'/'.$record->Id,
+      'root' => $user['Privileges'].'/home/default',
+      'dir' => $user['Privileges'].'/articles/default',
+      'subdir' => $user['Privileges'].'/'.$record->Category_unaccent.'/default',
+      'privileges'=>$user['Privileges'],
+      'article' => $record
     );
-    // odkial
-    $from = array(
-      $this->tab_articles,
-      array(
-        $this->tab_users,
-        $this->tab_articles.'.Id_Users'=>$this->tab_users.'.Id'
-      )
-    );
-    // podmienka
-    $where = array(
-      array(
-        '=',
-        $this->tab_articles.'.Id'=>Route::get('params2')
-      )
-    );
-    // zotriedenie
-    $order = array(
-      $this->tab_articles.'.Category',
-      $this->tab_articles.'.Title'
-    );
-    // spracovanie poziadavky
-    $record = $this->database
-      ->select($select)
-      ->from($from)
-      ->where($where)
-      ->order($order)
-      ->query();
+    // return variables
+    return $variables;
+  }
 
-    // articles
+  /***
+   * @desc   Add article
+   *
+   * @param  Void
+   *
+   * @return Array
+   */
+  public function removeArticle()
+  {
+    // if user is not logged in
+    if (!($user = $this->user->getLoggedUser())) {
+      // redirect to login
+      Route::redirect("");
+    }
+    // article id
+    $article = Route::get('params2');
+    // records
+    $record = $this->database->query("
+      SELECT
+        $this->tab_articles.Id,
+        $this->tab_articles.Category,
+        $this->tab_articles.Category_unaccent,
+        $this->tab_articles.Title,
+        $this->tab_articles.Title_unaccent,
+        $this->tab_articles.Content,
+        DATE_FORMAT(".$this->tab_articles.".Registered, '%d.%b. %Y') as Registered
+      FROM $this->tab_articles
+      WHERE
+        $this->tab_articles.Id=".intval($article)."
+    "); 
+    // get article
+    if (!empty($record)) {
+      if (is_array($record)) {
+        $record = $record[0];
+      }
+    }
+    // variables
+    $variables = array(
+      'link' => $user['Privileges'].'/'.$record->Category_unaccent.'/detail/'.$record->Title_unaccent.'/'.$record->Id,
+      'root' => $user['Privileges'].'/home/default',
+      'dir' => $user['Privileges'].'/articles/default',
+      'subdir' => $user['Privileges'].'/'.$record->Category_unaccent.'/default',
+      'privileges'=>$user['Privileges'],
+      'article' => $record
+    );
+    // return variables
+    return $variables;
+  }
+
+  /***
+   * @desc   Form for logon
+   *
+   * @param  \Vendor\Form\Form
+   *
+   * @return String
+   */
+  public function showFormRemove(\Vendor\Form\Form $form)
+  {
+    // if user is not logged in
+    if (!($user = $this->user->getLoggedUser())) {
+      // redirect to login
+      Route::redirect("");
+    }
+    // get article id
+    $article = Route::get('params2');
+    // records
+    $record = $this->database->query("
+      SELECT
+        $this->tab_articles.Id,
+        $this->tab_articles.Category,
+        $this->tab_articles.Title,
+        $this->tab_articles.Content
+      FROM $this->tab_articles
+      WHERE
+        $this->tab_articles.Id=".intval($article)."
+    "); 
+    
+    if (!empty($record)) {
+      if (is_array($record)) {
+        $record = $record[0];
+      }
+    }
+    // create form
+    $form
+      ->attrs(array(
+         'action'=>Route::getfullUri(true)
+        ,'method'=>'post'))
+      ->content(array(
+        'input'=>array(array(
+           'type'=>'submit'
+          ,'id'=>'id-remove'
+          ,'name'=>'ano'
+          ,'value'=>'Vymazať článok?'))
+        ,'input-hidden'=>array(array(
+           'type'=>'hidden'
+          ,'name'=>'Id'
+          ,'value'=>$record->Id))
+      )
+    );
+    // check if created columns exist in database
+    if ($form->succeedSend($this->database, $this->tab_articles)) {
+        // process form
+        $this->removeProcess($form, $user);
+    }
+    // return code
+    return $form;
+  }
+
+  /***
+   * @desc    Process login
+   *
+   * @param   \Vendor\Form\Form
+   * @param   \Vendor\User\User
+   *
+   * @return  Void
+   */
+  public function removeProcess($form, $user)
+  {
+    // get data
+    $data = $form->getData();
+    // table
+    $table = $this->tab_articles;
+    // insert data
+    $this->database->delete(array(
+      'Id' => $data['Id']
+      ),
+      $this->tab_articles
+    );
+    // redirect
+    Route::redirect($user['Privileges'] . "/articles/default/");
+  }
+
+  /***
+   * @desc   Add article
+   *
+   * @param  Void
+   *
+   * @return Array
+   */
+  public function addArticle()
+  {
+    // if user is not logged in
+    if (!($user = $this->user->getLoggedUser())) {
+      // redirect to login
+      Route::redirect("");
+    }
+    // variables
     $variables = array(
       'root' => $user['Privileges'].'/home/default',
       'dir' => $user['Privileges'].'/articles/default',
-      'subdir' => $user['Privileges'].'/'.Route::get('controller').'/default',
-      'article'=>$record[0],
       'privileges'=>$user['Privileges']
     );
     // return variables
     return $variables;
+  }
+
+  /***
+   * @desc   Form for logon
+   *
+   * @param  \Vendor\Form\Form
+   *
+   * @return String
+   */
+  public function showFormAdd(\Vendor\Form\Form $form)
+  {
+    // if user is not logged in
+    if (!($user = $this->user->getLoggedUser())) {
+      // redirect to login
+      Route::redirect("");
+    }
+    // create form
+    $form
+      ->attrs(array(
+         'action'=>Route::getfullUri(true)
+        ,'method'=>'post'))
+      ->content(array(
+        'input'=>array(array(
+           'type'=>'text'
+          ,'name'=>'Category'
+          ,'label'=>'Kategória'
+          ,'placeholder'=>'Category'
+          ,'id'=>'id-category'
+          ,'required'=>'true')),
+        'input-title'=>array(array(
+          'type'=>'text'
+          ,'name'=>'Title' 
+          ,'label'=>'Titul' 
+          ,'placeholder'=>'Titul'
+          ,'id'=>'id-title'
+          ,'required'=>'true')),
+        'textarea'=>array(array(
+          'name'=>'Content' 
+          ,'label'=>'Obsah' 
+          ,'id'=>'editor')),
+        'input-submit'=>array(array(
+          'type'=>'submit' 
+          ,'name'=>'Submit'
+          ,'value'=>'Odošli' 
+          ,'id'=>'id-submit'
+          ,'onclick'=>'getData("editor");'))
+      )
+    );
+    // check if created columns exist in database
+    if ($form->succeedSend($this->database, $this->tab_articles)) {
+        // process form
+        $this->addProcess($form, $user);
+    }
+    // return code
+    return $form;
+  }
+
+  /***
+   * @desc    Process login
+   *
+   * @param   \Vendor\Form\Form
+   * @param   \Vendor\User\User
+   *
+   * @return  Void
+   */
+  public function addProcess($form, $user)
+  {
+    // get data
+    $data = $form->getData();
+    // table
+    $table = $this->tab_articles;
+    // insert data
+    $this->database->insert(array(
+      'Id_Users' => $user['Id'],
+      'Category' => $data[self::CATEGORY],
+      'Category_unaccent' => $this->database->unAccentUrl($data[self::CATEGORY]),
+      'Title' => $data[self::TITLE],
+      'Title_unaccent' => $this->database->unAccentUrl($data[self::TITLE]),
+      'Content' => $data[self::CONTENT],
+      'Type' => 'draft'
+      ),
+      $this->tab_articles,
+      true
+    );
+    // redirect
+    Route::redirect($user['Privileges'] . "/articles/default/");
+  }
+  
+  /***
+   * @desc   Edit article
+   *
+   * @param  Void
+   *
+   * @return Array
+   */
+  public function editArticle()
+  {
+    // if user is not logged in
+    if (!($user = $this->user->getLoggedUser())) {
+      // redirect to login
+      Route::redirect("");
+    }
+    // article id
+    $article = Route::get('params2');
+    // records
+    $record = $this->database->query("
+      SELECT
+        $this->tab_articles.Id,
+        $this->tab_articles.Category,
+        $this->tab_articles.Category_unaccent,
+        $this->tab_articles.Title,
+        $this->tab_articles.Title_unaccent,
+        $this->tab_articles.Content,
+        DATE_FORMAT(".$this->tab_articles.".Registered, '%d.%b. %Y') as Registered
+      FROM $this->tab_articles
+      WHERE
+        $this->tab_articles.Id=".intval($article)."
+    "); 
+    // get article
+    if (!empty($record)) {
+      if (is_array($record)) {
+        $record = $record[0];
+      }
+    }
+    // variables
+    $variables = array(
+      'link' => $user['Privileges'].'/'.$record->Category_unaccent.'/detail/'.$record->Title_unaccent.'/'.$record->Id,
+      'root' => $user['Privileges'].'/home/default',
+      'dir' => $user['Privileges'].'/articles/default',
+      'subdir' => $user['Privileges'].'/'.$record->Category_unaccent.'/default',
+      'privileges'=>$user['Privileges'],
+      'article' => $record
+    );
+    // return variables
+    return $variables;
+  }
+  
+  /***
+   * @desc   Form for edit
+   *
+   * @param  \Vendor\Form\Form
+   *
+   * @return String
+   */
+  public function showFormEdit(\Vendor\Form\Form $form)
+  {
+    // if user is not logged in
+    if (!($user = $this->user->getLoggedUser())) {
+      // redirect to login
+      Route::redirect("");
+    }
+    // get article id
+    $article = Route::get('params2');
+    // records
+    $record = $this->database->query("
+      SELECT
+        $this->tab_articles.Id,
+        $this->tab_articles.Category,
+        $this->tab_articles.Title,
+        $this->tab_articles.Content
+      FROM $this->tab_articles
+      WHERE
+        $this->tab_articles.Id=".intval($article)."
+    "); 
+    
+    if (!empty($record)) {
+      if (is_array($record)) {
+        $record = $record[0];
+      }
+    }
+    // create form
+    $form
+      ->attrs(array(
+         'action'=>Route::getfullUri(true)
+        ,'method'=>'post'))
+      ->content(array(
+        'input-id'=>array(array(
+           'type'=>'hidden'
+          ,'name'=>'Id'
+          ,'value'=>$record->Id)),
+        'input-category'=>array(array(
+           'type'=>'text'
+          ,'name'=>'Category'
+          ,'value'=>$record->Category
+          ,'placeholder'=>'Category'
+          ,'id'=>'id-category'
+          ,'required'=>'true')),
+        'input-title'=>array(array(
+          'type'=>'text'
+          ,'name'=>'Title' 
+          ,'value'=>$record->Title 
+          ,'id'=>'id-title'
+          ,'required'=>'true')),
+        'textarea'=>array(array(
+          'name'=>'Content' 
+          ,'label'=>'Obsah' 
+          ,'id'=>'editor'), $record->Content),
+        'input-submit'=>array(array(
+          'type'=>'submit' 
+          ,'name'=>'Submit'
+          ,'value'=>'Odošli' 
+          ,'id'=>'id-submit'
+          ,'onclick'=>'getData("editor");'))
+      )
+    );
+    // check if created columns exist in database
+    if ($form->succeedSend($this->database, $this->tab_articles)) {
+        // process form
+        $this->editProcess($form, $user);
+    }
+    // return code
+    return $form;
+  }
+
+  /***
+   * @desc    Process edit
+   *
+   * @param   \Vendor\Form\Form
+   * @param   \Vendor\User\User
+   *
+   * @return  Void
+   */
+  public function editProcess($form, $user)
+  {
+    // get data
+    $data = $form->getData();
+    // table
+    $table = $this->tab_articles;
+    // update data
+    $this->database->update(
+      $values = array(
+        'Category' => $data[self::CATEGORY]
+        ,'Category_unaccent' => $this->database->unAccentUrl($data[self::CATEGORY])
+        ,'Title' => $data[self::TITLE]
+        ,'Title_unaccent' => $this->database->unAccentUrl($data[self::TITLE])
+        ,'Content' => $data[self::CONTENT]
+      ),
+      $condition = array('Id'=>$data['Id']),
+      $table
+    );
+
+    // redirect
+    Route::redirect($user['Privileges'] . "/articles/default/");
   }
 
   /***
@@ -416,231 +798,6 @@ class Model {
    *
    * @return Array
    */
-  public function addArticle()
-  {
-    // if user is not logged in
-    if (!($user = $this->user->getLoggedUser())) {
-      // redirect to login
-      Route::redirect("");
-    }
-    // variables
-    $variables = array(
-      'root' => $user['Privileges'].'/home/default',
-      'dir' => $user['Privileges'].'/articles/default',
-      'privileges'=>$user['Privileges']
-    );
-    // return variables
-    return $variables;
-  }
-
-  /***
-   * @desc   Form for logon
-   *
-   * @param  \Vendor\Form\Form
-   *
-   * @return String
-   */
-  public function showFormAdd(\Vendor\Form\Form $form)
-  {
-    // if user is not logged in
-    if (!($user = $this->user->getLoggedUser())) {
-      // redirect to login
-      Route::redirect("");
-    }
-    // set method
-    $form->setMethod(Config::get('FORM', 'METHOD_POST'));
-    // set action
-    $form->setAction(Route::getfullUri(true));
-    // set form
-    $form->setInline(false);
-    // input text field
-    $form->input('text')
-         ->attr(array('name'=>'Category', 'label'=>'Kategória', 'id'=>'id-category'))
-         ->html5Attrs('required')
-         ->create();
-    // input password field
-    $form->input('text')
-         ->attr(array('name'=>'Title', 'label'=>'Titul', 'id'=>'id-title'))
-         ->html5Attrs('required')
-         ->create();
-    // input content textarea
-    $form->textarea()
-         ->attr(array('name'=>'Content', 'label'=>'Obsah','id'=>'editor'))
-         ->create();
-    // submit
-    $form->input('submit')
-         ->attr(array('name'=>'Submit', 'value'=>'Odošli', 'id'=>'id-submit', 'onclick'=>'getData("editor");'))
-         ->create();
-    // check if created columns exist in database
-    if ($form->succeedSend($this->database, $this->tab_articles)) {
-        // process form
-        $this->addProcess($form, $user);
-    }
-    // return code
-    return $form;
-  }
-
-  /***
-   * @desc    Process login
-   *
-   * @param   \Vendor\Form\Form
-   * @param   \Vendor\User\User
-   *
-   * @return  Void
-   */
-  public function addProcess($form, $user)
-  {
-    // get data
-    $data = $form->getData();
-    // table
-    $table = $this->tab_articles;
-    // insert data
-    $this->database->insert(array(
-      'Id_Users' => $user['Id'],
-      'Category' => $data[self::CATEGORY],
-      'Category_unaccent' => $this->database->unAccentUrl($data[self::CATEGORY]),
-      'Title' => $data[self::TITLE],
-      'Title_unaccent' => $this->database->unAccentUrl($data[self::TITLE]),
-      'Content' => $data[self::CONTENT],
-      'Type' => 'draft'
-      ),
-      $this->tab_articles,
-      true
-    );
-    // redirect
-    Route::redirect($user['Privileges'] . "/articles/default/");
-  }
-  
-  /***
-   * @desc   Edit article
-   *
-   * @param  Void
-   *
-   * @return Array
-   */
-  public function editArticle()
-  {
-    // if user is not logged in
-    if (!($user = $this->user->getLoggedUser())) {
-      // redirect to login
-      Route::redirect("");
-    }
-    // variables
-    $variables = array(
-      'root' => $user['Privileges'].'/home/default',
-      'dir' => $user['Privileges'].'/articles/default',
-      'privileges'=>$user['Privileges']
-    );
-    // return variables
-    return $variables;
-  }
-  
-  /***
-   * @desc   Form for edit
-   *
-   * @param  \Vendor\Form\Form
-   *
-   * @return String
-   */
-  public function showFormEdit(\Vendor\Form\Form $form)
-  {
-    // if user is not logged in
-    if (!($user = $this->user->getLoggedUser())) {
-      // redirect to login
-      Route::redirect("");
-    }
-    
-    $article = Route::get('params2');
-    
-    // records
-    $record = $this->database->query("
-      SELECT
-        $this->tab_articles.Id,
-        $this->tab_articles.Category,
-        $this->tab_articles.Title,
-        $this->tab_articles.Content
-      FROM $this->tab_articles
-      WHERE
-        $this->tab_articles.Id=".intval($article)."
-    "); 
-    
-    if (!empty($record)) {
-      if (is_array($record)) {
-        $record = $record[0];
-      }
-    }
-    
-    // set method
-    $form->setMethod(Config::get('FORM', 'METHOD_POST'));
-    // set action
-    $form->setAction(Route::getfullUri(true));
-    // set form
-    $form->setInline(false);
-    // input text field
-    $form->input('text')
-         ->attr(array('name'=>'Category', 'label'=>'Kategória', 'value'=>$record->Category, 'id'=>'id-category'))
-         ->html5Attrs('required')
-         ->create();
-    // input password field
-    $form->input('text')
-         ->attr(array('name'=>'Title', 'label'=>'Titul', 'value'=>$record->Title, 'id'=>'id-title'))
-         ->html5Attrs('required')
-         ->create();
-    // input content textarea
-    $form->textarea()
-         ->attr(array('name'=>'Content', 'label'=>'Obsah', 'id'=>'editor'))
-         ->create();
-    // submit
-    $form->input('submit')
-         ->attr(array('name'=>'Submit', 'value'=>'Odošli', 'id'=>'id-submit', 'onclick'=>'getData("editor");'))
-         ->create();
-    // check if created columns exist in database
-    if ($form->succeedSend($this->database, $this->tab_articles)) {
-        // process form
-        $this->editProcess($form, $user);
-    }
-    // return code
-    return $form;
-  }
-
-  /***
-   * @desc    Process edit
-   *
-   * @param   \Vendor\Form\Form
-   * @param   \Vendor\User\User
-   *
-   * @return  Void
-   */
-  public function editProcess($form, $user)
-  {
-    // get data
-    $data = $form->getData();
-    // table
-    $table = $this->tab_articles;
-    // insert data
-    $this->database->insert(array(
-      'Id_Users' => $user['Id'],
-      'Category' => $data[self::CATEGORY],
-      'Category_unaccent' => $this->database->unAccentUrl($data[self::CATEGORY]),
-      'Title' => $data[self::TITLE],
-      'Title_unaccent' => $this->database->unAccentUrl($data[self::TITLE]),
-      'Content' => $data[self::CONTENT],
-      'Type' => 'draft'
-      ),
-      $this->tab_articles,
-      true
-    );
-    // redirect
-    Route::redirect($user['Privileges'] . "/articles/default/");
-  }  
-
-  /***
-   * @desc   Add article
-   *
-   * @param  Void
-   *
-   * @return Array
-   */
   public function addtimeSportsRun()
   {
     // if user is not logged in
@@ -756,9 +913,6 @@ class Model {
         }
       }
     }
-    
-    print_r($toDB);
-
     // insert data
     $this->database->insert(
       $toDB,
