@@ -4,5 +4,5 @@
           </div>
 
           <div style="margin: 10px; padding-top: 10px; border-width: 1px 0px 0px 0px; border-style: solid; border-color: #ccc;">
-            alebo sa <a href="/front/form/default/" style="color: #08a1c3; font-weight: bold;">prihlás</a>!
+            alebo sa <a href="/front/form/default/" style="color: DarkCyan; font-weight: bold;">prihlás</a>!
           </div>

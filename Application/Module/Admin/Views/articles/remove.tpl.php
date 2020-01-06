@@ -6,6 +6,7 @@
       <a href="/<?= $this->subdir; ?>/"><?= $this->article->Category ?></a>
     </span>
   <div class="content"><?= $this->article->Content ?></div>
+  {formular remove}
 </div>
 <!-- [END] Content -->
 
@@ -22,7 +23,6 @@
     <ul>
       <li><a href="/<?= $this->privileges;?>/articles/add/">Pridaj článok</a></li>
       <li><a href="/<?= $this->privileges;?>/articles/edit/<?= $this->article->Title_unaccent ?>/<?= $this->article->Id ?>/">Edituj článok</a></li>
-      <li><a href="/<?= $this->privileges;?>/articles/remove/<?= $this->article->Title_unaccent ?>/<?= $this->article->Id ?>/">Vymaž článok</a></li>
     </ul>
     </li>
   </ul>
