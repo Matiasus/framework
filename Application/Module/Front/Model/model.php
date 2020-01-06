@@ -179,6 +179,7 @@ class Model {
     Route::redirect($uri);
   }
 
+
   /***
    * @desc   Form for logon
    * 
@@ -188,26 +189,33 @@ class Model {
    */
   public function showFormPrihlasenie(\Vendor\Form\Form $form)
   {
-    // set method
-    $form->setMethod(Config::get('FORM', 'METHOD_POST'));
-    // set action
-    $form->setAction(Route::getfullUri(true));
-    // set form
-    $form->setInline(true);
-    // input text field
-    $form->input()
-         ->text(self::USERNAME, 'Meno/Name')
-         ->html5Attrs('required')
-         ->create();
-    // input password field
-    $form->input()
-         ->password(self::PASSNAME, 'Heslo/Pasword')
-         ->html5Attrs('required')
-         ->create();
-    // submit
-    $form->input()
-         ->submit('Prihlasenie', '', 'Prihlásenie')
-         ->create();
+    // create form
+    $form
+      ->attrs(array(
+         'action'=>Route::getfullUri(true)
+        ,'method'=>'post'))
+      ->content(array(
+        'input'=>array(array(
+           'type'=>'text'
+          ,'name'=>self::USERNAME
+          ,'label'=>'Meno/Name'
+          ,'placeholder'=>'Meno/Name'
+          ,'id'=>'id-'.strtolower(self::USERNAME)
+          ,'required'=>'true')),
+        'input-password'=>array(array(
+          'type'=>'password'
+          ,'name'=>self::PASSNAME 
+          ,'label'=>'Heslo/Pasword' 
+          ,'placeholder'=>'Heslo/Pasword'
+          ,'id'=>'id-'.strtolower(self::PASSNAME) 
+          ,'required'=>'true')),
+        'input-submit'=>array(array(
+          'type'=>'submit' 
+          ,'name'=>'Prihlasenie'
+          ,'value'=>'Prihlásenie' 
+          ,'id'=>'id-submit'))
+      )
+    );
     // check if created columns exist in database
     if ($form->succeedSend($this->database, Config::get('ICONNECTION', 'MYSQL', 'T_USER'))) {
         // process form
@@ -270,31 +278,40 @@ class Model {
    */
   public function showFormRegistracia(\Vendor\Form\Form $form)
   {
-    // set method
-    $form->setMethod(Config::get('FORM', 'METHOD_POST'));
-    // set action
-    $form->setAction(Route::getfullUri(true));
-    // set form
-    $form->setInline(true);
-    // input email
-    $form->input()
-         ->email('Email', 'E-mail')
-         ->html5Attrs('required')
-         ->create();
-    // input text field
-    $form->input()
-         ->text(self::USERNAME, 'Meno/Name')
-         ->html5Attrs('required')
-         ->create();
-    // input password field
-    $form->input()
-         ->password(self::PASSNAME, 'Heslo/Pasword')
-         ->html5Attrs('required')
-         ->create();
-    // submit
-    $form->input()
-         ->submit('Registracia', '', 'Registrácia')
-         ->create();
+    // create form
+    $form
+      ->attrs(array(
+         'action'=>Route::getfullUri(true)
+        ,'method'=>'post'))
+      ->content(array(
+        'input-email'=>array(array(
+           'type'=>'text'
+          ,'name'=>'Email'
+          ,'label'=>'E-mail'
+          ,'placeholder'=>'Email'
+          ,'id'=>'id-email'
+          ,'required'=>'true')),
+        'input-username'=>array(array(
+           'type'=>'text'
+          ,'name'=>self::USERNAME
+          ,'label'=>'Meno/Name'
+          ,'placeholder'=>'Meno/Name'
+          ,'id'=>'id-'.strtolower(self::USERNAME)
+          ,'required'=>'true')),
+        'input-password'=>array(array(
+          'type'=>'password'
+          ,'name'=>self::PASSNAME 
+          ,'label'=>'Heslo/Pasword' 
+          ,'placeholder'=>'Heslo/Pasword'
+          ,'id'=>'id-'.strtolower(self::PASSNAME) 
+          ,'required'=>'true')),
+        'input-submit'=>array(array(
+          'type'=>'submit' 
+          ,'name'=>'Prihlasenie'
+          ,'value'=>'Prihlásenie' 
+          ,'id'=>'id-submit'))
+      )
+    );
     // check if created columns exist in database
     if ($form->succeedSend($this->database, Config::get('ICONNECTION', 'MYSQL', 'T_USER'))) {
       // callback logon
