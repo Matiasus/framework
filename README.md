@@ -120,15 +120,15 @@ which generate following html code
   <table id='table'>
     <tr>
       <td>Name</td>
-      <td align='right'><input type='text' name='Username' label='Name' id='id-username' required /></td>
+      <td><input type='text' name='Username' label='Name' id='id-username' required /></td>
     </tr>
     <tr>
       <td>Pasword</td>
-      <td align='right'><input type='password' name='Passname' label='Pasword' id='id-passname' required /></td>
+      <td><input type='password' name='Passname' label='Pasword' id='id-passname' required /></td>
     </tr>
     <tr>
       <td></td>
-      <td align='right'><input type='submit' name='Login' value='login' id='id-submit' /></td>
+      <td><input type='submit' name='Login' value='login' id='id-submit' /></td>
     </tr>
   </table>
 </form>
