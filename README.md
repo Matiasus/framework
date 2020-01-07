@@ -62,30 +62,30 @@ Simple html form creator allows to create custimised html form element. For exam
 ```php
 // create form
 $form
- ->attrs(array(
-    'action'=>Route::getfullUri(true)
-   ,'method'=>'post'))
- ->content(array(
-   'input'=>array(array(
+  ->attrs(array(
+     'action'=>Route::getfullUri(true)
+    ,'method'=>'post'))
+  ->content(array(
+    'input'=>array(array(
       'type'=>'text'
      ,'name'=>'Name'
      ,'label'=>'Name'
      ,'placeholder'=>'Name'
      ,'id'=>'id-name'
      ,'required'=>'true')),
-   'input-password'=>array(array(
+    'input-password'=>array(array(
      'type'=>'password'
      ,'name'=>'Passname' 
      ,'label'=>'Passname' 
      ,'placeholder'=>'Passname'
      ,'id'=>'id-passname' 
      ,'required'=>'true')),
-   'input-submit'=>array(array(
+    'input-submit'=>array(array(
      'type'=>'submit' 
      ,'name'=>'Login'
      ,'value'=>'Login' 
      ,'id'=>'id-submit'))
- )
+  )
 );
 ```
 Html code of form can be get by calling public method *getCode()*
