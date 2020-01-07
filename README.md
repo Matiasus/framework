@@ -116,7 +116,7 @@ $form->getCode();
 ```
 which generate following html code
 ```html
-<form action='http://poznamkovyblog.cekuj.net/' method='POST'>
+<form action='http://poznamkovyblog.cekuj.net/' method='post'>
   <table id='table'>
     <tr>
       <td>Name</td>
