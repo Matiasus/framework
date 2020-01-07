@@ -13,10 +13,10 @@ Class is responded for load and parse config ini file. It contains instance of p
 - ```getArray($key)``` - return array stored under called key and throw exception if no exists
 ### Route
 This static class parses url requests and stores it into variables that can be used for next purpose. There are defined **public** methods:
-- `get ($key = false, $exception = false)` - get parameter (*module, controller, view, param1, param2, process, operation*), names of parameters (module, ...) are defined in **config.php.ini**
-- `getSerNameUri ($http = false)` - url in form `www.link.com/show/ubuntu`, 
-- `getfullUri ($http = false)` - url in form `www.link.com`
-- `getReqUri ()` - url in form `show/ubuntu/?call=script`
+- `get($key = false, $exception = false)` - get parameter (*module, controller, view, param1, param2, process, operation*), names of parameters (module, ...) are defined in **config.php.ini**
+- `getSerNameUri($http = false)` - url in form `www.link.com/show/ubuntu`, 
+- `getfullUri($http = false)` - url in form `www.link.com`
+- `getReqUri()` - url in form `show/ubuntu/?call=script`
 ### Date
 ```php
 /***
