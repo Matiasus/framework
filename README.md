@@ -19,16 +19,24 @@ This static class parses url requests and stores it into variables that can be u
 - `getReqUri ()` - url in form `show/ubuntu/?call=script`
 ### Date
 ```php
-// Call actual date
+/***
+ * @desc  Call actual date
+ */
 \Vendor\Date\DateTime::getActualTime()
 
-// Call future time
+/***
+ * @desc  Call future time
+ */
 \Vendor\Date\DateTime::getFutureTime($date = array())
 
-// Time in seconds
+/***
+ * @desc  Time in seconds
+ */
 \Vendor\Date\DateTime::getInSec($date = array())
 
-//Compare two dates (actual and requested)
+/***
+ * @desc  Compare two dates (actual and requested)
+ */
 \Vendor\Date\DateTime::difference($date)
 ```
 ### Cookie
