@@ -95,9 +95,18 @@ which generate following html code
 ```html
 <form action='http://poznamkovyblog.cekuj.net/' method='POST'>
   <table id='table'>
-    <tr><td>Meno/Name</td><td align='right'><input type='text' name='Username' label='Meno/Name' id='id-username' required /></td></tr>
-    <tr><td>Heslo/Pasword</td><td align='right'><input type='password' name='Passwordname' label='Heslo/Pasword' id='id-passwordname' required /></td></tr>
-    <tr><td></td><td align='right'><input type='submit' name='Prihlasenie' value='Prihlásenie' id='id-submit' /></td></tr>
+    <tr>
+      <td>Meno/Name</td>
+      <td align='right'><input type='text' name='Username' label='Meno/Name' id='id-username' required /></td>
+    </tr>
+    <tr>
+      <td>Heslo/Pasword</td>
+      <td align='right'><input type='password' name='Passwordname' label='Heslo/Pasword' id='id-passwordname' required /></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td align='right'><input type='submit' name='Prihlasenie' value='Prihlásenie' id='id-submit' /></td>
+    </tr>
   </table>
 </form>
 ```
