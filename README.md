@@ -109,12 +109,12 @@ $form
   )
 );
 ```
-Html code of form can be get by calling public method *getCode()*
+Html code of form can be get by calling public method:
 ```php
 // get created html code     
 $form->getCode();
 ```
-which generate following html code
+which generate following html code:
 ```html
 <form action='http://poznamkovyblog.cekuj.net/' method='post'>
   <table id='table'>
