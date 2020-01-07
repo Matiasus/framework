@@ -18,9 +18,15 @@ This static class parses url requests and stores it into variables that can be u
 - `getfullUri ($http = false)` - url in form `www.link.com`
 - `getReqUri ()` - url in form `show/ubuntu/?call=script`
 ### Date
-Call actual date
 ```php
+// Call actual date
 \Vendor\Date\DateTime::getActualTime()
+// Call future time
+\Vendor\Date\DateTime::getFutureTime($date = array())
+// Time in seconds
+\Vendor\Date\DateTime::getInSec($date = array())
+//Compare two dates (actual and requested)
+\Vendor\Date\DateTime::difference($date)
 ```
 ### Cookie
 Simplify static cookie class is responsible for manipulation with COOKIES. It contains two methods needed for store and destory COOKIE
