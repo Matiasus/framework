@@ -58,44 +58,46 @@ $html->tag('input')
 ### Form
 Simple html form creator allows to create custimised html form element. For example create form with two inputs (text, password) and submit should by done by following piece of code:
 ```php
-// new instance of form tag
-$html = new \Vendor\Form\Form();
-// set method
-$form->setMethod('POST');
-// set action
-$form->setAction('index.php');
-// set display form - more columns in one row
-$form->setInline(true);
-// input text field
-$form->input()
-     ->text('name', 'Name')
-     ->html5Attrs('required')
-     ->create();
-// input password field
-$form->input()
-     ->password('password', 'Password')
-     ->html5Attrs('required')
-     ->create();
-// submit
-$form->input()
-     ->submit('submit', '', 'Login')
-     ->create();
+// create form
+$form
+ ->attrs(array(
+    'action'=>Route::getfullUri(true)
+   ,'method'=>'post'))
+ ->content(array(
+   'input'=>array(array(
+      'type'=>'text'
+     ,'name'=>self::USERNAME
+     ,'label'=>'Meno/Name'
+     ,'placeholder'=>'Meno/Name'
+     ,'id'=>'id-'.strtolower(self::USERNAME)
+     ,'required'=>'true')),
+   'input-password'=>array(array(
+     'type'=>'password'
+     ,'name'=>self::PASSNAME 
+     ,'label'=>'Heslo/Pasword' 
+     ,'placeholder'=>'Heslo/Pasword'
+     ,'id'=>'id-'.strtolower(self::PASSNAME) 
+     ,'required'=>'true')),
+   'input-submit'=>array(array(
+     'type'=>'submit' 
+     ,'name'=>'Prihlasenie'
+     ,'value'=>'Prihlásenie' 
+     ,'id'=>'id-submit'))
+ )
+);
 ```
-Arguments of form elements are defined in order *name*, *label*, *value*, *id* and *maxlength*. Html code of form can be get by calling public method *getCode()*
+Html code of form can be get by calling public method *getCode()*
 ```php
 // get created html code     
 $form->getCode();
 ```
 which generate following html code
 ```html
-<form action='index.php' method='POST'>
-  <table>
-   <tr><td>Name*</td><td> <!-- label -->
-    <input type='text' name='Name' id='id-name' value='' required /></td></tr>
-   <tr><td>Password*</td><td> <!-- label -->
-    <input type='password' name='Password' id='id-password' value='' required /></td></tr>
-   <tr><td>
-    <input type='submit' name='submit' value='Login' /></td></tr>
+<form action='http://poznamkovyblog.cekuj.net/' method='POST'>
+  <table id='table'>
+    <tr><td>Meno/Name</td><td align='right'><input type='text' name='Username' label='Meno/Name' id='id-username' required /></td></tr>
+    <tr><td>Heslo/Pasword</td><td align='right'><input type='password' name='Passwordname' label='Heslo/Pasword' id='id-passwordname' required /></td></tr>
+    <tr><td></td><td align='right'><input type='submit' name='Prihlasenie' value='Prihlásenie' id='id-submit' /></td></tr>
   </table>
 </form>
 ```
