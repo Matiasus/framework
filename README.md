@@ -1,9 +1,10 @@
 # Framework PHP
 Simple PHP framework with Dependency Injection pattern. Preview of functional framework can be seen on web site [poznamkovyblog](http://poznamkovyblog.cekuj.net). 
 ## Static classes
-At the beginning are called five static classes about which is supposed that will be the only one in whole application. These static classes are
+At the beginning are called static classes about which is supposed that will be the only one in whole application. These static classes are
 - [Config](#config)
 - [Route](#route)
+- [Date](#date)
 - [Cookie](#cookie)
 - [Session](#session)
 ### Config
@@ -12,10 +13,32 @@ Class is responded for load and parse config ini file. It contains instance of p
 - ```getArray($key)``` - return array stored under called key and throw exception if no exists
 ### Route
 This static class parses url requests and stores it into variables that can be used for next purpose. There are defined **public** methods:
-- `get ($key = false, $exception = false)` - get parameter (*module, controller, view, param1, param2, process, operation*), names of parameters (module, ...) are defined in **config.php.ini**
-- `getSerNameUri ($http = false)` - url in form `www.link.com/show/ubuntu`, 
-- `getfullUri ($http = false)` - url in form `www.link.com`
-- `getReqUri ()` - url in form `show/ubuntu/?call=script`
+- `get($key = false, $exception = false)` - get parameter (*module, controller, view, param1, param2, process, operation*), names of parameters (module, ...) are defined in **config.php.ini**
+- `getSerNameUri($http = false)` - url in form `www.link.com/show/ubuntu`, 
+- `getfullUri($http = false)` - url in form `www.link.com`
+- `getReqUri()` - url in form `show/ubuntu/?call=script`
+### Date
+```php
+/***
+ * @desc  Call actual date
+ */
+\Vendor\Date\DateTime::getActualTime()
+
+/***
+ * @desc  Call future time
+ */
+\Vendor\Date\DateTime::getFutureTime($date = array())
+
+/***
+ * @desc  Time in seconds
+ */
+\Vendor\Date\DateTime::getInSec($date = array())
+
+/***
+ * @desc  Compare two dates (actual and requested)
+ */
+\Vendor\Date\DateTime::difference($date)
+```
 ### Cookie
 Simplify static cookie class is responsible for manipulation with COOKIES. It contains two methods needed for store and destory COOKIE
 - ```set($name, $value, $expire, $path = "/", $domain = false)``` - set COOKIE under specific name
@@ -58,44 +81,55 @@ $html->tag('input')
 ### Form
 Simple html form creator allows to create custimised html form element. For example create form with two inputs (text, password) and submit should by done by following piece of code:
 ```php
-// new instance of form tag
-$html = new \Vendor\Form\Form();
-// set method
-$form->setMethod('POST');
-// set action
-$form->setAction('index.php');
-// set display form - more columns in one row
-$form->setInline(true);
-// input text field
-$form->input()
-     ->text('name', 'Name')
-     ->html5Attrs('required')
-     ->create();
-// input password field
-$form->input()
-     ->password('password', 'Password')
-     ->html5Attrs('required')
-     ->create();
-// submit
-$form->input()
-     ->submit('submit', '', 'Login')
-     ->create();
+// create form
+$form
+  ->attrs(array(
+    'action'=>Route::getfullUri(true)
+    ,'method'=>'post'))
+  ->content(array(
+    'input'=>array(array(
+      'type'=>'text'
+      ,'name'=>'Name'
+      ,'label'=>'Name'
+      ,'placeholder'=>'Name'
+      ,'id'=>'id-name'
+      ,'required'=>'true')),
+    'input-password'=>array(array(
+     'type'=>'password'
+      ,'name'=>'Passname' 
+      ,'label'=>'Passname' 
+      ,'placeholder'=>'Passname'
+      ,'id'=>'id-passname' 
+      ,'required'=>'true')),
+    'input-submit'=>array(array(
+      'type'=>'submit' 
+      ,'name'=>'Login'
+      ,'value'=>'Login' 
+      ,'id'=>'id-submit'))
+  )
+);
 ```
-Arguments of form elements are defined in order *name*, *label*, *value*, *id* and *maxlength*. Html code of form can be get by calling public method *getCode()*
+Html code of form can be get by calling public method:
 ```php
 // get created html code     
 $form->getCode();
 ```
-which generate following html code
+which generate following html code:
 ```html
-<form action='index.php' method='POST'>
-  <table>
-   <tr><td>Name*</td><td> <!-- label -->
-    <input type='text' name='Name' id='id-name' value='' required /></td></tr>
-   <tr><td>Password*</td><td> <!-- label -->
-    <input type='password' name='Password' id='id-password' value='' required /></td></tr>
-   <tr><td>
-    <input type='submit' name='submit' value='Login' /></td></tr>
+<form action='http://poznamkovyblog.cekuj.net/' method='post'>
+  <table id='table'>
+    <tr>
+      <td>Name</td>
+      <td><input type='text' name='Username' label='Name' id='id-username' required /></td>
+    </tr>
+    <tr>
+      <td>Pasword</td>
+      <td><input type='password' name='Passname' label='Pasword' id='id-passname' required /></td>
+    </tr>
+    <tr>
+      <td></td>
+      <td><input type='submit' name='Login' value='login' id='id-submit' /></td>
+    </tr>
   </table>
 </form>
 ```
