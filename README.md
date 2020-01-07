@@ -21,10 +21,13 @@ This static class parses url requests and stores it into variables that can be u
 ```php
 // Call actual date
 \Vendor\Date\DateTime::getActualTime()
+
 // Call future time
 \Vendor\Date\DateTime::getFutureTime($date = array())
+
 // Time in seconds
 \Vendor\Date\DateTime::getInSec($date = array())
+
 //Compare two dates (actual and requested)
 \Vendor\Date\DateTime::difference($date)
 ```
