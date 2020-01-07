@@ -1,9 +1,10 @@
 # Framework PHP
 Simple PHP framework with Dependency Injection pattern. Preview of functional framework can be seen on web site [poznamkovyblog](http://poznamkovyblog.cekuj.net). 
 ## Static classes
-At the beginning are called five static classes about which is supposed that will be the only one in whole application. These static classes are
+At the beginning are called static classes about which is supposed that will be the only one in whole application. These static classes are
 - [Config](#config)
 - [Route](#route)
+- [Date](#date)
 - [Cookie](#cookie)
 - [Session](#session)
 ### Config
@@ -16,6 +17,7 @@ This static class parses url requests and stores it into variables that can be u
 - `getSerNameUri ($http = false)` - url in form `www.link.com/show/ubuntu`, 
 - `getfullUri ($http = false)` - url in form `www.link.com`
 - `getReqUri ()` - url in form `show/ubuntu/?call=script`
+### Date
 ### Cookie
 Simplify static cookie class is responsible for manipulation with COOKIES. It contains two methods needed for store and destory COOKIE
 - ```set($name, $value, $expire, $path = "/", $domain = false)``` - set COOKIE under specific name
