@@ -66,22 +66,22 @@ $form
  ->content(array(
    'input'=>array(array(
       'type'=>'text'
-     ,'name'=>self::USERNAME
-     ,'label'=>'Meno/Name'
-     ,'placeholder'=>'Meno/Name'
-     ,'id'=>'id-'.strtolower(self::USERNAME)
+     ,'name'=>'Name'
+     ,'label'=>'Name'
+     ,'placeholder'=>'Name'
+     ,'id'=>'id-name'
      ,'required'=>'true')),
    'input-password'=>array(array(
      'type'=>'password'
-     ,'name'=>self::PASSNAME 
-     ,'label'=>'Heslo/Pasword' 
-     ,'placeholder'=>'Heslo/Pasword'
-     ,'id'=>'id-'.strtolower(self::PASSNAME) 
+     ,'name'=>'Passname' 
+     ,'label'=>'Passname' 
+     ,'placeholder'=>'Passname'
+     ,'id'=>'id-passname' 
      ,'required'=>'true')),
    'input-submit'=>array(array(
      'type'=>'submit' 
-     ,'name'=>'Prihlasenie'
-     ,'value'=>'Prihlásenie' 
+     ,'name'=>'Login'
+     ,'value'=>'Login' 
      ,'id'=>'id-submit'))
  )
 );
@@ -96,16 +96,16 @@ which generate following html code
 <form action='http://poznamkovyblog.cekuj.net/' method='POST'>
   <table id='table'>
     <tr>
-      <td>Meno/Name</td>
-      <td align='right'><input type='text' name='Username' label='Meno/Name' id='id-username' required /></td>
+      <td>Name</td>
+      <td align='right'><input type='text' name='Username' label='Name' id='id-username' required /></td>
     </tr>
     <tr>
-      <td>Heslo/Pasword</td>
-      <td align='right'><input type='password' name='Passwordname' label='Heslo/Pasword' id='id-passwordname' required /></td>
+      <td>Pasword</td>
+      <td align='right'><input type='password' name='Passname' label='Pasword' id='id-passname' required /></td>
     </tr>
     <tr>
       <td></td>
-      <td align='right'><input type='submit' name='Prihlasenie' value='Prihlásenie' id='id-submit' /></td>
+      <td align='right'><input type='submit' name='Login' value='login' id='id-submit' /></td>
     </tr>
   </table>
 </form>
