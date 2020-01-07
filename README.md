@@ -63,8 +63,8 @@ Simple html form creator allows to create custimised html form element. For exam
 // create form
 $form
   ->attrs(array(
-     'action'=>Route::getfullUri(true)
-     ,'method'=>'post'))
+    'action'=>Route::getfullUri(true)
+    ,'method'=>'post'))
   ->content(array(
     'input'=>array(array(
       'type'=>'text'
